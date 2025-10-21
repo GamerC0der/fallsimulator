@@ -65,6 +65,76 @@
 
 
 .leaf:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 8s; }
+
+.modal {
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: #2d2d3d;
+    padding: 30px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    font-family: 'Edu NSW ACT Cursive', cursive;
+}
+
+.modal-content h2 {
+    color: #e0e0e0;
+    margin-bottom: 15px;
+    font-size: 24px;
+}
+
+.modal-content p {
+    color: #ccc;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #aaa;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.close-btn:hover {
+    color: #333;
+}
+
+.got-it-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-family: 'Edu NSW ACT Cursive', cursive;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.got-it-button:hover {
+    background-color: #45a049;
+}
 .leaf:nth-child(2) { left: 25%; animation-delay: 1s; animation-duration: 10s; }
 .leaf:nth-child(3) { left: 40%; animation-delay: 2s; animation-duration: 9s; }
 .leaf:nth-child(4) { left: 55%; animation-delay: 1.5s; animation-duration: 11s; }
@@ -88,16 +158,26 @@
     <div id="leaf-counter" style="font-family: 'Edu NSW ACT Cursive', cursive; font-size: 28px; color: #f0f0f0; margin-bottom: 20px;">Leaves: <span id="count">0</span></div>
 
     <div id="upgrades-section" style="color: #f0f0f0;">
-        <div id="leaf-blower" class="upgrade-item" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666;" data-cost="25" data-owned="0">
-            <div style="font-size: 18px; font-weight: bold; color: #f0f0f0;">🍃 Leaf Blower</div>
+        <div id="leaf-blower" class="upgrade-item" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666;" data-cost="10" data-owned="0">
+            <div style="font-size: 18px; font-weight: bold; color: #f0f0f0;"><img src="leave.png" alt="Leaf" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;">Leaf Blower</div>
             <div style="font-size: 14px; color: #ccc; margin-top: 2px;">+1 leaf per second</div>
+            <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">10</span> leaves</div>
+        </div>
+
+        <div id="electric-leaf-blower" class="upgrade-item" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="25" data-owned="0">
+            <div style="font-size: 18px; font-weight: bold; color: #f0f0f0;"><img src="electric.png" alt="Electric" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;">Electric Leaf Blower</div>
+            <div style="font-size: 14px; color: #ccc; margin-top: 2px;">+3 leaves per second</div>
             <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">25</span> leaves</div>
         </div>
 
-        <div id="electric-leaf-blower" class="upgrade-item" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="100" data-owned="0">
-            <div style="font-size: 18px; font-weight: bold; color: #f0f0f0;">⚡ Electric Leaf Blower</div>
-            <div style="font-size: 14px; color: #ccc; margin-top: 2px;">+3 leaves per second</div>
-            <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">100</span> leaves</div>
+        <div id="food-section-divider" style="font-family: 'Edu NSW ACT Cursive', cursive; font-size: 20px; color: #ffa500; margin: 20px 0 15px 0; text-align: center; border-bottom: 2px solid #ffa500; padding-bottom: 5px; display: none;">
+            🍎 Food
+        </div>
+
+        <div id="pumpkin-spice-latte" class="upgrade-item" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="75" data-owned="0">
+            <div style="font-size: 18px; font-weight: bold; color: #f0f0f0;"><img src="pumpkinspice.png" alt="Pumpkin Spice" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;">Pumpkin Spice Latte</div>
+            <div style="font-size: 14px; color: #ccc; margin-top: 2px;">+5% CPS boost</div>
+            <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">75</span> leaves</div>
         </div>
     </div>
 </div>
@@ -117,7 +197,15 @@
 <img class="bg-leaf" src="leave.png" alt="Falling leaf">
 <img class="bg-leaf" src="leave.png" alt="Falling leaf">
 <img class="bg-leaf" src="leave.png" alt="Falling leaf">
-<img class="bg-leaf" src="leave.png" alt="Falling leaf">
+
+<div id="food-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>🍎 Introducing Food</h2>
+        <p>Get boosts of up to 25% on all LPS earnings.</p>
+        <button id="got-it-btn" class="got-it-button">Got it!</button>
+    </div>
+</div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -128,12 +216,14 @@ document.addEventListener('DOMContentLoaded', function() {
     let leafCount = 0;
     let passiveIncome = 0;
     let leafBlowerOwned = 0;
+    let foodMultiplier = 1.0; 
 
     countDisplay.textContent = leafCount;
 
     setInterval(() => {
         if (passiveIncome > 0) {
-            leafCount += passiveIncome;
+            const totalIncome = Math.floor(passiveIncome * foodMultiplier);
+            leafCount += totalIncome;
             countDisplay.textContent = leafCount;
         }
     }, 1000);
@@ -194,10 +284,59 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.querySelector('.cost').textContent = 'OWNED';
 
                     this.dataset.owned = '1';
+
+                    const foodModal = document.getElementById('food-modal');
+                    if (foodModal) {
+                        foodModal.style.display = 'flex';
+                    }
+
+                    const foodSectionDivider = document.getElementById('food-section-divider');
+                    const pumpkinSpiceLatte = document.getElementById('pumpkin-spice-latte');
+                    if (foodSectionDivider) {
+                        foodSectionDivider.style.display = 'block';
+                    }
+                    if (pumpkinSpiceLatte) {
+                        pumpkinSpiceLatte.style.display = 'block';
+                    }
+                } else if (upgradeType === 'pumpkin-spice-latte') {
+                    foodMultiplier = 1.05;
+
+                    this.style.border = '2px solid #4CAF50';
+                    this.querySelector('.cost').textContent = 'OWNED';
+
+                    this.dataset.owned = '1';
                 }
             }
         });
     });
+
+    const foodModal = document.getElementById('food-modal');
+    const closeBtn = document.querySelector('.close-btn');
+
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+            if (foodModal) {
+                foodModal.style.display = 'none';
+            }
+        });
+    }
+
+    const gotItBtn = document.getElementById('got-it-btn');
+    if (gotItBtn) {
+        gotItBtn.addEventListener('click', function() {
+            if (foodModal) {
+                foodModal.style.display = 'none';
+            }
+        });
+    }
+
+    if (foodModal) {
+        foodModal.addEventListener('click', function(e) {
+            if (e.target === foodModal) {
+                foodModal.style.display = 'none';
+            }
+        });
+    }
 });
 </script>
 </body>
