@@ -1,0 +1,203 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Edu+NSW+ACT+Cursive:wght@400..700&display=swap" rel="stylesheet">
+
+<body style="background-color: lightblue; margin: 0; padding: 0;">
+<style>
+@keyframes fall {
+  0% { transform: translateY(0px) rotate(0deg); opacity: 1; }
+  95% { opacity: 1; }
+  100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+}
+
+@keyframes pulse {
+  0% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.2); }
+  100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+.leaf {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  animation: fall linear infinite;
+  cursor: pointer;
+  transition: opacity 0.5s ease;
+}
+
+.main-leaf {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: none;
+  cursor: pointer;
+  transition: opacity 0.5s ease;
+  z-index: 10;
+}
+
+.bg-leaf {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  animation: fall linear infinite;
+  cursor: pointer;
+  transition: opacity 0.5s ease;
+  opacity: 0;
+}
+
+.bg-leaf:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 8s; }
+.bg-leaf:nth-child(2) { left: 25%; animation-delay: 1s; animation-duration: 10s; }
+.bg-leaf:nth-child(3) { left: 40%; animation-delay: 2s; animation-duration: 9s; }
+.bg-leaf:nth-child(4) { left: 55%; animation-delay: 1.5s; animation-duration: 11s; }
+.bg-leaf:nth-child(5) { left: 70%; animation-delay: 3s; animation-duration: 7s; }
+.bg-leaf:nth-child(6) { left: 85%; animation-delay: 0.5s; animation-duration: 12s; }
+.bg-leaf:nth-child(7) { left: 15%; animation-delay: 4s; animation-duration: 8s; }
+.bg-leaf:nth-child(8) { left: 60%; animation-delay: 2.5s; animation-duration: 9s; }
+.bg-leaf:nth-child(9) { left: 35%; animation-delay: 0.8s; animation-duration: 10s; }
+.bg-leaf:nth-child(10) { left: 75%; animation-delay: 3.2s; animation-duration: 8s; }
+.bg-leaf:nth-child(11) { left: 5%; animation-delay: 1.8s; animation-duration: 12s; }
+.bg-leaf:nth-child(12) { left: 90%; animation-delay: 0.3s; animation-duration: 7s; }
+.bg-leaf:nth-child(13) { left: 20%; animation-delay: 4.1s; animation-duration: 9s; }
+.bg-leaf:nth-child(14) { left: 65%; animation-delay: 2.7s; animation-duration: 11s; }
+
+
+.leaf:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 8s; }
+.leaf:nth-child(2) { left: 25%; animation-delay: 1s; animation-duration: 10s; }
+.leaf:nth-child(3) { left: 40%; animation-delay: 2s; animation-duration: 9s; }
+.leaf:nth-child(4) { left: 55%; animation-delay: 1.5s; animation-duration: 11s; }
+.leaf:nth-child(5) { left: 70%; animation-delay: 3s; animation-duration: 7s; }
+.leaf:nth-child(6) { left: 85%; animation-delay: 0.5s; animation-duration: 12s; }
+.leaf:nth-child(7) { left: 15%; animation-delay: 4s; animation-duration: 8s; }
+.leaf:nth-child(8) { left: 60%; animation-delay: 2.5s; animation-duration: 9s; }
+.leaf:nth-child(9) { left: 35%; animation-delay: 0.8s; animation-duration: 10s; }
+.leaf:nth-child(10) { left: 75%; animation-delay: 3.2s; animation-duration: 8s; }
+.leaf:nth-child(11) { left: 5%; animation-delay: 1.8s; animation-duration: 12s; }
+.leaf:nth-child(12) { left: 90%; animation-delay: 0.3s; animation-duration: 7s; }
+.leaf:nth-child(13) { left: 20%; animation-delay: 4.1s; animation-duration: 9s; }
+.leaf:nth-child(14) { left: 65%; animation-delay: 2.7s; animation-duration: 11s; }
+.leaf:nth-child(15) { left: 45%; animation-delay: 1.2s; animation-duration: 8.5s; }
+.leaf:nth-child(16) { left: 80%; animation-delay: 3.8s; animation-duration: 9.5s; }
+</style>
+
+<h1 style="position: absolute; top: 10px; left: 10px; font-family: 'Edu NSW ACT Cursive', cursive; margin: 0; letter-spacing: 2px;">Fall Simulator</h1>
+
+    <div id="right-sidebar" style="position: fixed; top: 0; right: 0; width: 400px; height: 100vh; background: rgba(50, 50, 70, 0.95); border-left: 2px solid #555; padding: 20px; box-sizing: border-box; z-index: 1000;">
+    <div id="leaf-counter" style="font-family: 'Edu NSW ACT Cursive', cursive; font-size: 28px; color: #f0f0f0; margin-bottom: 20px;">Leaves: <span id="count">0</span></div>
+
+    <div id="upgrades-section" style="color: #f0f0f0;">
+        <div id="leaf-blower" class="upgrade-item" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666;" data-cost="25" data-owned="0">
+            <div style="font-size: 18px; font-weight: bold; color: #f0f0f0;">🍃 Leaf Blower</div>
+            <div style="font-size: 14px; color: #ccc; margin-top: 2px;">+1 leaf per second</div>
+            <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">25</span> leaves</div>
+        </div>
+
+        <div id="electric-leaf-blower" class="upgrade-item" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="100" data-owned="0">
+            <div style="font-size: 18px; font-weight: bold; color: #f0f0f0;">⚡ Electric Leaf Blower</div>
+            <div style="font-size: 14px; color: #ccc; margin-top: 2px;">+3 leaves per second</div>
+            <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">100</span> leaves</div>
+        </div>
+    </div>
+</div>
+
+<img class="main-leaf" src="leave.png" alt="Main falling leaf">
+
+<img class="bg-leaf" src="leave.png" alt="Falling leaf">
+<img class="bg-leaf" src="leave.png" alt="Falling leaf">
+<img class="bg-leaf" src="leave.png" alt="Falling leaf">
+<img class="bg-leaf" src="leave.png" alt="Falling leaf">
+<img class="bg-leaf" src="leave.png" alt="Falling leaf">
+<img class="bg-leaf" src="leave.png" alt="Falling leaf">
+<img class="bg-leaf" src="leave.png" alt="Falling leaf">
+<img class="bg-leaf" src="leave.png" alt="Falling leaf">
+<img class="bg-leaf" src="leave.png" alt="Falling leaf">
+<img class="bg-leaf" src="leave.png" alt="Falling leaf">
+<img class="bg-leaf" src="leave.png" alt="Falling leaf">
+<img class="bg-leaf" src="leave.png" alt="Falling leaf">
+<img class="bg-leaf" src="leave.png" alt="Falling leaf">
+<img class="bg-leaf" src="leave.png" alt="Falling leaf">
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mainLeaf = document.querySelector('.main-leaf');
+    const bgLeaves = document.querySelectorAll('.bg-leaf');
+    const countDisplay = document.getElementById('count');
+
+    let leafCount = 0;
+    let passiveIncome = 0;
+    let leafBlowerOwned = 0;
+
+    countDisplay.textContent = leafCount;
+
+    setInterval(() => {
+        if (passiveIncome > 0) {
+            leafCount += passiveIncome;
+            countDisplay.textContent = leafCount;
+        }
+    }, 1000);
+
+    mainLeaf.addEventListener('click', function() {
+        this.style.animation = 'none';
+        this.offsetHeight;
+        this.style.animation = 'pulse 0.6s ease-in-out 3';
+        leafCount++;
+        countDisplay.textContent = leafCount;
+    });
+
+    bgLeaves.forEach(leaf => {
+        leaf.addEventListener('click', function() {
+            this.style.animationPlayState = 'paused';
+            this.style.opacity = '0';
+
+            setTimeout(() => {
+                this.remove();
+                leafCount++;
+                countDisplay.textContent = leafCount;
+            }, 500);
+        });
+    });
+
+    document.querySelectorAll('.upgrade-item').forEach(upgrade => {
+        upgrade.addEventListener('click', function() {
+            const cost = parseInt(this.dataset.cost);
+            const upgradeType = this.id;
+
+            if (leafCount >= cost) {
+                leafCount -= cost;
+                countDisplay.textContent = leafCount;
+
+                if (upgradeType === 'leaf-blower') {
+                    leafBlowerOwned++;
+                    passiveIncome += 1;
+                    this.dataset.owned = leafBlowerOwned;
+
+                    if (leafBlowerOwned === 1) {
+                        this.style.border = '2px solid #4CAF50';
+                        this.querySelector('.cost').textContent = 'OWNED';
+
+                        const electricLeafBlower = document.getElementById('electric-leaf-blower');
+                        if (electricLeafBlower) {
+                            electricLeafBlower.style.display = 'block';
+                        }
+                    }
+                } else if (upgradeType === 'electric-leaf-blower') {
+                    const regularLeafBlower = document.getElementById('leaf-blower');
+                    if (regularLeafBlower) {
+                        regularLeafBlower.style.display = 'none';
+                    }
+
+                    passiveIncome = passiveIncome - 1 + 3;
+
+                    this.style.border = '2px solid #4CAF50';
+                    this.querySelector('.cost').textContent = 'OWNED';
+
+                    this.dataset.owned = '1';
+                }
+            }
+        });
+    });
+});
+</script>
+</body>
