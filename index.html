@@ -170,6 +170,12 @@
             <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">25</span> leaves</div>
         </div>
 
+        <div id="maple-syrup-tap" class="upgrade-item" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="100" data-owned="0">
+            <div style="font-size: 18px; font-weight: bold; color: #f0f0f0;"><img src="maplesyrup.png" alt="Maple Syrup" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;">Maple Syrup Tap</div>
+            <div style="font-size: 14px; color: #ccc; margin-top: 2px;">+1 leaf per second bonus</div>
+            <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">100</span> leaves</div>
+        </div>
+
         <div id="lawn-mower" class="upgrade-item" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="250" data-owned="0">
             <div style="font-size: 18px; font-weight: bold; color: #f0f0f0;"><img src="lawn_mower.png" alt="Lawn Mower" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;">Lawn Mower</div>
             <div style="font-size: 14px; color: #ccc; margin-top: 2px;">+10 leaves per second</div>
@@ -229,12 +235,13 @@ document.addEventListener('DOMContentLoaded', function() {
     let passiveIncome = 0;
     let leafBlowerOwned = 0;
     let foodMultiplier = 1.0;
+    let mapleSyrupBonus = 0;
 
     countDisplay.textContent = leafCount;
 
     setInterval(() => {
-        if (passiveIncome > 0) {
-            const totalIncome = Math.floor(passiveIncome * foodMultiplier);
+        if (passiveIncome > 0 || mapleSyrupBonus > 0) {
+            const totalIncome = Math.floor(passiveIncome * foodMultiplier) + mapleSyrupBonus;
             leafCount += totalIncome;
             countDisplay.textContent = leafCount;
         }
@@ -280,6 +287,7 @@ document.addEventListener('DOMContentLoaded', function() {
             passiveIncome = 0;
             leafBlowerOwned = 0;
             foodMultiplier = 1.0;
+            mapleSyrupBonus = 0;
             countDisplay.textContent = leafCount;
 
             document.querySelectorAll('.upgrade-item').forEach(upgrade => {
@@ -289,29 +297,36 @@ document.addEventListener('DOMContentLoaded', function() {
                 upgrade.dataset.owned = '0';
             });
 
+            const mapleSyrupTap = document.getElementById('maple-syrup-tap');
             const electricLeafBlower = document.getElementById('electric-leaf-blower');
             const lawnMower = document.getElementById('lawn-mower');
             const foodSectionDivider = document.getElementById('food-section-divider');
             const pumpkinSpiceLatte = document.getElementById('pumpkin-spice-latte');
             const pumpkinPie = document.getElementById('pumpkin-pie');
 
+            if (mapleSyrupTap) mapleSyrupTap.style.display = 'none';
             if (electricLeafBlower) electricLeafBlower.style.display = 'none';
             if (lawnMower) lawnMower.style.display = 'none';
             if (foodSectionDivider) foodSectionDivider.style.display = 'none';
             if (pumpkinSpiceLatte) pumpkinSpiceLatte.style.display = 'none';
-            if (pumpkinPie) pumpkinPie.style.display = 'none';
+            if (pumpkinPie) pumpkinPie.
+            style.display = 'none';
 
             console.log('🔄 Game reset!');
             return 'Game reset';
         },
 
         status: function() {
+            const lawnMower = document.getElementById('lawn-mower');
+            const electricDisabled = lawnMower && lawnMower.dataset.owned === '1';
             console.log(`📊 Game Status:
 - Leaves: ${leafCount}
-- Passive Income: ${passiveIncome} LPS
+- Passive Income: ${passiveIncome} LPS${electricDisabled ? ' (Electric blower disabled by lawn mower)' : ''}
+- Maple Syrup Bonus: ${mapleSyrupBonus} LPS
 - Food Multiplier: ${foodMultiplier}x
-- Leaf Blowers Owned: ${leafBlowerOwned}`);
-            return `Leaves: ${leafCount}, LPS: ${passiveIncome}, Multiplier: ${foodMultiplier}x`;
+- Leaf Blowers Owned: ${leafBlowerOwned}
+- Electric Blower: ${electricDisabled ? 'DISABLED' : 'ACTIVE'}`);
+            return `Leaves: ${leafCount}, LPS: ${passiveIncome}${electricDisabled ? ' (Electric disabled)' : ''}, Maple Bonus: ${mapleSyrupBonus}, Multiplier: ${foodMultiplier}x`;
         }
     };
 
@@ -351,6 +366,13 @@ document.addEventListener('DOMContentLoaded', function() {
                             electricLeafBlower.style.display = 'block';
                         }
                     }
+                } else if (upgradeType === 'maple-syrup-tap') {
+                    mapleSyrupBonus += 1;
+
+                    this.style.border = '2px solid #4CAF50';
+                    this.querySelector('.cost').textContent = 'OWNED';
+
+                    this.dataset.owned = '1';
                 } else if (upgradeType === 'electric-leaf-blower') {
                     const regularLeafBlower = document.getElementById('leaf-blower');
                     if (regularLeafBlower) {
@@ -364,7 +386,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     this.dataset.owned = '1';
 
+                    const mapleSyrupTap = document.getElementById('maple-syrup-tap');
                     const lawnMower = document.getElementById('lawn-mower');
+                    if (mapleSyrupTap) {
+                        mapleSyrupTap.style.display = 'block';
+                    }
                     if (lawnMower) {
                         lawnMower.style.display = 'block';
                     }
@@ -401,7 +427,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     this.dataset.owned = '1';
                 } else if (upgradeType === 'lawn-mower') {
-                    passiveIncome += 10;
+                    const electricLeafBlower = document.getElementById('electric-leaf-blower');
+                    if (electricLeafBlower) {
+                        electricLeafBlower.style.display = 'none';
+                    }
+                    passiveIncome = passiveIncome - 3 + 10; 
 
                     this.style.border = '2px solid #4CAF50';
                     this.querySelector('.cost').textContent = 'OWNED';
