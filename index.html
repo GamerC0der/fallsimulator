@@ -232,10 +232,22 @@
             <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">3</span> gems</div>
         </div>
 
-        <div id="five-minute-boost" class="upgrade-item" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="1" data-owned="0" data-cost-type="gems">
-            <div style="font-size: 18px; font-weight: bold; color: #f0f0f0;">🕐 5 Minute Boost</div>
-            <div style="font-size: 14px; color: #ccc; margin-top: 2px;">Instant 5 minutes of CPS earnings</div>
-            <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">1</span> gem</div>
+        <div id="duration-boost-section" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; border-bottom: 1px solid #666; display: none;">
+            <div style="font-size: 18px; font-weight: bold; color: #f0f0f0; margin-bottom: 10px;"><img src="clock.png" alt="Clock" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;">Duration Boost</div>
+            <div style="margin-bottom: 8px;">
+                <select id="duration-select" style="width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #666; background-color: #444; color: #f0f0f0; font-family: 'Edu NSW ACT Cursive', cursive; font-size: 14px;">
+                    <option value="1-1">1 minute - 1 gem</option>
+                    <option value="5-3">5 minutes - 3 gems</option>
+                    <option value="10-5">10 minutes - 5 gems</option>
+                    <option value="30-10">30 minutes - 10 gems</option>
+                    <option value="custom">Custom Duration</option>
+                </select>
+            </div>
+            <div id="custom-duration-input" style="margin-bottom: 8px; display: none;">
+                <input type="number" id="custom-minutes" min="1" max="1440" placeholder="Enter minutes" style="width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #666; background-color: #444; color: #f0f0f0; font-family: 'Edu NSW ACT Cursive', cursive; font-size: 14px;">
+            </div>
+            <button id="duration-boost-btn" style="width: 100%; padding: 10px; background-color: #ff9800; color: white; border: none; border-radius: 5px; font-family: 'Edu NSW ACT Cursive', cursive; font-size: 16px; cursor: pointer; transition: background-color 0.3s ease;">Activate Boost</button>
+            <div id="duration-preview" style="font-size: 12px; color: #999; margin-top: 5px; text-align: center;">Earn leaves instantly</div>
         </div>
     </div>
 </div>
@@ -287,7 +299,6 @@ document.addEventListener('DOMContentLoaded', function() {
     let mapleSyrupBonus = 0;
     let gemCount = 0;
     let gemModalShown = false;
-    let fiveMinBoostUnlocked = false;
     const gemCountDisplay = document.getElementById('gem-count');
 
     countDisplay.textContent = leafCount;
@@ -326,7 +337,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (gemCount === 1 && !gemModalShown) {
                     const gemModal = document.getElementById('gem-modal');
                     const gemCounter = document.getElementById('gem-counter');
-                    const fiveMinBoost = document.getElementById('five-minute-boost');
                     if (gemModal) {
                         gemModal.style.display = 'flex';
                         gemModalShown = true;
@@ -334,9 +344,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (gemCounter) {
                         gemCounter.style.display = 'block';
                     }
-                    if (fiveMinBoost && !fiveMinBoostUnlocked) {
-                        fiveMinBoost.style.display = 'block';
-                        fiveMinBoostUnlocked = true;
+
+                    const durationBoostSection = document.getElementById('duration-boost-section');
+                    if (durationBoostSection) {
+                        durationBoostSection.style.display = 'block';
                     }
                 }
             }, 300);
@@ -424,7 +435,6 @@ document.addEventListener('DOMContentLoaded', function() {
             mapleSyrupBonus = 0;
             gemCount = 0;
             gemModalShown = false;
-            fiveMinBoostUnlocked = false;
             countDisplay.textContent = leafCount;
             gemCountDisplay.textContent = gemCount;
 
@@ -450,7 +460,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const pumpkinSpiceLatte = document.getElementById('pumpkin-spice-latte');
             const pumpkinPie = document.getElementById('pumpkin-pie');
             const candycorn = document.getElementById('candycorn');
-            const fiveMinBoost = document.getElementById('five-minute-boost');
 
             if (mapleSyrupTap) mapleSyrupTap.style.display = 'none';
             if (electricLeafBlower) electricLeafBlower.style.display = 'none';
@@ -459,7 +468,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if (pumpkinSpiceLatte) pumpkinSpiceLatte.style.display = 'none';
             if (pumpkinPie) pumpkinPie.style.display = 'none';
             if (candycorn) candycorn.style.display = 'none';
-            if (fiveMinBoost) fiveMinBoost.style.display = 'none';
+
+            const durationBoostSection = document.getElementById('duration-boost-section');
+            if (durationBoostSection) durationBoostSection.style.display = 'none';
 
             const gemCounter = document.getElementById('gem-counter');
             if (gemCounter) gemCounter.style.display = 'none';
@@ -471,10 +482,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const lawnMower = document.getElementById('lawn-mower');
             const electricDisabled = lawnMower && lawnMower.dataset.owned === '1';
             const candycorn = document.getElementById('candycorn');
-            const fiveMinBoost = document.getElementById('five-minute-boost');
+            const durationBoostSection = document.getElementById('duration-boost-section');
             const candycornOwned = candycorn && candycorn.dataset.owned === '1';
-            const fiveMinBoostVisible = fiveMinBoost && fiveMinBoost.style.display !== 'none';
-            return `Leaves: ${leafCount}, LPS: ${passiveIncome}${electricDisabled ? ' (Electric disabled)' : ''}, Maple Bonus: ${mapleSyrupBonus}, Multiplier: ${foodMultiplier}x, Gems: ${gemCount}, Candycorn: ${candycornOwned ? 'OWNED' : 'NOT OWNED'}, 5Min Boost: ${fiveMinBoostVisible ? 'AVAILABLE' : 'LOCKED'}`;
+            const durationBoostVisible = durationBoostSection && durationBoostSection.style.display !== 'none';
+            return `Leaves: ${leafCount}, LPS: ${passiveIncome}${electricDisabled ? ' (Electric disabled)' : ''}, Maple Bonus: ${mapleSyrupBonus}, Multiplier: ${foodMultiplier}x, Gems: ${gemCount}, Candycorn: ${candycornOwned ? 'OWNED' : 'NOT OWNED'}, Duration Boost: ${durationBoostVisible ? 'AVAILABLE' : 'LOCKED'}`;
         },
 
         giveGems: function(gems) {
@@ -486,7 +497,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 if (wasZero) {
                     const gemCounter = document.getElementById('gem-counter');
-                    const fiveMinBoost = document.getElementById('five-minute-boost');
                     if (gemCounter) {
                         gemCounter.style.display = 'block';
                     }
@@ -497,9 +507,10 @@ document.addEventListener('DOMContentLoaded', function() {
                             gemModalShown = true;
                         }
                     }
-                    if (fiveMinBoost && !fiveMinBoostUnlocked) {
-                        fiveMinBoost.style.display = 'block';
-                        fiveMinBoostUnlocked = true;
+
+                    const durationBoostSection = document.getElementById('duration-boost-section');
+                    if (durationBoostSection) {
+                        durationBoostSection.style.display = 'block';
                     }
                 }
 
@@ -627,11 +638,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.querySelector('.cost').textContent = 'OWNED';
 
                     this.dataset.owned = '1';
-                } else if (upgradeType === 'five-minute-boost') {
-                    const currentCPS = Math.floor(passiveIncome * foodMultiplier) + mapleSyrupBonus;
-                    const fiveMinEarnings = currentCPS * 300;
-                    leafCount += fiveMinEarnings;
-                    countDisplay.textContent = leafCount;
                 } else if (upgradeType === 'lawn-mower') {
                     const electricLeafBlower = document.getElementById('electric-leaf-blower');
                     if (electricLeafBlower) {
@@ -647,6 +653,133 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
+    // Duration boost functionality
+    const durationSelect = document.getElementById('duration-select');
+    const durationBoostBtn = document.getElementById('duration-boost-btn');
+    const durationPreview = document.getElementById('duration-preview');
+    const customInput = document.getElementById('custom-duration-input');
+    const customMinutes = document.getElementById('custom-minutes');
+
+    function calculateGemCost(minutes) {
+        if (minutes <= 1) return 1;
+        if (minutes <= 5) return 3;
+        if (minutes <= 10) return 5;
+        if (minutes <= 30) return 10;
+        if (minutes <= 60) return 18;
+        if (minutes <= 120) return 30;
+        if (minutes <= 240) return 50;
+        if (minutes <= 480) return 80;
+        return Math.ceil(minutes * 0.2);
+    }
+
+    function updateDurationPreview() {
+        if (!durationSelect || !durationPreview) return;
+
+        let minutes, gems;
+        const selectedValue = durationSelect.value;
+
+        if (selectedValue === 'custom') {
+            const customMinValue = parseInt(customMinutes?.value) || 1;
+            minutes = customMinValue;
+            gems = calculateGemCost(minutes);
+            const currentCPS = Math.floor(passiveIncome * foodMultiplier) + mapleSyrupBonus;
+            const totalEarnings = currentCPS * (minutes * 60);
+
+            durationPreview.textContent = `${totalEarnings.toLocaleString()} leaves (${currentCPS} CPS × ${minutes} min) - Cost: ${gems} gems`;
+
+            if (durationBoostBtn) {
+                durationBoostBtn.textContent = `Activate (${gems} ${gems === 1 ? 'gem' : 'gems'})`;
+                durationBoostBtn.disabled = gemCount < gems;
+                durationBoostBtn.style.backgroundColor = gemCount >= gems ? '#ff9800' : '#666';
+                durationBoostBtn.style.cursor = gemCount >= gems ? 'pointer' : 'not-allowed';
+            }
+        } else {
+            [minutes, gems] = selectedValue.split('-').map(Number);
+            const currentCPS = Math.floor(passiveIncome * foodMultiplier) + mapleSyrupBonus;
+            const totalEarnings = currentCPS * (minutes * 60);
+
+            durationPreview.textContent = `${totalEarnings.toLocaleString()} leaves (${currentCPS} CPS × ${minutes} min)`;
+
+            if (durationBoostBtn) {
+                durationBoostBtn.textContent = `Activate (${gems} ${gems === 1 ? 'gem' : 'gems'})`;
+                durationBoostBtn.disabled = gemCount < gems;
+                durationBoostBtn.style.backgroundColor = gemCount >= gems ? '#ff9800' : '#666';
+                durationBoostBtn.style.cursor = gemCount >= gems ? 'pointer' : 'not-allowed';
+            }
+        }
+    }
+
+    function toggleCustomInput() {
+        if (!customInput) return;
+
+        if (durationSelect?.value === 'custom') {
+            customInput.style.display = 'block';
+        } else {
+            customInput.style.display = 'none';
+        }
+        updateDurationPreview();
+    }
+
+    if (durationSelect) {
+        durationSelect.addEventListener('change', function() {
+            toggleCustomInput();
+        });
+    }
+
+    if (customMinutes) {
+        customMinutes.addEventListener('input', function() {
+            let value = parseInt(this.value);
+            if (isNaN(value) || value < 1) {
+                this.value = 1;
+            } else if (value > 1440) {
+                this.value = 1440;
+            }
+            updateDurationPreview();
+        });
+    }
+
+    if (durationBoostBtn) {
+        durationBoostBtn.addEventListener('click', function() {
+            if (!durationSelect) return;
+
+            let minutes, gems;
+            const selectedValue = durationSelect.value;
+
+            if (selectedValue === 'custom') {
+                const customMinValue = parseInt(customMinutes?.value) || 1;
+                minutes = customMinValue;
+                gems = calculateGemCost(minutes);
+            } else {
+                [minutes, gems] = selectedValue.split('-').map(Number);
+            }
+
+            const currentCPS = Math.floor(passiveIncome * foodMultiplier) + mapleSyrupBonus;
+
+            if (gemCount >= gems) {
+                const totalEarnings = currentCPS * (minutes * 60);
+                leafCount += totalEarnings;
+                gemCount -= gems;
+
+                countDisplay.textContent = leafCount;
+                gemCountDisplay.textContent = gemCount;
+
+                // Show feedback
+                durationPreview.textContent = `+${totalEarnings.toLocaleString()} leaves earned!`;
+                durationPreview.style.color = '#4CAF50';
+
+                setTimeout(() => {
+                    durationPreview.style.color = '#999';
+                    updateDurationPreview();
+                }, 2000);
+            }
+        });
+    }
+
+    // Initialize custom input visibility and update preview
+    toggleCustomInput();
+    // Update preview initially and periodically
+    setInterval(updateDurationPreview, 1000);
 
     const foodModal = document.getElementById('food-modal');
     const closeBtn = document.querySelector('.close-btn');
