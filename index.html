@@ -150,12 +150,40 @@
 .leaf:nth-child(14) { left: 65%; animation-delay: 2.7s; animation-duration: 11s; }
 .leaf:nth-child(15) { left: 45%; animation-delay: 1.2s; animation-duration: 8.5s; }
 .leaf:nth-child(16) { left: 80%; animation-delay: 3.8s; animation-duration: 9.5s; }
+
+.gem {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  animation: fall linear infinite;
+  cursor: pointer;
+  transition: opacity 0.5s ease, transform 0.3s ease;
+  z-index: 5;
+  border-radius: 50%;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+}
+
+.gem:hover {
+  transform: scale(1.1);
+}
+
+.gem:nth-child(1) { left: 15%; animation-delay: 0s; animation-duration: 6s; }
+.gem:nth-child(2) { left: 30%; animation-delay: 1.5s; animation-duration: 8s; }
+.gem:nth-child(3) { left: 45%; animation-delay: 3s; animation-duration: 7s; }
+.gem:nth-child(4) { left: 60%; animation-delay: 2s; animation-duration: 9s; }
+.gem:nth-child(5) { left: 75%; animation-delay: 4s; animation-duration: 6.5s; }
+.gem:nth-child(6) { left: 20%; animation-delay: 1s; animation-duration: 8.5s; }
+.gem:nth-child(7) { left: 85%; animation-delay: 3.5s; animation-duration: 7.5s; }
+.gem:nth-child(8) { left: 35%; animation-delay: 0.5s; animation-duration: 9s; }
+.gem:nth-child(9) { left: 50%; animation-delay: 2.5s; animation-duration: 6s; }
+.gem:nth-child(10) { left: 65%; animation-delay: 1.8s; animation-duration: 8s; }
 </style>
 
 <h1 style="position: absolute; top: 10px; left: 10px; font-family: 'Edu NSW ACT Cursive', cursive; margin: 0; letter-spacing: 2px;">Fall Simulator</h1>
 
     <div id="right-sidebar" style="position: fixed; top: 0; right: 0; width: 400px; height: 100vh; background: rgba(50, 50, 70, 0.95); border-left: 2px solid #555; padding: 20px; box-sizing: border-box; z-index: 1000;">
     <div id="leaf-counter" style="font-family: 'Edu NSW ACT Cursive', cursive; font-size: 28px; color: #f0f0f0; margin-bottom: 20px;">Leaves: <span id="count">0</span></div>
+    <div id="gem-counter" style="font-family: 'Edu NSW ACT Cursive', cursive; font-size: 28px; color: #f0f0f0; margin-bottom: 30px;">Gems: <span id="gem-count">0</span> <img src="gem.png" alt="Gem" style="width: 25px; height: 25px; vertical-align: middle; margin-left: 5px;"></div>
 
     <div id="upgrades-section" style="color: #f0f0f0;">
         <div id="leaf-blower" class="upgrade-item" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666;" data-cost="10" data-owned="0">
@@ -236,8 +264,46 @@ document.addEventListener('DOMContentLoaded', function() {
     let leafBlowerOwned = 0;
     let foodMultiplier = 1.0;
     let mapleSyrupBonus = 0;
+    let gemCount = 0;
+    const gemCountDisplay = document.getElementById('gem-count');
 
     countDisplay.textContent = leafCount;
+    gemCountDisplay.textContent = gemCount;
+
+    function checkGemReward() {
+        if (Math.random() < 0.075) {
+            createGem();
+            console.log('💎 GEM SPAWNED! Click it to collect!');
+            return true;
+        }
+        return false;
+    }
+
+    function createGem() {
+        const gem = document.createElement('img');
+        gem.src = 'gem.png';
+        gem.alt = 'Gem';
+        gem.className = 'gem';
+        gem.style.left = Math.random() * 80 + 10 + '%';
+        gem.style.top = '0px';
+        gem.style.animationDelay = Math.random() * 2 + 's';
+        gem.style.animationDuration = (Math.random() * 3 + 6) + 's';
+
+        document.body.appendChild(gem);
+
+        gem.addEventListener('click', function() {
+            this.style.animationPlayState = 'paused';
+            this.style.opacity = '0';
+            this.style.transform = 'scale(1.5)';
+
+            setTimeout(() => {
+                this.remove();
+                gemCount += 1;
+                gemCountDisplay.textContent = gemCount;
+                console.log('💎 GEM COLLECTED! +1 gem! Total: ' + gemCount);
+            }, 300);
+        });
+    }
 
     setInterval(() => {
         if (passiveIncome > 0 || mapleSyrupBonus > 0) {
@@ -253,6 +319,8 @@ document.addEventListener('DOMContentLoaded', function() {
         this.style.animation = 'pulse 0.6s ease-in-out 3';
         leafCount++;
         countDisplay.textContent = leafCount;
+
+        checkGemReward();
     });
 
     bgLeaves.forEach(leaf => {
@@ -264,6 +332,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.remove();
                 leafCount++;
                 countDisplay.textContent = leafCount;
+
+                checkGemReward();
             }, 500);
         });
     });
@@ -288,7 +358,11 @@ document.addEventListener('DOMContentLoaded', function() {
             leafBlowerOwned = 0;
             foodMultiplier = 1.0;
             mapleSyrupBonus = 0;
+            gemCount = 0;
             countDisplay.textContent = leafCount;
+            gemCountDisplay.textContent = gemCount;
+
+            document.querySelectorAll('.gem').forEach(gem => gem.remove());
 
             document.querySelectorAll('.upgrade-item').forEach(upgrade => {
                 upgrade.style.border = '';
@@ -309,8 +383,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (lawnMower) lawnMower.style.display = 'none';
             if (foodSectionDivider) foodSectionDivider.style.display = 'none';
             if (pumpkinSpiceLatte) pumpkinSpiceLatte.style.display = 'none';
-            if (pumpkinPie) pumpkinPie.
-            style.display = 'none';
+            if (pumpkinPie) pumpkinPie.style.display = 'none';
 
             console.log('🔄 Game reset!');
             return 'Game reset';
@@ -325,19 +398,36 @@ document.addEventListener('DOMContentLoaded', function() {
 - Maple Syrup Bonus: ${mapleSyrupBonus} LPS
 - Food Multiplier: ${foodMultiplier}x
 - Leaf Blowers Owned: ${leafBlowerOwned}
-- Electric Blower: ${electricDisabled ? 'DISABLED' : 'ACTIVE'}`);
-            return `Leaves: ${leafCount}, LPS: ${passiveIncome}${electricDisabled ? ' (Electric disabled)' : ''}, Maple Bonus: ${mapleSyrupBonus}, Multiplier: ${foodMultiplier}x`;
+- Electric Blower: ${electricDisabled ? 'DISABLED' : 'ACTIVE'}
+- Gems: ${gemCount}`);
+            return `Leaves: ${leafCount}, LPS: ${passiveIncome}${electricDisabled ? ' (Electric disabled)' : ''}, Maple Bonus: ${mapleSyrupBonus}, Multiplier: ${foodMultiplier}x, Gems: ${gemCount}`;
+        },
+
+        giveGems: function(gems) {
+            const amount = parseInt(gems);
+            if (amount > 0) {
+                gemCount += amount;
+                gemCountDisplay.textContent = gemCount;
+                console.log(`💎 Added ${amount} gem${amount > 1 ? 's' : ''}! Total: ${gemCount}`);
+                return `Added ${amount} gem${amount > 1 ? 's' : ''}`;
+            } else {
+                console.error('❌ Please provide a positive number');
+                return 'Error: Please provide a positive number';
+            }
         }
     };
 
     window.give = window.fallSimulator.give;
+    window.giveGems = window.fallSimulator.giveGems;
     window.reset = window.fallSimulator.reset;
     window.status = window.fallSimulator.status;
 
     console.log('🎮 Fall Simulator Console Commands:');
     console.log('   give(amount)     - Add leaves (e.g., give(130))');
+    console.log('   giveGems(amount) - Add gems (e.g., giveGems(1))');
     console.log('   reset()          - Reset the game');
     console.log('   status()         - Show game status');
+    console.log('   💎 Gems appear randomly (7.5% chance) when clicking leaves!');
     console.log('   fallSimulator.*  - Alternative: fallSimulator.give(130)');
 
     document.querySelectorAll('.upgrade-item').forEach(upgrade => {
