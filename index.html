@@ -183,7 +183,7 @@
 
     <div id="right-sidebar" style="position: fixed; top: 0; right: 0; width: 400px; height: 100vh; background: rgba(50, 50, 70, 0.95); border-left: 2px solid #555; padding: 20px; box-sizing: border-box; z-index: 1000;">
     <div id="leaf-counter" style="font-family: 'Edu NSW ACT Cursive', cursive; font-size: 28px; color: #f0f0f0; margin-bottom: 20px;">Leaves: <span id="count">0</span></div>
-    <div id="gem-counter" style="font-family: 'Edu NSW ACT Cursive', cursive; font-size: 28px; color: #f0f0f0; margin-bottom: 30px;">Gems: <span id="gem-count">0</span> <img src="gem.png" alt="Gem" style="width: 25px; height: 25px; vertical-align: middle; margin-left: 5px;"></div>
+    <div id="gem-counter" style="font-family: 'Edu NSW ACT Cursive', cursive; font-size: 28px; color: #f0f0f0; margin-bottom: 30px; display: none;">Gems: <span id="gem-count">0</span> <img src="gem.png" alt="Gem" style="width: 25px; height: 25px; vertical-align: middle; margin-left: 5px;"></div>
 
     <div id="upgrades-section" style="color: #f0f0f0;">
         <div id="leaf-blower" class="upgrade-item" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666;" data-cost="10" data-owned="0">
@@ -225,6 +225,18 @@
             <div style="font-size: 14px; color: #ccc; margin-top: 2px;">+10% CPS boost</div>
             <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">100</span> leaves</div>
         </div>
+
+        <div id="candycorn" class="upgrade-item" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="3" data-owned="0" data-cost-type="gems">
+            <div style="font-size: 18px; font-weight: bold; color: #f0f0f0;"><img src="candycorn.png" alt="Candy Corn" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;">Candy Corn</div>
+            <div style="font-size: 14px; color: #ccc; margin-top: 2px;">+25% CPS boost</div>
+            <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">3</span> gems</div>
+        </div>
+
+        <div id="five-minute-boost" class="upgrade-item" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="1" data-owned="0" data-cost-type="gems">
+            <div style="font-size: 18px; font-weight: bold; color: #f0f0f0;">🕐 5 Minute Boost</div>
+            <div style="font-size: 14px; color: #ccc; margin-top: 2px;">Instant 5 minutes of CPS earnings</div>
+            <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">1</span> gem</div>
+        </div>
     </div>
 </div>
 
@@ -253,6 +265,15 @@
     </div>
 </div>
 
+<div id="gem-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>💎 Gems Discovered!</h2>
+        <p>You've earned enough leaves to unlock gems! These rare treasures will occasionally appear when you click on falling leaves. Click them quickly to collect them before they disappear!</p>
+        <button id="gem-got-it-btn" class="got-it-button">Got it!</button>
+    </div>
+</div>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const mainLeaf = document.querySelector('.main-leaf');
@@ -265,15 +286,16 @@ document.addEventListener('DOMContentLoaded', function() {
     let foodMultiplier = 1.0;
     let mapleSyrupBonus = 0;
     let gemCount = 0;
+    let gemModalShown = false;
+    let fiveMinBoostUnlocked = false;
     const gemCountDisplay = document.getElementById('gem-count');
 
     countDisplay.textContent = leafCount;
     gemCountDisplay.textContent = gemCount;
 
     function checkGemReward() {
-        if (Math.random() < 0.075) {
+        if (leafCount >= 100 && Math.random() < 0.075) {
             createGem();
-            console.log('💎 GEM SPAWNED! Click it to collect!');
             return true;
         }
         return false;
@@ -300,7 +322,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.remove();
                 gemCount += 1;
                 gemCountDisplay.textContent = gemCount;
-                console.log('💎 GEM COLLECTED! +1 gem! Total: ' + gemCount);
+
+                if (gemCount === 1 && !gemModalShown) {
+                    const gemModal = document.getElementById('gem-modal');
+                    const gemCounter = document.getElementById('gem-counter');
+                    const fiveMinBoost = document.getElementById('five-minute-boost');
+                    if (gemModal) {
+                        gemModal.style.display = 'flex';
+                        gemModalShown = true;
+                    }
+                    if (gemCounter) {
+                        gemCounter.style.display = 'block';
+                    }
+                    if (fiveMinBoost && !fiveMinBoostUnlocked) {
+                        fiveMinBoost.style.display = 'block';
+                        fiveMinBoostUnlocked = true;
+                    }
+                }
             }, 300);
         });
     }
@@ -310,15 +348,28 @@ document.addEventListener('DOMContentLoaded', function() {
             const totalIncome = Math.floor(passiveIncome * foodMultiplier) + mapleSyrupBonus;
             leafCount += totalIncome;
             countDisplay.textContent = leafCount;
+
+            if (leafCount >= 100) {
+                const gemCounter = document.getElementById('gem-counter');
+                if (gemCounter && gemCounter.style.display === 'none') {
+                    gemCounter.style.display = 'block';
+                }
+            }
         }
     }, 1000);
-
     mainLeaf.addEventListener('click', function() {
         this.style.animation = 'none';
         this.offsetHeight;
         this.style.animation = 'pulse 0.6s ease-in-out 3';
         leafCount++;
         countDisplay.textContent = leafCount;
+
+        if (leafCount >= 100) {
+            const gemCounter = document.getElementById('gem-counter');
+            if (gemCounter && gemCounter.style.display === 'none') {
+                gemCounter.style.display = 'block';
+            }
+        }
 
         checkGemReward();
     });
@@ -333,6 +384,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 leafCount++;
                 countDisplay.textContent = leafCount;
 
+                if (leafCount >= 100) {
+                    const gemCounter = document.getElementById('gem-counter');
+                    if (gemCounter && gemCounter.style.display === 'none') {
+                        gemCounter.style.display = 'block';
+                    }
+                }
+
                 checkGemReward();
             }, 500);
         });
@@ -344,10 +402,16 @@ document.addEventListener('DOMContentLoaded', function() {
             if (amount > 0) {
                 leafCount += amount;
                 countDisplay.textContent = leafCount;
-                console.log(`✅ Added ${amount} leaves! Total: ${leafCount}`);
+
+                if (leafCount >= 100) {
+                    const gemCounter = document.getElementById('gem-counter');
+                    if (gemCounter && gemCounter.style.display === 'none') {
+                        gemCounter.style.display = 'block';
+                    }
+                }
+
                 return `Added ${amount} leaves`;
             } else {
-                console.error('❌ Please provide a positive number');
                 return 'Error: Please provide a positive number';
             }
         },
@@ -359,6 +423,8 @@ document.addEventListener('DOMContentLoaded', function() {
             foodMultiplier = 1.0;
             mapleSyrupBonus = 0;
             gemCount = 0;
+            gemModalShown = false;
+            fiveMinBoostUnlocked = false;
             countDisplay.textContent = leafCount;
             gemCountDisplay.textContent = gemCount;
 
@@ -367,7 +433,13 @@ document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.upgrade-item').forEach(upgrade => {
                 upgrade.style.border = '';
                 upgrade.style.borderBottom = '1px solid #666';
-                upgrade.querySelector('.cost').textContent = upgrade.dataset.cost + (upgrade.dataset.cost > 0 ? ' leaves' : '');
+                const costType = upgrade.dataset.costType;
+                const cost = upgrade.dataset.cost;
+                if (costType === 'gems') {
+                    upgrade.querySelector('.cost').textContent = cost + ' gems';
+                } else {
+                    upgrade.querySelector('.cost').textContent = cost + (cost > 0 ? ' leaves' : '');
+                }
                 upgrade.dataset.owned = '0';
             });
 
@@ -377,6 +449,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const foodSectionDivider = document.getElementById('food-section-divider');
             const pumpkinSpiceLatte = document.getElementById('pumpkin-spice-latte');
             const pumpkinPie = document.getElementById('pumpkin-pie');
+            const candycorn = document.getElementById('candycorn');
+            const fiveMinBoost = document.getElementById('five-minute-boost');
 
             if (mapleSyrupTap) mapleSyrupTap.style.display = 'none';
             if (electricLeafBlower) electricLeafBlower.style.display = 'none';
@@ -384,34 +458,53 @@ document.addEventListener('DOMContentLoaded', function() {
             if (foodSectionDivider) foodSectionDivider.style.display = 'none';
             if (pumpkinSpiceLatte) pumpkinSpiceLatte.style.display = 'none';
             if (pumpkinPie) pumpkinPie.style.display = 'none';
+            if (candycorn) candycorn.style.display = 'none';
+            if (fiveMinBoost) fiveMinBoost.style.display = 'none';
 
-            console.log('🔄 Game reset!');
+            const gemCounter = document.getElementById('gem-counter');
+            if (gemCounter) gemCounter.style.display = 'none';
+
             return 'Game reset';
         },
 
         status: function() {
             const lawnMower = document.getElementById('lawn-mower');
             const electricDisabled = lawnMower && lawnMower.dataset.owned === '1';
-            console.log(`📊 Game Status:
-- Leaves: ${leafCount}
-- Passive Income: ${passiveIncome} LPS${electricDisabled ? ' (Electric blower disabled by lawn mower)' : ''}
-- Maple Syrup Bonus: ${mapleSyrupBonus} LPS
-- Food Multiplier: ${foodMultiplier}x
-- Leaf Blowers Owned: ${leafBlowerOwned}
-- Electric Blower: ${electricDisabled ? 'DISABLED' : 'ACTIVE'}
-- Gems: ${gemCount}`);
-            return `Leaves: ${leafCount}, LPS: ${passiveIncome}${electricDisabled ? ' (Electric disabled)' : ''}, Maple Bonus: ${mapleSyrupBonus}, Multiplier: ${foodMultiplier}x, Gems: ${gemCount}`;
+            const candycorn = document.getElementById('candycorn');
+            const fiveMinBoost = document.getElementById('five-minute-boost');
+            const candycornOwned = candycorn && candycorn.dataset.owned === '1';
+            const fiveMinBoostVisible = fiveMinBoost && fiveMinBoost.style.display !== 'none';
+            return `Leaves: ${leafCount}, LPS: ${passiveIncome}${electricDisabled ? ' (Electric disabled)' : ''}, Maple Bonus: ${mapleSyrupBonus}, Multiplier: ${foodMultiplier}x, Gems: ${gemCount}, Candycorn: ${candycornOwned ? 'OWNED' : 'NOT OWNED'}, 5Min Boost: ${fiveMinBoostVisible ? 'AVAILABLE' : 'LOCKED'}`;
         },
 
         giveGems: function(gems) {
             const amount = parseInt(gems);
             if (amount > 0) {
+                const wasZero = gemCount === 0;
                 gemCount += amount;
                 gemCountDisplay.textContent = gemCount;
-                console.log(`💎 Added ${amount} gem${amount > 1 ? 's' : ''}! Total: ${gemCount}`);
+
+                if (wasZero) {
+                    const gemCounter = document.getElementById('gem-counter');
+                    const fiveMinBoost = document.getElementById('five-minute-boost');
+                    if (gemCounter) {
+                        gemCounter.style.display = 'block';
+                    }
+                    if (!gemModalShown) {
+                        const gemModal = document.getElementById('gem-modal');
+                        if (gemModal) {
+                            gemModal.style.display = 'flex';
+                            gemModalShown = true;
+                        }
+                    }
+                    if (fiveMinBoost && !fiveMinBoostUnlocked) {
+                        fiveMinBoost.style.display = 'block';
+                        fiveMinBoostUnlocked = true;
+                    }
+                }
+
                 return `Added ${amount} gem${amount > 1 ? 's' : ''}`;
             } else {
-                console.error('❌ Please provide a positive number');
                 return 'Error: Please provide a positive number';
             }
         }
@@ -422,24 +515,31 @@ document.addEventListener('DOMContentLoaded', function() {
     window.reset = window.fallSimulator.reset;
     window.status = window.fallSimulator.status;
 
-    console.log('🎮 Fall Simulator Console Commands:');
-    console.log('   give(amount)     - Add leaves (e.g., give(130))');
-    console.log('   giveGems(amount) - Add gems (e.g., giveGems(1))');
-    console.log('   reset()          - Reset the game');
-    console.log('   status()         - Show game status');
-    console.log('   💎 Gems appear randomly (7.5% chance) when clicking leaves!');
-    console.log('   fallSimulator.*  - Alternative: fallSimulator.give(130)');
-
     document.querySelectorAll('.upgrade-item').forEach(upgrade => {
         upgrade.addEventListener('click', function() {
             const cost = parseInt(this.dataset.cost);
             const upgradeType = this.id;
             const isOwned = this.dataset.owned === '1';
+            const costType = this.dataset.costType;
 
-            if (cost === 0 || leafCount >= cost || isOwned) {
+            let canAfford = false;
+            if (cost === 0 || isOwned) {
+                canAfford = true;
+            } else if (costType === 'gems') {
+                canAfford = gemCount >= cost;
+            } else {
+                canAfford = leafCount >= cost;
+            }
+
+            if (canAfford) {
                 if (!isOwned) {
-                    leafCount -= cost;
-                    countDisplay.textContent = leafCount;
+                    if (costType === 'gems') {
+                        gemCount -= cost;
+                        gemCountDisplay.textContent = gemCount;
+                    } else {
+                        leafCount -= cost;
+                        countDisplay.textContent = leafCount;
+                    }
                 }
 
                 if (upgradeType === 'leaf-blower') {
@@ -493,6 +593,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const foodSectionDivider = document.getElementById('food-section-divider');
                     const pumpkinSpiceLatte = document.getElementById('pumpkin-spice-latte');
                     const pumpkinPie = document.getElementById('pumpkin-pie');
+                    const candycorn = document.getElementById('candycorn');
                     if (foodSectionDivider) {
                         foodSectionDivider.style.display = 'block';
                     }
@@ -501,6 +602,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                     if (pumpkinPie) {
                         pumpkinPie.style.display = 'block';
+                    }
+                    if (candycorn) {
+                        candycorn.style.display = 'block';
                     }
                 } else if (upgradeType === 'pumpkin-spice-latte') {
                     foodMultiplier = 1.05;
@@ -516,6 +620,18 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.querySelector('.cost').textContent = 'OWNED';
 
                     this.dataset.owned = '1';
+                } else if (upgradeType === 'candycorn') {
+                    foodMultiplier = 1.25;
+
+                    this.style.border = '2px solid #4CAF50';
+                    this.querySelector('.cost').textContent = 'OWNED';
+
+                    this.dataset.owned = '1';
+                } else if (upgradeType === 'five-minute-boost') {
+                    const currentCPS = Math.floor(passiveIncome * foodMultiplier) + mapleSyrupBonus;
+                    const fiveMinEarnings = currentCPS * 300;
+                    leafCount += fiveMinEarnings;
+                    countDisplay.textContent = leafCount;
                 } else if (upgradeType === 'lawn-mower') {
                     const electricLeafBlower = document.getElementById('electric-leaf-blower');
                     if (electricLeafBlower) {
@@ -556,6 +672,34 @@ document.addEventListener('DOMContentLoaded', function() {
         foodModal.addEventListener('click', function(e) {
             if (e.target === foodModal) {
                 foodModal.style.display = 'none';
+            }
+        });
+    }
+
+    const gemModal = document.getElementById('gem-modal');
+    const gemCloseBtn = gemModal ? gemModal.querySelector('.close-btn') : null;
+    const gemGotItBtn = document.getElementById('gem-got-it-btn');
+
+    if (gemCloseBtn) {
+        gemCloseBtn.addEventListener('click', function() {
+            if (gemModal) {
+                gemModal.style.display = 'none';
+            }
+        });
+    }
+
+    if (gemGotItBtn) {
+        gemGotItBtn.addEventListener('click', function() {
+            if (gemModal) {
+                gemModal.style.display = 'none';
+            }
+        });
+    }
+
+    if (gemModal) {
+        gemModal.addEventListener('click', function(e) {
+            if (e.target === gemModal) {
+                gemModal.style.display = 'none';
             }
         });
     }
