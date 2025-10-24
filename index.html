@@ -135,6 +135,33 @@
 .got-it-button:hover {
     background-color: #45a049;
 }
+
+#minigame-btn:hover {
+    background: linear-gradient(135deg, #777, #555);
+    border-color: #888;
+}
+
+#minigame-btn:active {
+    transform: scale(0.95);
+}
+
+#trick-treat-btn:hover {
+    background: #ff7a47;
+    transform: translateY(-2px);
+}
+
+#trick-treat-btn:active {
+    transform: translateY(0);
+}
+
+#back-btn:hover {
+    background: #777;
+    border-color: #888;
+}
+
+#back-btn:active {
+    transform: scale(0.95);
+}
 .leaf:nth-child(2) { left: 25%; animation-delay: 1s; animation-duration: 10s; }
 .leaf:nth-child(3) { left: 40%; animation-delay: 2s; animation-duration: 9s; }
 .leaf:nth-child(4) { left: 55%; animation-delay: 1.5s; animation-duration: 11s; }
@@ -185,7 +212,13 @@
     <div id="leaf-counter" style="font-family: 'Edu NSW ACT Cursive', cursive; font-size: 28px; color: #f0f0f0; margin-bottom: 20px;">Leaves: <span id="count">0</span></div>
     <div id="gem-counter" style="font-family: 'Edu NSW ACT Cursive', cursive; font-size: 28px; color: #f0f0f0; margin-bottom: 30px; display: none;">Gems: <span id="gem-count">0</span> <img src="gem.png" alt="Gem" style="width: 25px; height: 25px; vertical-align: middle; margin-left: 5px;"></div>
 
-    <div id="upgrades-section" style="color: #f0f0f0; max-height: 75vh; overflow-y: auto; padding-bottom: 20px; scrollbar-width: thin; scrollbar-color: #666 #444;">
+    <div style="position: absolute; top: 15px; right: 15px; z-index: 1001;">
+        <button id="minigame-btn" style="background: linear-gradient(135deg, #666, #444); color: #f0f0f0; border: 2px solid #777; padding: 8px 16px; font-size: 14px; font-family: 'Edu NSW ACT Cursive', cursive; border-radius: 15px; cursor: pointer; transition: all 0.3s ease; font-weight: bold;">
+            🎮 
+        </button>
+    </div>
+
+    <div id="upgrades-section" style="color: #f0f0f0; max-height: 70vh; overflow-y: auto; padding-bottom: 20px; scrollbar-width: thin; scrollbar-color: #666 #444;">
         <div id="leaf-blower" class="upgrade-item" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666;" data-cost="10" data-owned="0">
             <div style="font-size: 18px; font-weight: bold; color: #f0f0f0;"><img src="leave.png" alt="Leaf" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;">Leaf Blower</div>
             <div style="font-size: 14px; color: #ccc; margin-top: 2px;">+1 leaf per second</div>
@@ -298,6 +331,27 @@
         </div>
         <p>You've earned enough leaves to unlock gems! These rare treasures will occasionally appear when you click on falling leaves. Click them quickly to collect them before they disappear!</p>
         <button id="gem-got-it-btn" class="got-it-button">Got it!</button>
+    </div>
+</div>
+
+<div id="minigame-modal" class="modal" style="display: none;">
+    <div class="modal-content" style="min-height: 200px; min-width: 350px; padding: 40px; text-align: center;">
+        <span class="close-btn">&times;</span>
+        <h2 style="color: #e0e0e0; font-size: 24px; margin: 0 0 30px 0; font-family: 'Edu NSW ACT Cursive', cursive;">Minigames</h2>
+
+        <div style="display: flex; flex-direction: row; gap: 20px; justify-content: center; align-items: center;">
+            <button id="trick-treat-btn" style="background: #ff6b35; color: white; border: none; padding: 12px 25px; font-size: 16px; font-family: 'Edu NSW ACT Cursive', cursive; border-radius: 20px; cursor: pointer; transition: all 0.3s ease;">
+                🎃 Trick n Treat
+            </button>
+
+            <button id="back-btn" style="background: #666; color: #f0f0f0; border: 2px solid #777; padding: 12px 25px; font-size: 16px; font-family: 'Edu NSW ACT Cursive', cursive; border-radius: 15px; cursor: pointer; transition: all 0.3s ease;">
+                ← Back
+            </button>
+        </div>
+
+        <p style="color: #ccc; font-size: 14px; margin: 20px 0 0 0; text-align: center; font-family: 'Edu NSW ACT Cursive', cursive;">
+            <img src="gem.png" alt="Gem" style="width: 16px; height: 16px; vertical-align: middle; margin: 0 3px;"> Playing games is free and lets you earn diamonds!
+        </p>
     </div>
 </div>
 
@@ -877,6 +931,50 @@ document.addEventListener('DOMContentLoaded', function() {
         gemModal.addEventListener('click', function(e) {
             if (e.target === gemModal) {
                 gemModal.style.display = 'none';
+            }
+        });
+    }
+
+    const minigameBtn = document.getElementById('minigame-btn');
+    const minigameModal = document.getElementById('minigame-modal');
+    const minigameModalClose = minigameModal ? minigameModal.querySelector('.close-btn') : null;
+    const trickTreatBtn = document.getElementById('trick-treat-btn');
+    const backBtn = document.getElementById('back-btn');
+
+    if (minigameBtn) {
+        minigameBtn.addEventListener('click', function() {
+            if (minigameModal) {
+                minigameModal.style.display = 'flex';
+            }
+        });
+    }
+
+    if (minigameModalClose) {
+        minigameModalClose.addEventListener('click', function() {
+            if (minigameModal) {
+                minigameModal.style.display = 'none';
+            }
+        });
+    }
+
+    if (backBtn) {
+        backBtn.addEventListener('click', function() {
+            if (minigameModal) {
+                minigameModal.style.display = 'none';
+            }
+        });
+    }
+
+    if (trickTreatBtn) {
+        trickTreatBtn.addEventListener('click', function() {
+            window.location.href = '/minigame';
+        });
+    }
+
+    if (minigameModal) {
+        minigameModal.addEventListener('click', function(e) {
+            if (e.target === minigameModal) {
+                minigameModal.style.display = 'none';
             }
         });
     }
