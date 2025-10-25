@@ -346,7 +346,13 @@
         <div id="large-maple-syrup-tap" class="upgrade-item" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="1000" data-owned="0">
             <div style="font-size: 18px; font-weight: bold; color: #f0f0f0;"><img src="largemaplesyrup.png" alt="Large Maple Syrup" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;">Large Maple Syrup Tap</div>
             <div style="font-size: 14px; color: #ccc; margin-top: 2px;">+2 leaves per second bonus</div>
-            <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">1000</span> leaves</div>
+            <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">1k</span> leaves</div>
+        </div>
+
+        <div id="golden-maple-syrup-tap" class="upgrade-item" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="25000" data-owned="0">
+            <div style="font-size: 18px; font-weight: bold; color: #ffd700;"><img src="largemaplesyrup.png" alt="Golden Maple Syrup" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle; filter: sepia(100%) hue-rotate(45deg) saturate(200%);">Golden Maple Syrup Tap</div>
+            <div style="font-size: 14px; color: #ccc; margin-top: 2px;">+100 leaves per second</div>
+            <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">25k</span> leaves</div>
         </div>
 
         <div id="lawn-mower" class="upgrade-item" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="250" data-owned="0">
@@ -364,14 +370,15 @@
         <div id="snow-blower" class="upgrade-item" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="2500" data-owned="0">
             <div style="font-size: 18px; font-weight: bold; color: #f0f0f0;"><img src="snow.png" alt="Snow Blower" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;">Snow Blower</div>
             <div style="font-size: 14px; color: #ccc; margin-top: 2px;">+50 leaves per second</div>
-            <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">2500</span> leaves</div>
+            <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">2.5k</span> leaves</div>
         </div>
 
         <div id="super-snow-blower" class="upgrade-item" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="7500" data-owned="0">
             <div style="font-size: 18px; font-weight: bold; color: #f0f0f0;"><img src="largesnow.png" alt="Super Snow Blower" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;">Super Snow Blower</div>
             <div style="font-size: 14px; color: #ccc; margin-top: 2px;">+100 leaves per second</div>
-            <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">7500</span> leaves</div>
+            <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">7.5k</span> leaves</div>
         </div>
+
 
         <div id="food-section-divider" style="font-family: 'Edu NSW ACT Cursive', cursive; font-size: 20px; color: #ffa500; margin: 20px 0 15px 0; text-align: center; border-bottom: 2px solid #ffa500; padding-bottom: 5px; display: none;">
             🍎 Food
@@ -479,16 +486,52 @@
     </div>
 </div>
 
-<!-- Reset Button and Modal -->
-<button id="reset-btn" class="reset-btn" title="Reset Game">🗑️</button>
+<button id="reset-btn" class="reset-btn" title="Reset Game">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 6H18V18C18 19.1 17.1 20 16 20H8C6.9 20 6 19.1 6 18V6Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M8 6V4C8 2.9 8.9 2 10 2H14C15.1 2 16 2.9 16 4V6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="9" y1="9" x2="9" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <line x1="15" y1="9" x2="15" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <line x1="3" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+</button>
 
 <div id="reset-modal" class="reset-modal">
     <div class="reset-modal-content">
-        <h2>🗑️ Reset Game?</h2>
+        <h2>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 8px;">
+                <path d="M6 6H18V18C18 19.1 17.1 20 16 20H8C6.9 20 6 19.1 6 18V6Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M8 6V4C8 2.9 8.9 2 10 2H14C15.1 2 16 2.9 16 4V6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <line x1="9" y1="9" x2="9" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <line x1="15" y1="9" x2="15" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <line x1="3" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            Reset Game?
+        </h2>
         <p>This will permanently delete all your progress including:</p>
-        <p>🍂 All leaves and gems</p>
-        <p>🏭 All purchased upgrades</p>
-        <p>📊 All achievements and unlocks</p>
+        <p>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 8px;">
+                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            All leaves and gems
+        </p>
+        <p>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 8px;">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                <circle cx="9" cy="9" r="2" stroke="currentColor" stroke-width="2"/>
+                <path d="M21 15L16 10L9 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            All purchased upgrades
+        </p>
+        <p>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 8px;">
+                <polyline points="22,12 18,12 15,21 9,3 6,12 2,12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            All achievements and unlocks
+        </p>
         <div class="reset-modal-buttons">
             <button id="reset-confirm" class="reset-confirm-btn">Yes, Reset</button>
             <button id="reset-cancel" class="reset-cancel-btn">Cancel</button>
@@ -513,8 +556,324 @@ document.addEventListener('DOMContentLoaded', function() {
     let foodModalShown = false;
     const gemCountDisplay = document.getElementById('gem-count');
 
-    countDisplay.textContent = leafCount;
-    gemCountDisplay.textContent = gemCount;
+    function formatLeafCount(count) {
+        if (count >= 100000) {
+            return '100k';
+        } else if (count >= 1000) {
+            return (count / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
+        }
+        return count.toString();
+    }
+
+    function updateLeafDisplay() {
+        countDisplay.textContent = formatLeafCount(leafCount);
+    }
+
+    function updateGemDisplay() {
+        gemCountDisplay.textContent = gemCount;
+    }
+
+    function formatCost(cost) {
+        if (cost >= 100000) {
+            return '100k';
+        } else if (cost >= 1000) {
+            return (cost / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
+        }
+        return cost.toString();
+    }
+
+    updateLeafDisplay();
+    updateGemDisplay();
+
+    const UPGRADE_TYPES = {
+        PASSIVE_INCOME: 'passive_income',
+        MULTIPLIER: 'multiplier',
+        BONUS: 'bonus',
+        UNLOCK: 'unlock',
+        REPLACE: 'replace'
+    };
+
+    const UPGRADE_CONFIG = {
+        'leaf-blower': {
+            id: 'leaf-blower',
+            name: 'Leaf Blower',
+            icon: 'leave.png',
+            description: '+1 leaf per second',
+            type: UPGRADE_TYPES.PASSIVE_INCOME,
+            cost: 10,
+            costType: 'leaves',
+            effect: { value: 1 },
+            maxOwned: Infinity,
+            prerequisites: [],
+            unlocks: ['electric-leaf-blower']
+        },
+
+        'electric-leaf-blower': {
+            id: 'electric-leaf-blower',
+            name: 'Electric Leaf Blower',
+            icon: 'electric.png',
+            description: '+3 leaves per second',
+            type: UPGRADE_TYPES.REPLACE,
+            cost: 25,
+            costType: 'leaves',
+            effect: { value: 3 },
+            replaces: ['leaf-blower'],
+            prerequisites: ['leaf-blower'],
+            unlocks: ['maple-syrup-tap']
+        },
+
+        'maple-syrup-tap': {
+            id: 'maple-syrup-tap',
+            name: 'Maple Syrup Tap',
+            icon: 'maplesyrup.png',
+            description: '+1 leaf per second bonus',
+            type: UPGRADE_TYPES.BONUS,
+            cost: 100,
+            costType: 'leaves',
+            effect: { value: 1 },
+            prerequisites: ['electric-leaf-blower'],
+            unlocks: ['large-maple-syrup-tap']
+        },
+
+        'large-maple-syrup-tap': {
+            id: 'large-maple-syrup-tap',
+            name: 'Large Maple Syrup Tap',
+            icon: 'largemaplesyrup.png',
+            description: '+2 leaves per second bonus',
+            type: UPGRADE_TYPES.BONUS,
+            cost: 1000,
+            costType: 'leaves',
+            effect: { value: 2 },
+            prerequisites: ['maple-syrup-tap'],
+            unlocks: ['lawn-mower']
+        },
+
+        'golden-maple-syrup-tap': {
+            id: 'golden-maple-syrup-tap',
+            name: 'Golden Maple Syrup Tap',
+            icon: 'largemaplesyrup.png',
+            description: '+100 leaves per second',
+            type: UPGRADE_TYPES.REPLACE,
+            cost: 25000,
+            costType: 'leaves',
+            effect: { value: 100 },
+            replaces: ['maple-syrup-tap', 'large-maple-syrup-tap', 'electric-leaf-blower'],
+            prerequisites: ['lawn-mower']
+        },
+
+        'lawn-mower': {
+            id: 'lawn-mower',
+            name: 'Lawn Mower',
+            icon: 'lawn_mower.png',
+            description: '+10 leaves per second',
+            type: UPGRADE_TYPES.REPLACE,
+            cost: 250,
+            costType: 'leaves',
+            effect: { value: 10 },
+            replaces: ['electric-leaf-blower'],
+            prerequisites: ['large-maple-syrup-tap'],
+            unlocks: ['jack-o-lantern']
+        },
+
+        'jack-o-lantern': {
+            id: 'jack-o-lantern',
+            name: 'Jack O\'Lantern',
+            icon: 'pumpkin.png',
+            description: '+25 leaves per second',
+            type: UPGRADE_TYPES.PASSIVE_INCOME,
+            cost: 500,
+            costType: 'leaves',
+            effect: { value: 25 },
+            prerequisites: ['lawn-mower'],
+            unlocks: ['snow-blower']
+        },
+
+        'snow-blower': {
+            id: 'snow-blower',
+            name: 'Snow Blower',
+            icon: 'snow.png',
+            description: '+50 leaves per second',
+            type: UPGRADE_TYPES.REPLACE,
+            cost: 2500,
+            costType: 'leaves',
+            effect: { value: 50 },
+            replaces: ['electric-leaf-blower'],
+            prerequisites: ['jack-o-lantern'],
+            unlocks: ['super-snow-blower']
+        },
+
+        'super-snow-blower': {
+            id: 'super-snow-blower',
+            name: 'Super Snow Blower',
+            icon: 'largesnow.png',
+            description: '+100 leaves per second',
+            type: UPGRADE_TYPES.REPLACE,
+            cost: 7500,
+            costType: 'leaves',
+            effect: { value: 100 },
+            replaces: ['snow-blower', 'electric-leaf-blower'],
+            prerequisites: ['snow-blower']
+        },
+
+        'pumpkin-spice-latte': {
+            id: 'pumpkin-spice-latte',
+            name: 'Pumpkin Spice Latte',
+            icon: 'pumpkinspice.png',
+            description: '+5% CPS boost',
+            type: UPGRADE_TYPES.MULTIPLIER,
+            cost: 50,
+            costType: 'leaves',
+            effect: { value: 1.05, operation: 'multiply' },
+            prerequisites: ['jack-o-lantern'],
+            unlocks: ['pumpkin-pie']
+        },
+
+        'pumpkin-pie': {
+            id: 'pumpkin-pie',
+            name: 'Pumpkin Pie',
+            icon: 'pie.png',
+            description: '+10% CPS boost',
+            type: UPGRADE_TYPES.MULTIPLIER,
+            cost: 100,
+            costType: 'leaves',
+            effect: { value: 1.10, operation: 'multiply' },
+            prerequisites: ['pumpkin-spice-latte'],
+            unlocks: ['candycorn']
+        },
+
+        'candycorn': {
+            id: 'candycorn',
+            name: 'Candy Corn',
+            icon: 'candycorn.png',
+            description: '+25% CPS boost',
+            type: UPGRADE_TYPES.MULTIPLIER,
+            cost: 3,
+            costType: 'gems',
+            effect: { value: 1.25, operation: 'multiply' },
+            prerequisites: ['pumpkin-pie'],
+            unlocks: ['apple-cider-press']
+        },
+
+        'apple-cider-press': {
+            id: 'apple-cider-press',
+            name: 'Apple Cider Press',
+            icon: 'applecider.png',
+            description: '+50% CPS boost',
+            type: UPGRADE_TYPES.MULTIPLIER,
+            cost: 10,
+            costType: 'gems',
+            effect: { value: 1.50, operation: 'multiply' },
+            prerequisites: ['candycorn']
+        },
+
+    };
+
+    function getUpgradeConfig(upgradeId) {
+        return UPGRADE_CONFIG[upgradeId];
+    }
+
+    function canAffordUpgrade(upgradeId, currentLeaves, currentGems) {
+        const config = getUpgradeConfig(upgradeId);
+        if (!config) return false;
+
+        const cost = config.cost;
+        if (config.costType === 'gems') {
+            return currentGems >= cost;
+        } else {
+            return currentLeaves >= cost;
+        }
+    }
+
+    function applyUpgradeEffect(upgradeId, ownedCount = 1) {
+        const config = getUpgradeConfig(upgradeId);
+        if (!config) return;
+
+        const effect = config.effect;
+
+        switch (config.type) {
+            case UPGRADE_TYPES.PASSIVE_INCOME:
+                passiveIncome += effect.value;
+                break;
+
+            case UPGRADE_TYPES.MULTIPLIER:
+                if (upgradeId === 'apple-cider-press') {
+                    ciderPressBonus = effect.value;
+                } else {
+                    foodMultiplier = effect.value;
+                }
+                break;
+
+            case UPGRADE_TYPES.BONUS:
+                mapleSyrupBonus += effect.value;
+                break;
+
+            case UPGRADE_TYPES.REPLACE:
+                if (config.replaces) {
+                    config.replaces.forEach(replacedId => {
+                        hideUpgrade(replacedId);
+                        const replacedConfig = getUpgradeConfig(replacedId);
+                        if (replacedConfig && replacedConfig.type === UPGRADE_TYPES.PASSIVE_INCOME) {
+                            passiveIncome -= replacedConfig.effect.value;
+                        }
+                    });
+                }
+                passiveIncome += effect.value;
+                break;
+        }
+    }
+
+    function hideUpgrade(upgradeId) {
+        const upgradeElement = document.getElementById(upgradeId);
+        if (upgradeElement) {
+            upgradeElement.style.display = 'none';
+        }
+    }
+
+    function showUpgrade(upgradeId) {
+        const upgradeElement = document.getElementById(upgradeId);
+        if (upgradeElement) {
+            upgradeElement.style.display = 'block';
+        }
+    }
+
+    function updateUpgradeDisplay(upgradeId) {
+        const upgradeElement = document.getElementById(upgradeId);
+        if (!upgradeElement) return;
+
+        const config = getUpgradeConfig(upgradeId);
+        if (!config) return;
+
+        const ownedCount = parseInt(upgradeElement.dataset.owned) || 0;
+        const costSpan = upgradeElement.querySelector('.cost');
+
+        if (ownedCount > 0) {
+            upgradeElement.style.border = '2px solid #4CAF50';
+            costSpan.textContent = 'OWNED';
+        } else {
+            upgradeElement.style.border = '';
+            upgradeElement.style.borderBottom = '1px solid #666';
+            const formattedCost = config.costType === 'gems' ? config.cost : formatCost(config.cost);
+            costSpan.textContent = formattedCost + (config.costType === 'gems' ? ' gems' : ' leaves');
+        }
+    }
+
+    function unlockUpgrades(unlockList) {
+        if (!unlockList) return;
+
+        unlockList.forEach(upgradeId => {
+            showUpgrade(upgradeId);
+        });
+    }
+
+    function checkPrerequisites(upgradeId) {
+        const config = getUpgradeConfig(upgradeId);
+        if (!config || !config.prerequisites) return true;
+
+        return config.prerequisites.every(prereqId => {
+            const prereqElement = document.getElementById(prereqId);
+            return prereqElement && prereqElement.dataset.owned === '1';
+        });
+    }
 
     function showGemUI() {
         const gemCounter = document.getElementById('gem-counter');
@@ -528,7 +887,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function hideAllUpgrades() {
         const upgrades = [
-            'electric-leaf-blower', 'maple-syrup-tap', 'large-maple-syrup-tap', 'lawn-mower', 'jack-o-lantern', 'snow-blower', 'super-snow-blower',
+            'electric-leaf-blower', 'maple-syrup-tap', 'large-maple-syrup-tap', 'golden-maple-syrup-tap', 'lawn-mower', 'jack-o-lantern', 'snow-blower', 'super-snow-blower',
             'food-section-divider', 'pumpkin-spice-latte', 'pumpkin-pie',
             'candycorn', 'apple-cider-press', 'duration-boost-section'
         ];
@@ -537,45 +896,37 @@ document.addEventListener('DOMContentLoaded', function() {
             const element = document.getElementById(id);
             if (element) element.style.display = 'none';
         });
+
+        const foodSectionDivider = document.getElementById('food-section-divider');
+        const durationBoostSection = document.getElementById('duration-boost-section');
+        if (foodSectionDivider) foodSectionDivider.style.display = 'none';
+        if (durationBoostSection) durationBoostSection.style.display = 'none';
     }
 
     function showUpgradesForProgression(upgradeId) {
-        if (upgradeId === 'leaf-blower') {
-            const electricLeafBlower = document.getElementById('electric-leaf-blower');
-            if (electricLeafBlower) electricLeafBlower.style.display = 'block';
-        } else if (upgradeId === 'electric-leaf-blower') {
-            const normalMapleSyrup = document.getElementById('maple-syrup-tap');
-            const largeMapleSyrup = document.getElementById('large-maple-syrup-tap');
+        const config = getUpgradeConfig(upgradeId);
+        if (!config || !config.unlocks) return;
 
-            if (normalMapleSyrup) normalMapleSyrup.style.display = 'block';
-            if (largeMapleSyrup && normalMapleSyrup && normalMapleSyrup.dataset.owned === '1') {
-                largeMapleSyrup.style.display = 'block';
+        config.unlocks.forEach(unlockId => {
+            const unlockConfig = getUpgradeConfig(unlockId);
+            if (unlockConfig) {
+                showUpgrade(unlockId);
+            } else {
+                showUpgrade(unlockId);
             }
+        });
 
-            const sections = ['lawn-mower', 'food-section-divider',
-                           'pumpkin-spice-latte', 'pumpkin-pie', 'candycorn', 'apple-cider-press'];
-            sections.forEach(id => {
-                const element = document.getElementById(id);
-                if (element) element.style.display = 'block';
-            });
+        if (upgradeId === 'jack-o-lantern') {
+            const foodSectionDivider = document.getElementById('food-section-divider');
+            if (foodSectionDivider) foodSectionDivider.style.display = 'block';
 
-            const foodModal = document.getElementById('food-modal');
-            if (foodModal && !foodModalShown) {
-                foodModal.style.display = 'flex';
-                foodModalShown = true;
+            if (!foodModalShown) {
+                const foodModal = document.getElementById('food-modal');
+                if (foodModal) {
+                    foodModal.style.display = 'flex';
+                    foodModalShown = true;
+                }
             }
-        } else if (upgradeId === 'lawn-mower') {
-            const jackOLantern = document.getElementById('jack-o-lantern');
-            if (jackOLantern) jackOLantern.style.display = 'block';
-        } else if (upgradeId === 'jack-o-lantern') {
-            const snowBlower = document.getElementById('snow-blower');
-            if (snowBlower) snowBlower.style.display = 'block';
-        } else if (upgradeId === 'snow-blower') {
-            const superSnowBlower = document.getElementById('super-snow-blower');
-            if (superSnowBlower) superSnowBlower.style.display = 'block';
-        } else if (upgradeId === 'maple-syrup-tap') {
-            const largeMapleSyrupTap = document.getElementById('large-maple-syrup-tap');
-            if (largeMapleSyrupTap) largeMapleSyrupTap.style.display = 'block';
         }
     }
 
@@ -586,12 +937,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (savedLeaves) {
             leafCount = parseInt(savedLeaves);
-            countDisplay.textContent = leafCount;
+            updateLeafDisplay();
         }
 
         if (savedGems) {
             gemCount = parseInt(savedGems);
-            gemCountDisplay.textContent = gemCount;
+            updateGemDisplay();
 
             if (gemCount > 0 && !gemModalShown) {
                 showGemUI();
@@ -601,119 +952,44 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (savedUpgrades) {
             const upgrades = JSON.parse(savedUpgrades);
+
             Object.keys(upgrades).forEach(upgradeId => {
                 const upgrade = document.getElementById(upgradeId);
-                if (upgrade) {
-                    upgrade.dataset.owned = upgrades[upgradeId].owned;
-                    if (upgrades[upgradeId].owned === '1') {
-                        upgrade.style.border = '2px solid #4CAF50';
-                        upgrade.querySelector('.cost').textContent = 'OWNED';
+                const config = getUpgradeConfig(upgradeId);
 
-                        if (upgradeId === 'leaf-blower') {
-                            showUpgradesForProgression('leaf-blower');
-                        } else if (upgradeId === 'electric-leaf-blower') {
-                            if (!gemModalShown && !foodModalShown) {
-                                const foodModal = document.getElementById('food-modal');
-                                if (foodModal) {
-                                    foodModal.style.display = 'flex';
-                                    foodModalShown = true;
-                                }
+                if (upgrade && config) {
+                    const ownedCount = parseInt(upgrades[upgradeId].owned) || 0;
+
+                    if (ownedCount > 0) {
+                        upgrade.dataset.owned = upgrades[upgradeId].owned;
+                        updateUpgradeDisplay(upgradeId);
+
+                        if (config.type === UPGRADE_TYPES.PASSIVE_INCOME && config.maxOwned === Infinity) {
+                            leafBlowerOwned = ownedCount;
+                            for (let i = 0; i < ownedCount; i++) {
+                                applyUpgradeEffect(upgradeId, i + 1);
                             }
-                            showUpgradesForProgression('electric-leaf-blower');
-                        } else if (upgradeId === 'lawn-mower') {
-                            showUpgradesForProgression('lawn-mower');
-                        } else if (upgradeId === 'jack-o-lantern') {
-                            showUpgradesForProgression('jack-o-lantern');
-                        } else if (upgradeId === 'snow-blower') {
-                            const superSnowBlower = document.getElementById('super-snow-blower');
-                            if (superSnowBlower) {
-                                superSnowBlower.style.display = 'block';
+                        } else {
+                            applyUpgradeEffect(upgradeId);
+                        }
+
+                        showUpgradesForProgression(upgradeId);
+
+                        if (upgradeId === 'jack-o-lantern' && !foodModalShown) {
+                            const foodModal = document.getElementById('food-modal');
+                            if (foodModal) {
+                                foodModal.style.display = 'flex';
+                                foodModalShown = true;
                             }
-                        } else if (upgradeId === 'maple-syrup-tap') {
-                            const largeMapleSyrupTap = document.getElementById('large-maple-syrup-tap');
-                            if (largeMapleSyrupTap) {
-                                largeMapleSyrupTap.style.display = 'block';
-                            }
+                        }
+
+                        if (gemCount > 0 && !gemModalShown) {
+                            showGemUI();
+                            gemModalShown = true;
                         }
                     }
                 }
             });
-
-        
-            const leafBlower = document.getElementById('leaf-blower');
-            if (leafBlower && leafBlower.dataset.owned === '1') {
-                leafBlowerOwned = 1;
-                passiveIncome += 1;
-            }
-
-            const electricLeafBlower = document.getElementById('electric-leaf-blower');
-            const snowBlower = document.getElementById('snow-blower');
-            const superSnowBlower = document.getElementById('super-snow-blower');
-
-            if (electricLeafBlower && electricLeafBlower.dataset.owned === '1' && (!snowBlower || snowBlower.dataset.owned !== '1') && (!superSnowBlower || superSnowBlower.dataset.owned !== '1')) {
-                passiveIncome += 2;
-            }
-
-            const lawnMower = document.getElementById('lawn-mower');
-            if (lawnMower && lawnMower.dataset.owned === '1') {
-                passiveIncome += 7;
-            }
-
-            const jackOLantern = document.getElementById('jack-o-lantern');
-            if (jackOLantern && jackOLantern.dataset.owned === '1') {
-                passiveIncome += 25;
-            }
-
-            if (snowBlower && snowBlower.dataset.owned === '1') {
-                passiveIncome += 50;
-                if (electricLeafBlower) {
-                    electricLeafBlower.style.display = 'none';
-                }
-            }
-
-            if (superSnowBlower && superSnowBlower.dataset.owned === '1') {
-                passiveIncome += 100;
-                if (snowBlower) {
-                    snowBlower.style.display = 'none';
-                }
-                if (electricLeafBlower) {
-                    electricLeafBlower.style.display = 'none';
-                }
-            } else if (snowBlower && snowBlower.dataset.owned === '1') {
-                if (superSnowBlower) {
-                    superSnowBlower.style.display = 'block';
-                }
-            }
-
-            const mapleSyrupTap = document.getElementById('maple-syrup-tap');
-            const largeMapleSyrupTap = document.getElementById('large-maple-syrup-tap');
-
-            if (largeMapleSyrupTap && largeMapleSyrupTap.dataset.owned === '1') {
-                mapleSyrupBonus += 2;
-            }
-            if (mapleSyrupTap && mapleSyrupTap.dataset.owned === '1') {
-                mapleSyrupBonus += 1;
-            }
-
-            const pumpkinSpiceLatte = document.getElementById('pumpkin-spice-latte');
-            if (pumpkinSpiceLatte && pumpkinSpiceLatte.dataset.owned === '1') {
-                foodMultiplier = 1.05;
-            }
-
-            const pumpkinPie = document.getElementById('pumpkin-pie');
-            if (pumpkinPie && pumpkinPie.dataset.owned === '1') {
-                foodMultiplier = 1.10;
-            }
-
-            const candycorn = document.getElementById('candycorn');
-            if (candycorn && candycorn.dataset.owned === '1') {
-                foodMultiplier = 1.25;
-            }
-
-            const appleCiderPress = document.getElementById('apple-cider-press');
-            if (appleCiderPress && appleCiderPress.dataset.owned === '1') {
-                ciderPressBonus = 1.5;
-            }
         }
 
         if (leafCount >= 100) {
@@ -732,7 +1008,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (minigameGems) {
             const gemsToAdd = parseInt(minigameGems);
             gemCount += gemsToAdd;
-            gemCountDisplay.textContent = gemCount;
+            updateGemDisplay();
             localStorage.removeItem('minigameGems');
 
             if (gemCount > 0 && !gemModalShown) {
@@ -749,7 +1025,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     window.updateGemDisplay = function(newGemCount) {
         gemCount = newGemCount;
-        gemCountDisplay.textContent = gemCount;
+        updateGemDisplay();
         saveGame();
     };
 
@@ -799,7 +1075,7 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => {
                 this.remove();
                 gemCount += 1;
-                gemCountDisplay.textContent = gemCount;
+                updateGemDisplay();
 
                 if (gemCount === 1 && !gemModalShown) {
                     const gemModal = document.getElementById('gem-modal');
@@ -817,7 +1093,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (passiveIncome > 0 || mapleSyrupBonus > 0) {
             const totalIncome = Math.floor(passiveIncome * foodMultiplier * ciderPressBonus) + mapleSyrupBonus;
             leafCount += totalIncome;
-            countDisplay.textContent = leafCount;
+            updateLeafDisplay();
 
             if (leafCount >= 100) {
                 const gemCounter = document.getElementById('gem-counter');
@@ -837,7 +1113,7 @@ document.addEventListener('DOMContentLoaded', function() {
         this.offsetHeight;
         this.style.animation = 'pulse 0.6s ease-in-out 3';
         leafCount++;
-        countDisplay.textContent = leafCount;
+        updateLeafDisplay();
 
         if (leafCount >= 100) {
             const gemCounter = document.getElementById('gem-counter');
@@ -862,7 +1138,7 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => {
                 this.remove();
                 leafCount++;
-                countDisplay.textContent = leafCount;
+                updateLeafDisplay();
 
                 if (leafCount >= 100) {
                     const gemCounter = document.getElementById('gem-counter');
@@ -886,7 +1162,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const amount = parseInt(leaves);
             if (amount > 0) {
                 leafCount += amount;
-                countDisplay.textContent = leafCount;
+                updateLeafDisplay();
 
                 if (leafCount >= 100) {
                     const gemCounter = document.getElementById('gem-counter');
@@ -916,41 +1192,35 @@ document.addEventListener('DOMContentLoaded', function() {
             gemCount = 0;
             gemModalShown = false;
             foodModalShown = false;
-            countDisplay.textContent = leafCount;
-            gemCountDisplay.textContent = gemCount;
+            updateLeafDisplay();
+            updateGemDisplay();
 
             document.querySelectorAll('.gem').forEach(gem => gem.remove());
 
             document.querySelectorAll('.upgrade-item').forEach(upgrade => {
-                upgrade.style.border = '';
-                upgrade.style.borderBottom = '1px solid #666';
-                const costType = upgrade.dataset.costType;
-                const cost = upgrade.dataset.cost;
-                if (costType === 'gems') {
-                    upgrade.querySelector('.cost').textContent = cost + ' gems';
-                } else {
-                    upgrade.querySelector('.cost').textContent = cost + (cost > 0 ? ' leaves' : '');
+                const config = getUpgradeConfig(upgrade.id);
+                if (config) {
+                    upgrade.dataset.owned = '0';
+                    updateUpgradeDisplay(upgrade.id);
                 }
-                upgrade.dataset.owned = '0';
             });
 
-            const electricLeafBlower = document.getElementById('electric-leaf-blower');
-            if (electricLeafBlower) {
-                electricLeafBlower.style.display = 'block';
-            }
-
-            const superSnowBlower = document.getElementById('super-snow-blower');
-            if (superSnowBlower) {
-                superSnowBlower.style.display = 'none';
-            }
-
             hideAllUpgrades();
+            const leafBlower = document.getElementById('leaf-blower');
+            if (leafBlower) {
+                leafBlower.style.display = 'block';
+            }
 
             const gemCounter = document.getElementById('gem-counter');
             if (gemCounter) gemCounter.style.display = 'none';
 
             const minigameBtn = document.getElementById('minigame-btn');
             if (minigameBtn) minigameBtn.style.display = 'none';
+
+            localStorage.removeItem('leaves');
+            localStorage.removeItem('gems');
+            localStorage.removeItem('upgrade');
+            localStorage.removeItem('foodModalShown');
 
             return 'Game reset';
         },
@@ -964,7 +1234,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const electricReplaced = snowBlower && snowBlower.dataset.owned === '1';
             const candycorn = document.getElementById('candycorn');
             const appleCiderPress = document.getElementById('apple-cider-press');
-            const durationBoostSection = document.getElementById('duration-boost-section');
             const largeMapleSyrupTap = document.getElementById('large-maple-syrup-tap');
             const superSnowBlower = document.getElementById('super-snow-blower');
             const candycornOwned = candycorn && candycorn.dataset.owned === '1';
@@ -973,8 +1242,9 @@ document.addEventListener('DOMContentLoaded', function() {
             const superSnowBlowerOwned = superSnowBlower && superSnowBlower.dataset.owned === '1';
             const appleCiderPressOwned = appleCiderPress && appleCiderPress.dataset.owned === '1';
             const largeMapleSyrupOwned = largeMapleSyrupTap && largeMapleSyrupTap.dataset.owned === '1';
-            const durationBoostVisible = durationBoostSection && durationBoostSection.style.display !== 'none';
-            return `Leaves: ${leafCount}, LPS: ${passiveIncome}${electricDisabled ? ' (Electric disabled)' : ''}${electricReplaced ? ' (Electric replaced by snow blower)' : ''}${jackOLanternOwned ? ' (+25 jack bonus)' : ''}${snowBlowerOwned ? ' (+50 snow blower)' : ''}${superSnowBlowerOwned ? ' (+100 super snow blower)' : ''}, Maple Bonus: ${mapleSyrupBonus}${largeMapleSyrupOwned ? ' (LARGE)' : ''}, Multiplier: ${foodMultiplier}x${appleCiderPressOwned ? ' (+50% cider bonus)' : ''}, Gems: ${gemCount}, Candycorn: ${candycornOwned ? 'OWNED' : 'NOT OWNED'}, Jack O'Lantern: ${jackOLanternOwned ? 'OWNED' : 'NOT OWNED'}, Snow Blower: ${snowBlowerOwned ? 'OWNED' : 'NOT OWNED'}, Super Snow Blower: ${superSnowBlowerOwned ? 'OWNED' : 'NOT OWNED'}, Cider Press: ${appleCiderPressOwned ? 'OWNED' : 'NOT OWNED'}, Duration Boost: ${durationBoostVisible ? 'AVAILABLE' : 'LOCKED'}`;
+            const goldenMapleSyrupTap = document.getElementById('golden-maple-syrup-tap');
+            const goldenMapleSyrupOwned = goldenMapleSyrupTap && goldenMapleSyrupTap.dataset.owned === '1';
+            return `Leaves: ${leafCount}, LPS: ${passiveIncome}${electricDisabled ? ' (Electric disabled)' : ''}${electricReplaced ? ' (Electric replaced by snow blower)' : ''}${jackOLanternOwned ? ' (+25 jack bonus)' : ''}${snowBlowerOwned ? ' (+50 snow blower)' : ''}${superSnowBlowerOwned ? ' (+100 super snow blower)' : ''}${goldenMapleSyrupOwned ? ' (+100 golden maple)' : ''}, Maple Bonus: ${mapleSyrupBonus}${largeMapleSyrupOwned ? ' (LARGE)' : ''}${goldenMapleSyrupOwned ? ' (GOLDEN)' : ''}, Multiplier: ${foodMultiplier}x${appleCiderPressOwned ? ' (+50% cider bonus)' : ''}, Gems: ${gemCount}, Candycorn: ${candycornOwned ? 'OWNED' : 'NOT OWNED'}, Jack O'Lantern: ${jackOLanternOwned ? 'OWNED' : 'NOT OWNED'}, Snow Blower: ${snowBlowerOwned ? 'OWNED' : 'NOT OWNED'}, Super Snow Blower: ${superSnowBlowerOwned ? 'OWNED' : 'NOT OWNED'}, Golden Maple: ${goldenMapleSyrupOwned ? 'OWNED' : 'NOT OWNED'}, Cider Press: ${appleCiderPressOwned ? 'OWNED' : 'NOT OWNED'}`;
         },
 
         giveGems: function(gems) {
@@ -982,7 +1252,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (amount > 0) {
                 const wasZero = gemCount === 0;
                 gemCount += amount;
-                gemCountDisplay.textContent = gemCount;
+                updateGemDisplay();
 
                 if (wasZero) {
                     if (!gemModalShown) {
@@ -1009,169 +1279,78 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.querySelectorAll('.upgrade-item').forEach(upgrade => {
         upgrade.addEventListener('click', function() {
-            const cost = parseInt(this.dataset.cost);
-            const upgradeType = this.id;
+            const upgradeId = this.id;
+            const config = getUpgradeConfig(upgradeId);
+
+            if (!config) {
+                console.error(`No configuration found for upgrade: ${upgradeId}`);
+                return;
+            }
+
             const isOwned = this.dataset.owned === '1';
-            const costType = this.dataset.costType;
+            const ownedCount = parseInt(this.dataset.owned) || 0;
 
-            let canAfford = false;
-            if (cost === 0 || isOwned) {
-                canAfford = true;
-            } else if (costType === 'gems') {
-                canAfford = gemCount >= cost;
+            if (isOwned) {
+                if (config.maxOwned && config.maxOwned === Infinity && upgradeId === 'leaf-blower') {
+                } else {
+                    return;
+                }
+            }
+
+            if (!checkPrerequisites(upgradeId)) {
+                return;
+            }
+
+            if (!canAffordUpgrade(upgradeId, leafCount, gemCount)) {
+                return;
+            }
+
+            const cost = config.cost;
+            if (config.costType === 'gems') {
+                gemCount -= cost;
+                updateGemDisplay();
             } else {
-                canAfford = leafCount >= cost;
+                leafCount -= cost;
+                updateLeafDisplay();
             }
 
-            if (canAfford) {
-                if (!isOwned) {
-                    if (costType === 'gems') {
-                        gemCount -= cost;
-                        gemCountDisplay.textContent = gemCount;
-                    } else {
-                        leafCount -= cost;
-                        countDisplay.textContent = leafCount;
-                    }
+            if (config.type === UPGRADE_TYPES.PASSIVE_INCOME && config.maxOwned === Infinity) {
+                leafBlowerOwned++;
+                this.dataset.owned = leafBlowerOwned;
+                applyUpgradeEffect(upgradeId, ownedCount + 1);
+
+                if (leafBlowerOwned === 1) {
+                    this.style.border = '2px solid #4CAF50';
+                    this.querySelector('.cost').textContent = 'OWNED';
                 }
+            } else {
+                this.dataset.owned = '1';
+                applyUpgradeEffect(upgradeId);
+                updateUpgradeDisplay(upgradeId);
+            }
 
-                if (upgradeType === 'leaf-blower') {
-                    leafBlowerOwned++;
-                    passiveIncome += 1;
-                    this.dataset.owned = leafBlowerOwned;
+            if (config.unlocks) {
+                unlockUpgrades(config.unlocks);
+            }
 
-                    if (leafBlowerOwned === 1) {
-                        this.style.border = '2px solid #4CAF50';
-                        this.querySelector('.cost').textContent = 'OWNED';
-
-                        const electricLeafBlower = document.getElementById('electric-leaf-blower');
-                        if (electricLeafBlower) {
-                            electricLeafBlower.style.display = 'block';
-                        }
-                    }
-                } else if (upgradeType === 'maple-syrup-tap') {
-                    mapleSyrupBonus += 1;
-
-                    this.style.border = '2px solid #4CAF50';
-                    this.querySelector('.cost').textContent = 'OWNED';
-
-                    this.dataset.owned = '1';
-
-                    const largeMapleSyrupTap = document.getElementById('large-maple-syrup-tap');
-                    if (largeMapleSyrupTap) {
-                        largeMapleSyrupTap.style.display = 'block';
-                    }
-                } else if (upgradeType === 'large-maple-syrup-tap') {
-                    mapleSyrupBonus += 2;
-
-                    this.style.border = '2px solid #4CAF50';
-                    this.querySelector('.cost').textContent = 'OWNED';
-
-                    this.dataset.owned = '1';
-                } else if (upgradeType === 'electric-leaf-blower') {
-                    const regularLeafBlower = document.getElementById('leaf-blower');
-                    if (regularLeafBlower) {
-                        regularLeafBlower.style.display = 'none';
-                    }
-
-                    const snowBlower = document.getElementById('snow-blower');
-                    if (!snowBlower || snowBlower.dataset.owned !== '1') {
-                        passiveIncome = passiveIncome - 1 + 3;
-                    } else {
-                        passiveIncome = passiveIncome - 1;
-                    }
-
-                    this.style.border = '2px solid #4CAF50';
-                    this.querySelector('.cost').textContent = 'OWNED';
-
-                    this.dataset.owned = '1';
-
-                    showUpgradesForProgression('electric-leaf-blower');
-                } else if (upgradeType === 'pumpkin-spice-latte') {
-                    foodMultiplier = 1.05;
-
-                    this.style.border = '2px solid #4CAF50';
-                    this.querySelector('.cost').textContent = 'OWNED';
-
-                    this.dataset.owned = '1';
-                } else if (upgradeType === 'pumpkin-pie') {
-                    foodMultiplier = 1.10;
-
-                    this.style.border = '2px solid #4CAF50';
-                    this.querySelector('.cost').textContent = 'OWNED';
-
-                    this.dataset.owned = '1';
-                } else if (upgradeType === 'candycorn') {
-                    foodMultiplier = 1.25;
-
-                    this.style.border = '2px solid #4CAF50';
-                    this.querySelector('.cost').textContent = 'OWNED';
-
-                    this.dataset.owned = '1';
-                } else if (upgradeType === 'apple-cider-press') {
-                    ciderPressBonus = 1.5;
-
-                    this.style.border = '2px solid #4CAF50';
-                    this.querySelector('.cost').textContent = 'OWNED';
-
-                    this.dataset.owned = '1';
-                } else if (upgradeType === 'lawn-mower') {
-                    const electricLeafBlower = document.getElementById('electric-leaf-blower');
-                    if (electricLeafBlower) {
-                        electricLeafBlower.style.display = 'none';
-                    }
-                    passiveIncome = passiveIncome - 3 + 10;
-
-                    this.style.border = '2px solid #4CAF50';
-                    this.querySelector('.cost').textContent = 'OWNED';
-
-                    this.dataset.owned = '1';
-
-                    const jackOLantern = document.getElementById('jack-o-lantern');
-                    if (jackOLantern) {
-                        jackOLantern.style.display = 'block';
-                    }
-                } else if (upgradeType === 'jack-o-lantern') {
-                    passiveIncome += 25;
-
-                    this.style.border = '2px solid #4CAF50';
-                    this.querySelector('.cost').textContent = 'OWNED';
-
-                    this.dataset.owned = '1';
-                } else if (upgradeType === 'snow-blower') {
-                    const electricLeafBlower = document.getElementById('electric-leaf-blower');
-                    if (electricLeafBlower) {
-                        electricLeafBlower.style.display = 'none';
-                    }
-                    passiveIncome = passiveIncome - 3 + 50;
-
-                    this.style.border = '2px solid #4CAF50';
-                    this.querySelector('.cost').textContent = 'OWNED';
-
-                    this.dataset.owned = '1';
-
-                    const superSnowBlower = document.getElementById('super-snow-blower');
-                    if (superSnowBlower) {
-                        superSnowBlower.style.display = 'block';
-                    }
-                } else if (upgradeType === 'super-snow-blower') {
-                    const electricLeafBlower = document.getElementById('electric-leaf-blower');
-                    const snowBlower = document.getElementById('snow-blower');
-
-                    if (snowBlower) {
-                        snowBlower.style.display = 'none';
-                    }
-                    if (electricLeafBlower) {
-                        electricLeafBlower.style.display = 'none';
-                    }
-
-                    passiveIncome = passiveIncome - 50 + 100;
-
-                    this.style.border = '2px solid #4CAF50';
-                    this.querySelector('.cost').textContent = 'OWNED';
-
-                    this.dataset.owned = '1';
+            if (upgradeId === 'jack-o-lantern' && !foodModalShown) {
+                const foodModal = document.getElementById('food-modal');
+                if (foodModal) {
+                    foodModal.style.display = 'flex';
+                    foodModalShown = true;
                 }
             }
+
+            if (config.costType === 'gems' && gemCount === 0 && !gemModalShown) {
+                const gemModal = document.getElementById('gem-modal');
+                if (gemModal) {
+                    gemModal.style.display = 'flex';
+                    gemModalShown = true;
+                }
+                showGemUI();
+            }
+
+            saveGame();
         });
     });
 
@@ -1294,8 +1473,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 leafCount += totalEarnings;
                 gemCount -= gems;
 
-                countDisplay.textContent = leafCount;
-                gemCountDisplay.textContent = gemCount;
+                updateLeafDisplay();
+                updateGemDisplay();
 
                 durationPreview.textContent = `+${totalEarnings.toLocaleString()} leaves earned!`;
                 durationPreview.style.color = '#4CAF50';
