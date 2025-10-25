@@ -204,6 +204,112 @@
 .gem:nth-child(8) { left: 35%; animation-delay: 0.5s; animation-duration: 9s; }
 .gem:nth-child(9) { left: 50%; animation-delay: 2.5s; animation-duration: 6s; }
 .gem:nth-child(10) { left: 65%; animation-delay: 1.8s; animation-duration: 8s; }
+
+.reset-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background: transparent;
+    color: #ff4444;
+    border: 2px solid #ff4444;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.reset-btn:hover {
+    color: #ff6666;
+    border-color: #ff6666;
+    transform: scale(1.1);
+    background: rgba(255, 68, 68, 0.1);
+}
+
+.reset-btn:active {
+    transform: scale(0.95);
+}
+
+.reset-modal {
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.reset-modal-content {
+    background-color: #2d2d3d;
+    color: white;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    font-family: 'Edu NSW ACT Cursive', cursive;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+}
+
+.reset-modal-content h2 {
+    color: #ff4444;
+    margin-top: 0;
+    font-size: 24px;
+}
+
+.reset-modal-content p {
+    font-size: 18px;
+    margin: 15px 0;
+    color: #ccc;
+}
+
+.reset-modal-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 25px;
+}
+
+.reset-confirm-btn {
+    background-color: #ff4444;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Edu NSW ACT Cursive', cursive;
+    transition: background-color 0.3s ease;
+}
+
+.reset-confirm-btn:hover {
+    background-color: #ff6666;
+}
+
+.reset-cancel-btn {
+    background-color: #666;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Edu NSW ACT Cursive', cursive;
+    transition: background-color 0.3s ease;
+}
+
+.reset-cancel-btn:hover {
+    background-color: #777;
+}
 </style>
 
 <h1 style="position: absolute; top: 10px; left: 10px; font-family: 'Edu NSW ACT Cursive', cursive; margin: 0; letter-spacing: 2px;">Fall Simulator</h1>
@@ -213,8 +319,8 @@
     <div id="gem-counter" style="font-family: 'Edu NSW ACT Cursive', cursive; font-size: 28px; color: #f0f0f0; margin-bottom: 30px; display: none;">Gems: <span id="gem-count">0</span> <img src="gem.png" alt="Gem" style="width: 25px; height: 25px; vertical-align: middle; margin-left: 5px;"></div>
 
     <div style="position: absolute; top: 15px; right: 15px; z-index: 1001;">
-        <button id="minigame-btn" style="background: linear-gradient(135deg, #666, #444); color: #f0f0f0; border: 2px solid #777; padding: 8px 16px; font-size: 14px; font-family: 'Edu NSW ACT Cursive', cursive; border-radius: 15px; cursor: pointer; transition: all 0.3s ease; font-weight: bold;">
-            🎮 
+        <button id="minigame-btn" style="display: none; background: linear-gradient(135deg, #666, #444); color: #f0f0f0; border: 2px solid #777; padding: 8px 16px; font-size: 14px; font-family: 'Edu NSW ACT Cursive', cursive; border-radius: 15px; cursor: pointer; transition: all 0.3s ease; font-weight: bold;">
+            🎮
         </button>
     </div>
 
@@ -235,6 +341,12 @@
             <div style="font-size: 18px; font-weight: bold; color: #f0f0f0;"><img src="maplesyrup.png" alt="Maple Syrup" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;">Maple Syrup Tap</div>
             <div style="font-size: 14px; color: #ccc; margin-top: 2px;">+1 leaf per second bonus</div>
             <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">100</span> leaves</div>
+        </div>
+
+        <div id="large-maple-syrup-tap" class="upgrade-item" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="1000" data-owned="0">
+            <div style="font-size: 18px; font-weight: bold; color: #f0f0f0;"><img src="largemaplesyrup.png" alt="Large Maple Syrup" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;">Large Maple Syrup Tap</div>
+            <div style="font-size: 14px; color: #ccc; margin-top: 2px;">+2 leaves per second bonus</div>
+            <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">1000</span> leaves</div>
         </div>
 
         <div id="lawn-mower" class="upgrade-item" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="250" data-owned="0">
@@ -350,8 +462,25 @@
         </div>
 
         <p style="color: #ccc; font-size: 14px; margin: 20px 0 0 0; text-align: center; font-family: 'Edu NSW ACT Cursive', cursive;">
-            <img src="gem.png" alt="Gem" style="width: 16px; height: 16px; vertical-align: middle; margin: 0 3px;"> Playing games is free and lets you earn diamonds!
+            <img src="gem.png" alt="Gem" style="width: 16px; height: 16px; vertical-align: middle; margin: 0 3px;"> Unlock games with gems and earn even more diamonds!
         </p>
+    </div>
+</div>
+
+<!-- Reset Button and Modal -->
+<button id="reset-btn" class="reset-btn" title="Reset Game">🗑️</button>
+
+<div id="reset-modal" class="reset-modal">
+    <div class="reset-modal-content">
+        <h2>🗑️ Reset Game?</h2>
+        <p>This will permanently delete all your progress including:</p>
+        <p>🍂 All leaves and gems</p>
+        <p>🏭 All purchased upgrades</p>
+        <p>📊 All achievements and unlocks</p>
+        <div class="reset-modal-buttons">
+            <button id="reset-confirm" class="reset-confirm-btn">Yes, Reset</button>
+            <button id="reset-cancel" class="reset-cancel-btn">Cancel</button>
+        </div>
     </div>
 </div>
 
@@ -369,10 +498,216 @@ document.addEventListener('DOMContentLoaded', function() {
     let ciderPressBonus = 1.0;
     let gemCount = 0;
     let gemModalShown = false;
+    let foodModalShown = false;
     const gemCountDisplay = document.getElementById('gem-count');
 
     countDisplay.textContent = leafCount;
     gemCountDisplay.textContent = gemCount;
+
+    function showGemUI() {
+        const gemCounter = document.getElementById('gem-counter');
+        const durationBoostSection = document.getElementById('duration-boost-section');
+        const minigameBtn = document.getElementById('minigame-btn');
+
+        if (gemCounter) gemCounter.style.display = 'block';
+        if (durationBoostSection) durationBoostSection.style.display = 'block';
+        if (minigameBtn) minigameBtn.style.display = 'inline-block';
+    }
+
+    function hideAllUpgrades() {
+        const upgrades = [
+            'electric-leaf-blower', 'maple-syrup-tap', 'large-maple-syrup-tap', 'lawn-mower', 'jack-o-lantern',
+            'food-section-divider', 'pumpkin-spice-latte', 'pumpkin-pie',
+            'candycorn', 'apple-cider-press', 'duration-boost-section'
+        ];
+
+        upgrades.forEach(id => {
+            const element = document.getElementById(id);
+            if (element) element.style.display = 'none';
+        });
+    }
+
+    function showUpgradesForProgression(upgradeId) {
+        if (upgradeId === 'leaf-blower') {
+            const electricLeafBlower = document.getElementById('electric-leaf-blower');
+            if (electricLeafBlower) electricLeafBlower.style.display = 'block';
+        } else if (upgradeId === 'electric-leaf-blower') {
+            const sections = ['maple-syrup-tap', 'large-maple-syrup-tap', 'lawn-mower', 'food-section-divider',
+                           'pumpkin-spice-latte', 'pumpkin-pie', 'candycorn', 'apple-cider-press'];
+            sections.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) element.style.display = 'block';
+            });
+
+            const foodModal = document.getElementById('food-modal');
+            if (foodModal && !foodModalShown) {
+                foodModal.style.display = 'flex';
+                foodModalShown = true;
+            }
+        } else if (upgradeId === 'lawn-mower') {
+            const jackOLantern = document.getElementById('jack-o-lantern');
+            if (jackOLantern) jackOLantern.style.display = 'block';
+        } else if (upgradeId === 'maple-syrup-tap') {
+            const largeMapleSyrupTap = document.getElementById('large-maple-syrup-tap');
+            if (largeMapleSyrupTap) largeMapleSyrupTap.style.display = 'block';
+        }
+    }
+
+    function loadGame() {
+        const savedLeaves = localStorage.getItem('leaves');
+        const savedGems = localStorage.getItem('gems');
+        const savedUpgrades = localStorage.getItem('upgrade');
+
+        if (savedLeaves) {
+            leafCount = parseInt(savedLeaves);
+            countDisplay.textContent = leafCount;
+        }
+
+        if (savedGems) {
+            gemCount = parseInt(savedGems);
+            gemCountDisplay.textContent = gemCount;
+
+            if (gemCount > 0 && !gemModalShown) {
+                showGemUI();
+                gemModalShown = true;
+            }
+        }
+
+        if (savedUpgrades) {
+            const upgrades = JSON.parse(savedUpgrades);
+            Object.keys(upgrades).forEach(upgradeId => {
+                const upgrade = document.getElementById(upgradeId);
+                if (upgrade) {
+                    upgrade.dataset.owned = upgrades[upgradeId].owned;
+                    if (upgrades[upgradeId].owned === '1') {
+                        upgrade.style.border = '2px solid #4CAF50';
+                        upgrade.querySelector('.cost').textContent = 'OWNED';
+
+                        if (upgradeId === 'leaf-blower') {
+                            showUpgradesForProgression('leaf-blower');
+                        } else if (upgradeId === 'electric-leaf-blower') {
+                            if (!gemModalShown && !foodModalShown) {
+                                const foodModal = document.getElementById('food-modal');
+                                if (foodModal) {
+                                    foodModal.style.display = 'flex';
+                                    foodModalShown = true;
+                                }
+                            }
+                            showUpgradesForProgression('electric-leaf-blower');
+                        } else if (upgradeId === 'lawn-mower') {
+                            showUpgradesForProgression('lawn-mower');
+                        }
+                    }
+                }
+            });
+
+        
+            const leafBlower = document.getElementById('leaf-blower');
+            if (leafBlower && leafBlower.dataset.owned === '1') {
+                leafBlowerOwned = 1;
+                passiveIncome += 1;
+            }
+
+            const electricLeafBlower = document.getElementById('electric-leaf-blower');
+            if (electricLeafBlower && electricLeafBlower.dataset.owned === '1') {
+                passiveIncome += 2; // 3 - 1 (replacing the regular leaf blower)
+            }
+
+            const lawnMower = document.getElementById('lawn-mower');
+            if (lawnMower && lawnMower.dataset.owned === '1') {
+                passiveIncome += 7;
+            }
+
+            const jackOLantern = document.getElementById('jack-o-lantern');
+            if (jackOLantern && jackOLantern.dataset.owned === '1') {
+                passiveIncome += 25;
+            }
+
+            const mapleSyrupTap = document.getElementById('maple-syrup-tap');
+            const largeMapleSyrupTap = document.getElementById('large-maple-syrup-tap');
+
+            if (largeMapleSyrupTap && largeMapleSyrupTap.dataset.owned === '1') {
+                mapleSyrupBonus += 2;
+            }
+            if (mapleSyrupTap && mapleSyrupTap.dataset.owned === '1') {
+                mapleSyrupBonus += 1;
+            }
+
+            const pumpkinSpiceLatte = document.getElementById('pumpkin-spice-latte');
+            if (pumpkinSpiceLatte && pumpkinSpiceLatte.dataset.owned === '1') {
+                foodMultiplier = 1.05;
+            }
+
+            const pumpkinPie = document.getElementById('pumpkin-pie');
+            if (pumpkinPie && pumpkinPie.dataset.owned === '1') {
+                foodMultiplier = 1.10;
+            }
+
+            const candycorn = document.getElementById('candycorn');
+            if (candycorn && candycorn.dataset.owned === '1') {
+                foodMultiplier = 1.25;
+            }
+
+            const appleCiderPress = document.getElementById('apple-cider-press');
+            if (appleCiderPress && appleCiderPress.dataset.owned === '1') {
+                ciderPressBonus = 1.5;
+            }
+        }
+
+        if (leafCount >= 100) {
+            const gemCounter = document.getElementById('gem-counter');
+            if (gemCounter && gemCounter.style.display === 'none') {
+                gemCounter.style.display = 'block';
+
+                const minigameBtn = document.getElementById('minigame-btn');
+                if (minigameBtn && gemCount > 0) {
+                    minigameBtn.style.display = 'inline-block';
+                }
+            }
+        }
+
+        const minigameGems = localStorage.getItem('minigameGems');
+        if (minigameGems) {
+            const gemsToAdd = parseInt(minigameGems);
+            gemCount += gemsToAdd;
+            gemCountDisplay.textContent = gemCount;
+            localStorage.removeItem('minigameGems');
+
+            if (gemCount > 0 && !gemModalShown) {
+                showGemUI();
+                gemModalShown = true;
+            }
+        }
+
+        const savedFoodModalShown = localStorage.getItem('foodModalShown');
+        if (savedFoodModalShown) {
+            foodModalShown = savedFoodModalShown === 'true';
+        }
+    }
+
+    window.updateGemDisplay = function(newGemCount) {
+        gemCount = newGemCount;
+        gemCountDisplay.textContent = gemCount;
+        saveGame();
+    };
+
+    function saveGame() {
+        const upgradesToSave = {};
+        document.querySelectorAll('.upgrade-item').forEach(upgrade => {
+            upgradesToSave[upgrade.id] = {
+                owned: upgrade.dataset.owned
+            };
+        });
+
+        localStorage.setItem('leaves', leafCount.toString());
+        localStorage.setItem('gems', gemCount.toString());
+        localStorage.setItem('upgrade', JSON.stringify(upgradesToSave));
+        localStorage.setItem('foodModalShown', foodModalShown.toString());
+    }
+
+    loadGame();
+
+    setInterval(saveGame, 3000);
 
     function checkGemReward() {
         if (leafCount >= 100 && Math.random() < 0.075) {
@@ -406,19 +741,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 if (gemCount === 1 && !gemModalShown) {
                     const gemModal = document.getElementById('gem-modal');
-                    const gemCounter = document.getElementById('gem-counter');
                     if (gemModal) {
                         gemModal.style.display = 'flex';
                         gemModalShown = true;
                     }
-                    if (gemCounter) {
-                        gemCounter.style.display = 'block';
-                    }
-
-                    const durationBoostSection = document.getElementById('duration-boost-section');
-                    if (durationBoostSection) {
-                        durationBoostSection.style.display = 'block';
-                    }
+                    showGemUI();
                 }
             }, 300);
         });
@@ -434,6 +761,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 const gemCounter = document.getElementById('gem-counter');
                 if (gemCounter && gemCounter.style.display === 'none') {
                     gemCounter.style.display = 'block';
+
+                    const minigameBtn = document.getElementById('minigame-btn');
+                    if (minigameBtn && gemCount > 0) {
+                        minigameBtn.style.display = 'inline-block';
+                    }
                 }
             }
         }
@@ -449,6 +781,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const gemCounter = document.getElementById('gem-counter');
             if (gemCounter && gemCounter.style.display === 'none') {
                 gemCounter.style.display = 'block';
+
+                const minigameBtn = document.getElementById('minigame-btn');
+                if (minigameBtn && gemCount > 0) {
+                    minigameBtn.style.display = 'inline-block';
+                }
             }
         }
 
@@ -469,6 +806,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     const gemCounter = document.getElementById('gem-counter');
                     if (gemCounter && gemCounter.style.display === 'none') {
                         gemCounter.style.display = 'block';
+
+                        const minigameBtn = document.getElementById('minigame-btn');
+                        if (minigameBtn && gemCount > 0) {
+                            minigameBtn.style.display = 'inline-block';
+                        }
                     }
                 }
 
@@ -488,6 +830,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     const gemCounter = document.getElementById('gem-counter');
                     if (gemCounter && gemCounter.style.display === 'none') {
                         gemCounter.style.display = 'block';
+
+                        const minigameBtn = document.getElementById('minigame-btn');
+                        if (minigameBtn && gemCount > 0) {
+                            minigameBtn.style.display = 'inline-block';
+                        }
                     }
                 }
 
@@ -506,6 +853,7 @@ document.addEventListener('DOMContentLoaded', function() {
             ciderPressBonus = 1.0;
             gemCount = 0;
             gemModalShown = false;
+            foodModalShown = false;
             countDisplay.textContent = leafCount;
             gemCountDisplay.textContent = gemCount;
 
@@ -524,31 +872,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 upgrade.dataset.owned = '0';
             });
 
-            const mapleSyrupTap = document.getElementById('maple-syrup-tap');
-            const electricLeafBlower = document.getElementById('electric-leaf-blower');
-            const lawnMower = document.getElementById('lawn-mower');
-            const foodSectionDivider = document.getElementById('food-section-divider');
-            const pumpkinSpiceLatte = document.getElementById('pumpkin-spice-latte');
-            const pumpkinPie = document.getElementById('pumpkin-pie');
-            const candycorn = document.getElementById('candycorn');
-
-            if (mapleSyrupTap) mapleSyrupTap.style.display = 'none';
-            if (electricLeafBlower) electricLeafBlower.style.display = 'none';
-            if (lawnMower) lawnMower.style.display = 'none';
-            const jackOLantern = document.getElementById('jack-o-lantern');
-            if (jackOLantern) jackOLantern.style.display = 'none';
-            if (foodSectionDivider) foodSectionDivider.style.display = 'none';
-            if (pumpkinSpiceLatte) pumpkinSpiceLatte.style.display = 'none';
-            if (pumpkinPie) pumpkinPie.style.display = 'none';
-            if (candycorn) candycorn.style.display = 'none';
-            const appleCiderPress = document.getElementById('apple-cider-press');
-            if (appleCiderPress) appleCiderPress.style.display = 'none';
-
-            const durationBoostSection = document.getElementById('duration-boost-section');
-            if (durationBoostSection) durationBoostSection.style.display = 'none';
+            hideAllUpgrades();
 
             const gemCounter = document.getElementById('gem-counter');
             if (gemCounter) gemCounter.style.display = 'none';
+
+            const minigameBtn = document.getElementById('minigame-btn');
+            if (minigameBtn) minigameBtn.style.display = 'none';
 
             return 'Game reset';
         },
@@ -560,11 +890,13 @@ document.addEventListener('DOMContentLoaded', function() {
             const candycorn = document.getElementById('candycorn');
             const appleCiderPress = document.getElementById('apple-cider-press');
             const durationBoostSection = document.getElementById('duration-boost-section');
+            const largeMapleSyrupTap = document.getElementById('large-maple-syrup-tap');
             const candycornOwned = candycorn && candycorn.dataset.owned === '1';
             const jackOLanternOwned = jackOLantern && jackOLantern.dataset.owned === '1';
             const appleCiderPressOwned = appleCiderPress && appleCiderPress.dataset.owned === '1';
+            const largeMapleSyrupOwned = largeMapleSyrupTap && largeMapleSyrupTap.dataset.owned === '1';
             const durationBoostVisible = durationBoostSection && durationBoostSection.style.display !== 'none';
-            return `Leaves: ${leafCount}, LPS: ${passiveIncome}${electricDisabled ? ' (Electric disabled)' : ''}${jackOLanternOwned ? ' (+25 jack bonus)' : ''}, Maple Bonus: ${mapleSyrupBonus}, Multiplier: ${foodMultiplier}x${appleCiderPressOwned ? ' (+50% cider bonus)' : ''}, Gems: ${gemCount}, Candycorn: ${candycornOwned ? 'OWNED' : 'NOT OWNED'}, Jack O'Lantern: ${jackOLanternOwned ? 'OWNED' : 'NOT OWNED'}, Cider Press: ${appleCiderPressOwned ? 'OWNED' : 'NOT OWNED'}, Duration Boost: ${durationBoostVisible ? 'AVAILABLE' : 'LOCKED'}`;
+            return `Leaves: ${leafCount}, LPS: ${passiveIncome}${electricDisabled ? ' (Electric disabled)' : ''}${jackOLanternOwned ? ' (+25 jack bonus)' : ''}, Maple Bonus: ${mapleSyrupBonus}${largeMapleSyrupOwned ? ' (LARGE)' : ''}, Multiplier: ${foodMultiplier}x${appleCiderPressOwned ? ' (+50% cider bonus)' : ''}, Gems: ${gemCount}, Candycorn: ${candycornOwned ? 'OWNED' : 'NOT OWNED'}, Jack O'Lantern: ${jackOLanternOwned ? 'OWNED' : 'NOT OWNED'}, Cider Press: ${appleCiderPressOwned ? 'OWNED' : 'NOT OWNED'}, Duration Boost: ${durationBoostVisible ? 'AVAILABLE' : 'LOCKED'}`;
         },
 
         giveGems: function(gems) {
@@ -575,10 +907,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 gemCountDisplay.textContent = gemCount;
 
                 if (wasZero) {
-                    const gemCounter = document.getElementById('gem-counter');
-                    if (gemCounter) {
-                        gemCounter.style.display = 'block';
-                    }
                     if (!gemModalShown) {
                         const gemModal = document.getElementById('gem-modal');
                         if (gemModal) {
@@ -586,11 +914,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             gemModalShown = true;
                         }
                     }
-
-                    const durationBoostSection = document.getElementById('duration-boost-section');
-                    if (durationBoostSection) {
-                        durationBoostSection.style.display = 'block';
-                    }
+                    showGemUI();
                 }
 
                 return `Added ${amount} gem${amount > 1 ? 's' : ''}`;
@@ -653,6 +977,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.querySelector('.cost').textContent = 'OWNED';
 
                     this.dataset.owned = '1';
+                } else if (upgradeType === 'large-maple-syrup-tap') {
+                    mapleSyrupBonus += 2;
+
+                    this.style.border = '2px solid #4CAF50';
+                    this.querySelector('.cost').textContent = 'OWNED';
+
+                    this.dataset.owned = '1';
                 } else if (upgradeType === 'electric-leaf-blower') {
                     const regularLeafBlower = document.getElementById('leaf-blower');
                     if (regularLeafBlower) {
@@ -666,40 +997,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     this.dataset.owned = '1';
 
-                    const mapleSyrupTap = document.getElementById('maple-syrup-tap');
-                    const lawnMower = document.getElementById('lawn-mower');
-                    if (mapleSyrupTap) {
-                        mapleSyrupTap.style.display = 'block';
-                    }
-                    if (lawnMower) {
-                        lawnMower.style.display = 'block';
-                    }
-
-                    const foodModal = document.getElementById('food-modal');
-                    if (foodModal) {
-                        foodModal.style.display = 'flex';
-                    }
-
-                    const foodSectionDivider = document.getElementById('food-section-divider');
-                    const pumpkinSpiceLatte = document.getElementById('pumpkin-spice-latte');
-                    const pumpkinPie = document.getElementById('pumpkin-pie');
-                    const candycorn = document.getElementById('candycorn');
-                    if (foodSectionDivider) {
-                        foodSectionDivider.style.display = 'block';
-                    }
-                    if (pumpkinSpiceLatte) {
-                        pumpkinSpiceLatte.style.display = 'block';
-                    }
-                    if (pumpkinPie) {
-                        pumpkinPie.style.display = 'block';
-                    }
-                    if (candycorn) {
-                        candycorn.style.display = 'block';
-                    }
-                    const appleCiderPress = document.getElementById('apple-cider-press');
-                    if (appleCiderPress) {
-                        appleCiderPress.style.display = 'block';
-                    }
+                    showUpgradesForProgression('electric-leaf-blower');
                 } else if (upgradeType === 'pumpkin-spice-latte') {
                     foodMultiplier = 1.05;
 
@@ -975,6 +1273,39 @@ document.addEventListener('DOMContentLoaded', function() {
         minigameModal.addEventListener('click', function(e) {
             if (e.target === minigameModal) {
                 minigameModal.style.display = 'none';
+            }
+        });
+    }
+
+    // Reset functionality
+    const resetBtn = document.getElementById('reset-btn');
+    const resetModal = document.getElementById('reset-modal');
+    const resetConfirm = document.getElementById('reset-confirm');
+    const resetCancel = document.getElementById('reset-cancel');
+
+    if (resetBtn) {
+        resetBtn.addEventListener('click', function() {
+            resetModal.style.display = 'flex';
+        });
+    }
+
+    if (resetConfirm) {
+        resetConfirm.addEventListener('click', function() {
+            window.fallSimulator.reset();
+            resetModal.style.display = 'none';
+        });
+    }
+
+    if (resetCancel) {
+        resetCancel.addEventListener('click', function() {
+            resetModal.style.display = 'none';
+        });
+    }
+
+    if (resetModal) {
+        resetModal.addEventListener('click', function(e) {
+            if (e.target === resetModal) {
+                resetModal.style.display = 'none';
             }
         });
     }

@@ -1,1 +1,290 @@
-<h1>Minigame</h1>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pumpkin Spawner</title>
+    <style>
+        body {
+            background-color: lightblue;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .pumpkin {
+            position: absolute;
+            width: 120px;
+            height: 240px;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+
+        .pumpkin:hover {
+            opacity: 0.7;
+        }
+
+        .counter {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 165, 0, 0.9);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            font-weight: bold;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: none;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 50%;
+            font-family: Arial, sans-serif;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1000;
+            border: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .back-btn:hover {
+            opacity: 0.7;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .modal-content {
+            background-color: #2d2d3d;
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            font-family: Arial, sans-serif;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content h2 {
+            margin-top: 0;
+            color: #ffa500;
+            font-size: 24px;
+        }
+
+        .modal-content p {
+            font-size: 18px;
+            margin: 15px 0;
+        }
+
+        .modal-content .score {
+            font-size: 48px;
+            font-weight: bold;
+            color: #ffa500;
+            text-shadow: 0 0 10px rgba(255, 165, 0, 0.5);
+        }
+
+        .close-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+<body>
+    <div id="counter" class="counter">🎃 0</div>
+    <button id="back-btn" class="back-btn">←</button>
+
+    <div id="game-modal" class="modal">
+        <div class="modal-content">
+            <h2>🎃 Time's Up!</h2>
+            <p>You clicked</p>
+            <div class="score" id="final-score">0</div>
+            <p>pumpkins!</p>
+            <p>You earned <span class="score" id="gems-earned">0</span> gems! 🏆</p>
+            <button id="close-modal" class="close-btn">Back</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const pumpkinImage = 'pumpkin.png';
+            const maxPumpkins = 15;
+            let clickedCount = 0;
+            const counterDisplay = document.getElementById('counter');
+            const backBtn = document.getElementById('back-btn');
+            const gameModal = document.getElementById('game-modal');
+            const finalScore = document.getElementById('final-score');
+            const gemsEarned = document.getElementById('gems-earned');
+            const closeModalBtn = document.getElementById('close-modal');
+
+            function createPumpkin() {
+                const pumpkin = document.createElement('img');
+                pumpkin.src = pumpkinImage;
+                pumpkin.alt = 'Pumpkin';
+                pumpkin.className = 'pumpkin';
+
+                const x = Math.random() * (window.innerWidth - 160);
+                const y = Math.random() * (window.innerHeight - 320);
+
+                pumpkin.style.left = x + 'px';
+                pumpkin.style.top = y + 'px';
+
+                const baseSize = Math.random() * 40 + 40;
+                pumpkin.style.width = (baseSize * 2) + 'px';
+                pumpkin.style.height = (baseSize * 4) + 'px';
+
+                pumpkin.addEventListener('click', function() {
+                    clickedCount++;
+                    counterDisplay.textContent = `🎃 ${clickedCount}`;
+                    this.style.opacity = '0';
+                    setTimeout(() => {
+                        this.remove();
+                    }, 300);
+                });
+
+                document.body.appendChild(pumpkin);
+
+                setTimeout(() => {
+                    if (document.body.contains(pumpkin)) {
+                        pumpkin.style.opacity = '0';
+                        setTimeout(() => {
+                            if (document.body.contains(pumpkin)) {
+                                pumpkin.remove();
+                            }
+                        }, 300);
+                    }
+                }, 10000);
+            }
+
+            setInterval(() => {
+                const currentPumpkins = document.querySelectorAll('.pumpkin').length;
+                if (currentPumpkins < maxPumpkins) {
+                    createPumpkin();
+                }
+            }, 800);
+
+            for (let i = 0; i < 5; i++) {
+                setTimeout(createPumpkin, i * 200);
+            }
+
+            backBtn.addEventListener('click', function() {
+                const gems = Math.floor(clickedCount / 10);
+                localStorage.setItem('minigameGems', gems.toString());
+
+                if (window.parent && window.parent !== window) {
+                    try {
+                        const currentGems = parseInt(localStorage.getItem('gems') || '0');
+                        const newGemCount = currentGems + gems;
+                        localStorage.setItem('gems', newGemCount.toString());
+
+                        if (window.parent.updateGemDisplay) {
+                            window.parent.updateGemDisplay(newGemCount);
+                        }
+                    } catch (e) {
+                        console.log('Could not update parent window');
+                    }
+                }
+
+                window.location.href = '/';
+            });
+
+            setTimeout(() => {
+                finalScore.textContent = clickedCount;
+                const gems = Math.floor(clickedCount / 10);
+                gemsEarned.textContent = gems;
+
+                localStorage.setItem('minigameGems', gems.toString());
+
+                if (window.parent && window.parent !== window) {
+                    try {
+                        const currentGems = parseInt(localStorage.getItem('gems') || '0');
+                        const newGemCount = currentGems + gems;
+                        localStorage.setItem('gems', newGemCount.toString());
+
+                        if (window.parent.updateGemDisplay) {
+                            window.parent.updateGemDisplay(newGemCount);
+                        }
+                    } catch (e) {
+                        console.log('Could not update parent window, gems saved to localStorage');
+                    }
+                }
+
+                gameModal.style.display = 'flex';
+            }, 15000);
+
+            closeModalBtn.addEventListener('click', function() {
+                const gems = Math.floor(clickedCount / 10);
+                localStorage.setItem('minigameGems', gems.toString());
+
+                if (window.parent && window.parent !== window) {
+                    try {
+                        const currentGems = parseInt(localStorage.getItem('gems') || '0');
+                        const newGemCount = currentGems + gems;
+                        localStorage.setItem('gems', newGemCount.toString());
+
+                        if (window.parent.updateGemDisplay) {
+                            window.parent.updateGemDisplay(newGemCount);
+                        }
+                    } catch (e) {
+                        console.log('Could not update parent window');
+                    }
+                }
+
+                window.location.href = '/';
+            });
+
+            gameModal.addEventListener('click', function(e) {
+                if (e.target === gameModal) {
+                    const gems = Math.floor(clickedCount / 10);
+                    localStorage.setItem('minigameGems', gems.toString());
+
+                    if (window.parent && window.parent !== window) {
+                        try {
+                            const currentGems = parseInt(localStorage.getItem('gems') || '0');
+                            const newGemCount = currentGems + gems;
+                            localStorage.setItem('gems', newGemCount.toString());
+
+                            if (window.parent.updateGemDisplay) {
+                                window.parent.updateGemDisplay(newGemCount);
+                            }
+                        } catch (e) {
+                            console.log('Could not update parent window');
+                        }
+                    }
+
+                    window.location.href = '/';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
