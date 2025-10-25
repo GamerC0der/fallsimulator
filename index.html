@@ -1204,9 +1204,13 @@ document.addEventListener('DOMContentLoaded', function() {
             minutes = customMinValue;
             gems = calculateGemCost(minutes);
             const currentCPS = Math.floor(passiveIncome * foodMultiplier * ciderPressBonus) + mapleSyrupBonus;
-            const totalEarnings = currentCPS * (minutes * 60);
+            let totalEarnings = currentCPS * (minutes * 60);
 
-            durationPreview.textContent = `${totalEarnings.toLocaleString()} leaves (${currentCPS} CPS × ${minutes} min) - Cost: ${gems} gems`;
+            if (currentCPS > 2500) {
+                totalEarnings = Math.floor(totalEarnings / 2);
+            }
+
+            durationPreview.textContent = `${totalEarnings.toLocaleString()} leaves (${currentCPS} CPS × ${minutes} min${currentCPS > 2500 ? ' - 50% boost' : ''}) - Cost: ${gems} gems`;
 
             if (durationBoostBtn) {
                 durationBoostBtn.textContent = `Activate (${gems} ${gems === 1 ? 'gem' : 'gems'})`;
@@ -1217,9 +1221,13 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             [minutes, gems] = selectedValue.split('-').map(Number);
             const currentCPS = Math.floor(passiveIncome * foodMultiplier * ciderPressBonus) + mapleSyrupBonus;
-            const totalEarnings = currentCPS * (minutes * 60);
+            let totalEarnings = currentCPS * (minutes * 60);
 
-            durationPreview.textContent = `${totalEarnings.toLocaleString()} leaves (${currentCPS} CPS × ${minutes} min)`;
+            if (currentCPS > 2500) {
+                totalEarnings = Math.floor(totalEarnings / 2);
+            }
+
+            durationPreview.textContent = `${totalEarnings.toLocaleString()} leaves (${currentCPS} CPS × ${minutes} min${currentCPS > 2500 ? ' - 50% boost' : ''})`;
 
             if (durationBoostBtn) {
                 durationBoostBtn.textContent = `Activate (${gems} ${gems === 1 ? 'gem' : 'gems'})`;
@@ -1277,7 +1285,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const currentCPS = Math.floor(passiveIncome * foodMultiplier * ciderPressBonus) + mapleSyrupBonus;
 
             if (gemCount >= gems) {
-                const totalEarnings = currentCPS * (minutes * 60);
+                let totalEarnings = currentCPS * (minutes * 60);
+
+                if (currentCPS > 2500) {
+                    totalEarnings = Math.floor(totalEarnings / 2);
+                }
+
                 leafCount += totalEarnings;
                 gemCount -= gems;
 
