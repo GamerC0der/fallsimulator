@@ -367,6 +367,12 @@
             <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">2500</span> leaves</div>
         </div>
 
+        <div id="super-snow-blower" class="upgrade-item" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="7500" data-owned="0">
+            <div style="font-size: 18px; font-weight: bold; color: #f0f0f0;"><img src="largesnow.png" alt="Super Snow Blower" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;">Super Snow Blower</div>
+            <div style="font-size: 14px; color: #ccc; margin-top: 2px;">+100 leaves per second</div>
+            <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">7500</span> leaves</div>
+        </div>
+
         <div id="food-section-divider" style="font-family: 'Edu NSW ACT Cursive', cursive; font-size: 20px; color: #ffa500; margin: 20px 0 15px 0; text-align: center; border-bottom: 2px solid #ffa500; padding-bottom: 5px; display: none;">
             🍎 Food
         </div>
@@ -522,7 +528,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function hideAllUpgrades() {
         const upgrades = [
-            'electric-leaf-blower', 'maple-syrup-tap', 'large-maple-syrup-tap', 'lawn-mower', 'jack-o-lantern', 'snow-blower',
+            'electric-leaf-blower', 'maple-syrup-tap', 'large-maple-syrup-tap', 'lawn-mower', 'jack-o-lantern', 'snow-blower', 'super-snow-blower',
             'food-section-divider', 'pumpkin-spice-latte', 'pumpkin-pie',
             'candycorn', 'apple-cider-press', 'duration-boost-section'
         ];
@@ -564,6 +570,9 @@ document.addEventListener('DOMContentLoaded', function() {
         } else if (upgradeId === 'jack-o-lantern') {
             const snowBlower = document.getElementById('snow-blower');
             if (snowBlower) snowBlower.style.display = 'block';
+        } else if (upgradeId === 'snow-blower') {
+            const superSnowBlower = document.getElementById('super-snow-blower');
+            if (superSnowBlower) superSnowBlower.style.display = 'block';
         } else if (upgradeId === 'maple-syrup-tap') {
             const largeMapleSyrupTap = document.getElementById('large-maple-syrup-tap');
             if (largeMapleSyrupTap) largeMapleSyrupTap.style.display = 'block';
@@ -615,6 +624,11 @@ document.addEventListener('DOMContentLoaded', function() {
                             showUpgradesForProgression('lawn-mower');
                         } else if (upgradeId === 'jack-o-lantern') {
                             showUpgradesForProgression('jack-o-lantern');
+                        } else if (upgradeId === 'snow-blower') {
+                            const superSnowBlower = document.getElementById('super-snow-blower');
+                            if (superSnowBlower) {
+                                superSnowBlower.style.display = 'block';
+                            }
                         } else if (upgradeId === 'maple-syrup-tap') {
                             const largeMapleSyrupTap = document.getElementById('large-maple-syrup-tap');
                             if (largeMapleSyrupTap) {
@@ -634,8 +648,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const electricLeafBlower = document.getElementById('electric-leaf-blower');
             const snowBlower = document.getElementById('snow-blower');
+            const superSnowBlower = document.getElementById('super-snow-blower');
 
-            if (electricLeafBlower && electricLeafBlower.dataset.owned === '1' && (!snowBlower || snowBlower.dataset.owned !== '1')) {
+            if (electricLeafBlower && electricLeafBlower.dataset.owned === '1' && (!snowBlower || snowBlower.dataset.owned !== '1') && (!superSnowBlower || superSnowBlower.dataset.owned !== '1')) {
                 passiveIncome += 2;
             }
 
@@ -653,6 +668,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 passiveIncome += 50;
                 if (electricLeafBlower) {
                     electricLeafBlower.style.display = 'none';
+                }
+            }
+
+            if (superSnowBlower && superSnowBlower.dataset.owned === '1') {
+                passiveIncome += 100;
+                if (snowBlower) {
+                    snowBlower.style.display = 'none';
+                }
+                if (electricLeafBlower) {
+                    electricLeafBlower.style.display = 'none';
+                }
+            } else if (snowBlower && snowBlower.dataset.owned === '1') {
+                if (superSnowBlower) {
+                    superSnowBlower.style.display = 'block';
                 }
             }
 
@@ -910,6 +939,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 electricLeafBlower.style.display = 'block';
             }
 
+            const superSnowBlower = document.getElementById('super-snow-blower');
+            if (superSnowBlower) {
+                superSnowBlower.style.display = 'none';
+            }
+
             hideAllUpgrades();
 
             const gemCounter = document.getElementById('gem-counter');
@@ -932,13 +966,15 @@ document.addEventListener('DOMContentLoaded', function() {
             const appleCiderPress = document.getElementById('apple-cider-press');
             const durationBoostSection = document.getElementById('duration-boost-section');
             const largeMapleSyrupTap = document.getElementById('large-maple-syrup-tap');
+            const superSnowBlower = document.getElementById('super-snow-blower');
             const candycornOwned = candycorn && candycorn.dataset.owned === '1';
             const jackOLanternOwned = jackOLantern && jackOLantern.dataset.owned === '1';
             const snowBlowerOwned = snowBlower && snowBlower.dataset.owned === '1';
+            const superSnowBlowerOwned = superSnowBlower && superSnowBlower.dataset.owned === '1';
             const appleCiderPressOwned = appleCiderPress && appleCiderPress.dataset.owned === '1';
             const largeMapleSyrupOwned = largeMapleSyrupTap && largeMapleSyrupTap.dataset.owned === '1';
             const durationBoostVisible = durationBoostSection && durationBoostSection.style.display !== 'none';
-            return `Leaves: ${leafCount}, LPS: ${passiveIncome}${electricDisabled ? ' (Electric disabled)' : ''}${electricReplaced ? ' (Electric replaced by snow blower)' : ''}${jackOLanternOwned ? ' (+25 jack bonus)' : ''}${snowBlowerOwned ? ' (+50 snow blower)' : ''}, Maple Bonus: ${mapleSyrupBonus}${largeMapleSyrupOwned ? ' (LARGE)' : ''}, Multiplier: ${foodMultiplier}x${appleCiderPressOwned ? ' (+50% cider bonus)' : ''}, Gems: ${gemCount}, Candycorn: ${candycornOwned ? 'OWNED' : 'NOT OWNED'}, Jack O'Lantern: ${jackOLanternOwned ? 'OWNED' : 'NOT OWNED'}, Snow Blower: ${snowBlowerOwned ? 'OWNED' : 'NOT OWNED'}, Cider Press: ${appleCiderPressOwned ? 'OWNED' : 'NOT OWNED'}, Duration Boost: ${durationBoostVisible ? 'AVAILABLE' : 'LOCKED'}`;
+            return `Leaves: ${leafCount}, LPS: ${passiveIncome}${electricDisabled ? ' (Electric disabled)' : ''}${electricReplaced ? ' (Electric replaced by snow blower)' : ''}${jackOLanternOwned ? ' (+25 jack bonus)' : ''}${snowBlowerOwned ? ' (+50 snow blower)' : ''}${superSnowBlowerOwned ? ' (+100 super snow blower)' : ''}, Maple Bonus: ${mapleSyrupBonus}${largeMapleSyrupOwned ? ' (LARGE)' : ''}, Multiplier: ${foodMultiplier}x${appleCiderPressOwned ? ' (+50% cider bonus)' : ''}, Gems: ${gemCount}, Candycorn: ${candycornOwned ? 'OWNED' : 'NOT OWNED'}, Jack O'Lantern: ${jackOLanternOwned ? 'OWNED' : 'NOT OWNED'}, Snow Blower: ${snowBlowerOwned ? 'OWNED' : 'NOT OWNED'}, Super Snow Blower: ${superSnowBlowerOwned ? 'OWNED' : 'NOT OWNED'}, Cider Press: ${appleCiderPressOwned ? 'OWNED' : 'NOT OWNED'}, Duration Boost: ${durationBoostVisible ? 'AVAILABLE' : 'LOCKED'}`;
         },
 
         giveGems: function(gems) {
@@ -1107,6 +1143,28 @@ document.addEventListener('DOMContentLoaded', function() {
                         electricLeafBlower.style.display = 'none';
                     }
                     passiveIncome = passiveIncome - 3 + 50;
+
+                    this.style.border = '2px solid #4CAF50';
+                    this.querySelector('.cost').textContent = 'OWNED';
+
+                    this.dataset.owned = '1';
+
+                    const superSnowBlower = document.getElementById('super-snow-blower');
+                    if (superSnowBlower) {
+                        superSnowBlower.style.display = 'block';
+                    }
+                } else if (upgradeType === 'super-snow-blower') {
+                    const electricLeafBlower = document.getElementById('electric-leaf-blower');
+                    const snowBlower = document.getElementById('snow-blower');
+
+                    if (snowBlower) {
+                        snowBlower.style.display = 'none';
+                    }
+                    if (electricLeafBlower) {
+                        electricLeafBlower.style.display = 'none';
+                    }
+
+                    passiveIncome = passiveIncome - 50 + 100;
 
                     this.style.border = '2px solid #4CAF50';
                     this.querySelector('.cost').textContent = 'OWNED';
