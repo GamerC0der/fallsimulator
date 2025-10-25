@@ -374,7 +374,7 @@
         </div>
 
         <div id="super-snow-blower" class="upgrade-item" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="7500" data-owned="0">
-            <div style="font-size: 18px; font-weight: bold; color: #f0f0f0;"><img src="largesnow.png" alt="Super Snow Blower" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;">Super Snow Blower</div>
+            <div style="font-size: 18px; font-weight: bold; color: #f0f0f0;"><img src="largesnow.png" alt="Powerful Snow Blower" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;">Powerful Snow Blower</div>
             <div style="font-size: 14px; color: #ccc; margin-top: 2px;">+100 leaves per second</div>
             <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">7.5k</span> leaves</div>
         </div>
@@ -632,7 +632,7 @@ document.addEventListener('DOMContentLoaded', function() {
             costType: 'leaves',
             effect: { value: 1 },
             prerequisites: ['electric-leaf-blower'],
-            unlocks: ['large-maple-syrup-tap']
+            unlocks: ['lawn-mower']
         },
 
         'large-maple-syrup-tap': {
@@ -640,12 +640,13 @@ document.addEventListener('DOMContentLoaded', function() {
             name: 'Large Maple Syrup Tap',
             icon: 'largemaplesyrup.png',
             description: '+2 leaves per second bonus',
-            type: UPGRADE_TYPES.BONUS,
+            type: UPGRADE_TYPES.REPLACE,
             cost: 1000,
             costType: 'leaves',
             effect: { value: 2 },
-            prerequisites: ['maple-syrup-tap'],
-            unlocks: ['lawn-mower']
+            replaces: ['maple-syrup-tap'],
+            prerequisites: ['apple-cider-press'],
+            unlocks: []
         },
 
         'golden-maple-syrup-tap': {
@@ -658,7 +659,8 @@ document.addEventListener('DOMContentLoaded', function() {
             costType: 'leaves',
             effect: { value: 100 },
             replaces: ['maple-syrup-tap', 'large-maple-syrup-tap', 'electric-leaf-blower'],
-            prerequisites: ['lawn-mower']
+            prerequisites: ['lawn-mower'],
+            unlocks: []
         },
 
         'lawn-mower': {
@@ -704,7 +706,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         'super-snow-blower': {
             id: 'super-snow-blower',
-            name: 'Super Snow Blower',
+            name: 'Powerful Snow Blower',
             icon: 'largesnow.png',
             description: '+100 leaves per second',
             type: UPGRADE_TYPES.REPLACE,
@@ -763,7 +765,8 @@ document.addEventListener('DOMContentLoaded', function() {
             cost: 10,
             costType: 'gems',
             effect: { value: 1.50, operation: 'multiply' },
-            prerequisites: ['candycorn']
+            prerequisites: ['candycorn'],
+            unlocks: ['large-maple-syrup-tap']
         },
 
     };
@@ -812,8 +815,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     config.replaces.forEach(replacedId => {
                         hideUpgrade(replacedId);
                         const replacedConfig = getUpgradeConfig(replacedId);
-                        if (replacedConfig && replacedConfig.type === UPGRADE_TYPES.PASSIVE_INCOME) {
-                            passiveIncome -= replacedConfig.effect.value;
+                        if (replacedConfig) {
+                            if (replacedConfig.type === UPGRADE_TYPES.PASSIVE_INCOME) {
+                                passiveIncome -= replacedConfig.effect.value;
+                            } else if (replacedConfig.type === UPGRADE_TYPES.BONUS) {
+                                mapleSyrupBonus -= replacedConfig.effect.value;
+                            }
                         }
                     });
                 }
@@ -1244,7 +1251,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const largeMapleSyrupOwned = largeMapleSyrupTap && largeMapleSyrupTap.dataset.owned === '1';
             const goldenMapleSyrupTap = document.getElementById('golden-maple-syrup-tap');
             const goldenMapleSyrupOwned = goldenMapleSyrupTap && goldenMapleSyrupTap.dataset.owned === '1';
-            return `Leaves: ${leafCount}, LPS: ${passiveIncome}${electricDisabled ? ' (Electric disabled)' : ''}${electricReplaced ? ' (Electric replaced by snow blower)' : ''}${jackOLanternOwned ? ' (+25 jack bonus)' : ''}${snowBlowerOwned ? ' (+50 snow blower)' : ''}${superSnowBlowerOwned ? ' (+100 super snow blower)' : ''}${goldenMapleSyrupOwned ? ' (+100 golden maple)' : ''}, Maple Bonus: ${mapleSyrupBonus}${largeMapleSyrupOwned ? ' (LARGE)' : ''}${goldenMapleSyrupOwned ? ' (GOLDEN)' : ''}, Multiplier: ${foodMultiplier}x${appleCiderPressOwned ? ' (+50% cider bonus)' : ''}, Gems: ${gemCount}, Candycorn: ${candycornOwned ? 'OWNED' : 'NOT OWNED'}, Jack O'Lantern: ${jackOLanternOwned ? 'OWNED' : 'NOT OWNED'}, Snow Blower: ${snowBlowerOwned ? 'OWNED' : 'NOT OWNED'}, Super Snow Blower: ${superSnowBlowerOwned ? 'OWNED' : 'NOT OWNED'}, Golden Maple: ${goldenMapleSyrupOwned ? 'OWNED' : 'NOT OWNED'}, Cider Press: ${appleCiderPressOwned ? 'OWNED' : 'NOT OWNED'}`;
+            return `Leaves: ${leafCount}, LPS: ${passiveIncome}${electricDisabled ? ' (Electric disabled)' : ''}${electricReplaced ? ' (Electric replaced by snow blower)' : ''}${jackOLanternOwned ? ' (+25 jack bonus)' : ''}${snowBlowerOwned ? ' (+50 snow blower)' : ''}${superSnowBlowerOwned ? ' (+100 powerful snow blower)' : ''}${goldenMapleSyrupOwned ? ' (+100 golden maple)' : ''}, Maple Bonus: ${mapleSyrupBonus}${largeMapleSyrupOwned ? ' (LARGE)' : ''}${goldenMapleSyrupOwned ? ' (GOLDEN)' : ''}, Multiplier: ${foodMultiplier}x${appleCiderPressOwned ? ' (+50% cider bonus)' : ''}, Gems: ${gemCount}, Candycorn: ${candycornOwned ? 'OWNED' : 'NOT OWNED'}, Jack O'Lantern: ${jackOLanternOwned ? 'OWNED' : 'NOT OWNED'}, Snow Blower: ${snowBlowerOwned ? 'OWNED' : 'NOT OWNED'}, Powerful Snow Blower: ${superSnowBlowerOwned ? 'OWNED' : 'NOT OWNED'}, Golden Maple: ${goldenMapleSyrupOwned ? 'OWNED' : 'NOT OWNED'}, Cider Press: ${appleCiderPressOwned ? 'OWNED' : 'NOT OWNED'}`;
         },
 
         giveGems: function(gems) {
