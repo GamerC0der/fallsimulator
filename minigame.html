@@ -173,6 +173,7 @@
 
                 document.body.appendChild(pumpkin);
 
+
                 setTimeout(() => {
                     if (document.body.contains(pumpkin)) {
                         pumpkin.style.opacity = '0';
@@ -277,6 +278,7 @@
                                 window.parent.updateGemDisplay(newGemCount);
                             }
                         } catch (e) {
+                            console.log(e);
                             console.log('Could not update parent window');
                         }
                     }
