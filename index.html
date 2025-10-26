@@ -1600,8 +1600,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         rebirth: function() {
             this.reset();
-            rebirthMultiplier = 1.1;
-            rebirthCount = 1;
+            rebirthCount += 1;
+            rebirthMultiplier = 1.0 + (rebirthCount * 0.1);
             checkRebirthUnlock();
             return 'Rebirth completed!';
         },
@@ -2002,6 +2002,29 @@ document.addEventListener('DOMContentLoaded', function() {
     if (rebirthBtn) {
         rebirthBtn.addEventListener('click', function() {
             if (rebirthModal) {
+                const rebirthNumber = rebirthCount + 1;
+                const rebirthMultiplierDisplay = (1.0 + (rebirthNumber * 0.1)).toFixed(1);
+
+                const modalTitle = rebirthModal.querySelector('h2');
+                const multiplierText = rebirthModal.querySelector('div p:first-child');
+                const tempFoodText = rebirthModal.querySelector('div p:nth-child(2)');
+
+                if (modalTitle) {
+                    modalTitle.textContent = `Rebirth ${rebirthNumber}!`;
+                }
+
+                if (multiplierText) {
+                    multiplierText.innerHTML = `<i class="fas fa-star" style="color:#FFD700;"></i> ${rebirthMultiplierDisplay}x multiplier`;
+                }
+
+                if (tempFoodText) {
+                    if (rebirthCount <= 1) {
+                        tempFoodText.style.display = 'block';
+                    } else {
+                        tempFoodText.style.display = 'none';
+                    }
+                }
+
                 rebirthModal.style.display = 'flex';
             }
         });
