@@ -34,7 +34,7 @@
   width: 200px;
   height: 200px;
   top: 50%;
-  left: 50%;
+  left: calc(50vw - 200px);
   transform: translate(-50%, -50%);
   animation: none;
   cursor: pointer;
@@ -222,6 +222,92 @@
     transform: scale(0.95);
 }
 
+.rebirth-btn {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background: linear-gradient(135deg, #9c27b0, #673ab7);
+    color: #f0f0f0;
+    border: 2px solid #7b1fa2;
+    border-radius: 15px;
+    font-size: 14px;
+    font-family: var(--font-cursive);
+    cursor: pointer;
+    padding: 8px 16px;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    font-weight: bold;
+    display: none;
+}
+
+.rebirth-btn:hover {
+    background: linear-gradient(135deg, #7b1fa2, #512da8);
+    border-color: #6a1b9a;
+    transform: scale(1.05);
+}
+
+.rebirth-btn:active {
+    transform: scale(0.95);
+}
+
+.rebirth-modal {
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.rebirth-modal-content {
+    background-color: #2d2d3d;
+    color: #f0f0f0;
+    padding: 60px;
+    border-radius: 30px;
+    text-align: center;
+    max-width: 600px;
+    width: 90%;
+    font-family: var(--font-cursive);
+    box-shadow: 0 16px 60px rgba(0, 0, 0, 0.5);
+    border: 6px solid #9c27b0;
+    font-size: 24px;
+}
+
+.rebirth-modal-buttons {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.rebirth-confirm-btn, .rebirth-cancel-btn {
+    background-color: #666;
+    color: #f0f0f0;
+    border: none;
+    padding: 20px 40px;
+    font-size: 20px;
+    border-radius: 15px;
+    cursor: pointer;
+    font-family: var(--font-cursive);
+    transition: background-color 0.3s ease;
+}
+
+.rebirth-confirm-btn {
+    background-color: #9c27b0;
+}
+
+.rebirth-confirm-btn:hover {
+    background-color: #7b1fa2;
+}
+
+.rebirth-cancel-btn:hover {
+    background-color: #777;
+}
+
 .reset-modal {
     position: fixed;
     z-index: 10000;
@@ -401,6 +487,22 @@
             <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">10</span> gems</div>
         </div>
 
+        <div id="boosts-section-divider" style="font-family: var(--font-cursive); font-size: 20px; color: #ffa500; margin: 20px 0 15px 0; text-align: center; border-bottom: 2px solid #ffa500; padding-bottom: 5px; display: none;">
+            🍎 Boosts
+        </div>
+
+        <div id="pumpkin-cream-brew" class="upgrade-item" style="font-family: var(--font-cursive); padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="1" data-owned="0" data-cost-type="gems">
+            <div style="font-size: 18px; font-weight: bold; color: #f0f0f0;"><img src="boost1.png" alt="Pumpkin Cream Brew" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;">Pumpkin Cream Brew</div>
+            <div style="font-size: 14px; color: #f0f0f0; margin-top: 2px;">Duration: 30s</div>
+            <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">1</span> gem</div>
+        </div>
+
+        <div id="large-pumpkin-cream-brew" class="upgrade-item" style="font-family: var(--font-cursive); padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="2" data-owned="0" data-cost-type="gems">
+            <div style="font-size: 18px; font-weight: bold; color: #f0f0f0;"><img src="boost1.png" alt="Large Pumpkin Cream Brew" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;">Large Pumpkin Cream Brew</div>
+            <div style="font-size: 14px; color: #f0f0f0; margin-top: 2px;">Duration: 60s</div>
+            <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">2</span> gems</div>
+        </div>
+
         <div id="duration-boost-section" style="font-family: var(--font-cursive); padding: 8px 0; margin-bottom: 12px; border-bottom: 1px solid #666; display: none;">
             <div style="font-size: 18px; font-weight: bold; color: #f0f0f0; margin-bottom: 10px;"><img src="clock.png" alt="Clock" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;">Duration Boost</div>
             <div style="margin-bottom: 8px;">
@@ -481,6 +583,13 @@
     </svg>
 </button>
 
+<button id="rebirth-btn" class="rebirth-btn" title="Rebirth">
+    Rebirth
+</button>
+
+<div id="rebirth-counter" style="position: fixed; bottom: 20px; left: 20px; font-family: var(--font-cursive); font-size: 20px; color: #f0f0f0; display: none;" title="Rebirth Multi">Rebirth: 1</div>
+<div id="rebirth-multi-display" style="position: fixed; bottom: 5px; left: 20px; font-family: var(--font-cursive); font-size: 16px; color: #f0f0f0; display: none;">1.1x Multiplier</div>
+
 <div id="reset-modal" class="reset-modal">
     <div class="reset-modal-content">
         <h2><i class="fas fa-exclamation-triangle"></i> Reset Game?</h2>
@@ -495,6 +604,25 @@
             <button id="reset-confirm" class="reset-confirm-btn">Yes, Reset Everything</button>
         </div>
     </div>
+</div>
+
+<div id="rebirth-modal" class="rebirth-modal">
+    <div class="rebirth-modal-content">
+        <h2>Rebirth 1!</h2>
+        <p>Reset upgrades & Leaves. Keeps Gems.</p>
+        <div style="text-align:left;display:inline-block;color:#f0f0f0;margin: 30px 0;">
+            <p><i class="fas fa-star" style="color:#FFD700;"></i> 1.1x multiplier</p>
+            <p><i class="fas fa-clock" style="color:#FF6B35;"></i> Temporary Food</p>
+        </div>
+        <div class="rebirth-modal-buttons">
+            <button id="rebirth-cancel" class="rebirth-cancel-btn">Cancel</button>
+            <button id="rebirth-confirm" class="rebirth-confirm-btn">Rebirth</button>
+        </div>
+    </div>
+</div>
+
+<div id="boost-banner" style="position: fixed; top: 10px; left: 50%; transform: translateX(-50%); background: rgba(0, 0, 0, 0.8); color: #f0f0f0; padding: 10px 20px; border-radius: 20px; font-family: var(--font-cursive); font-size: 16px; z-index: 10000; display: none;">
+    <span id="boost-text">+500% CPS</span> <span id="boost-timer">(30s)</span>
 </div>
 
 <script>
@@ -513,6 +641,9 @@ document.addEventListener('DOMContentLoaded', function() {
     let gemCount = 0;
     let gemModalShown = false;
     let foodModalShown = false;
+    let rebirthMultiplier = 1.0;
+    let rebirthCount = 0;
+    let activeBoosts = [];
     const gemCountDisplay = document.getElementById('gem-count');
 
     function formatNumber(num) {
@@ -544,7 +675,8 @@ document.addEventListener('DOMContentLoaded', function() {
         MULTIPLIER: 'multiplier',
         BONUS: 'bonus',
         UNLOCK: 'unlock',
-        REPLACE: 'replace'
+        REPLACE: 'replace',
+        BOOST: 'boost'
     };
 
     const UPGRADE_CONFIG = {
@@ -557,7 +689,7 @@ document.addEventListener('DOMContentLoaded', function() {
             cost: 10,
             costType: 'leaves',
             effect: { value: 1 },
-            maxOwned: Infinity,
+            maxOwned: 1,
             prerequisites: [],
             unlocks: ['electric-leaf-blower']
         },
@@ -736,6 +868,32 @@ document.addEventListener('DOMContentLoaded', function() {
             unlocks: ['large-maple-syrup-tap']
         },
 
+        'pumpkin-cream-brew': {
+            id: 'pumpkin-cream-brew',
+            name: 'Pumpkin Cream Brew',
+            icon: 'boost1.png',
+            description: '+500% CPS for 30s',
+            type: UPGRADE_TYPES.BOOST,
+            cost: 1,
+            costType: 'gems',
+            effect: { value: 5.0, duration: 30 },
+            prerequisites: ['has-rebirth-1'],
+            unlocks: []
+        },
+
+        'large-pumpkin-cream-brew': {
+            id: 'large-pumpkin-cream-brew',
+            name: 'Large Pumpkin Cream Brew',
+            icon: 'boost1.png',
+            description: '+500% CPS for 60s',
+            type: UPGRADE_TYPES.BOOST,
+            cost: 2,
+            costType: 'gems',
+            effect: { value: 5.0, duration: 60 },
+            prerequisites: ['has-rebirth-1'],
+            unlocks: []
+        },
+
     };
 
     function getUpgradeConfig(upgradeId) {
@@ -793,6 +951,51 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 passiveIncome += effect.value;
                 break;
+
+            case UPGRADE_TYPES.BOOST:
+                activeBoosts.push({
+                    id: upgradeId,
+                    multiplier: effect.value,
+                    duration: effect.duration,
+                    endTime: Date.now() + (effect.duration * 1000)
+                });
+                updateBoostBanner();
+                break;
+        }
+    }
+
+    function updateBoostBanner() {
+        const banner = document.getElementById('boost-banner');
+        const boostText = document.getElementById('boost-text');
+        const boostTimer = document.getElementById('boost-timer');
+
+        if (activeBoosts.length > 0) {
+            const activeBoost = activeBoosts[0];
+            boostText.textContent = `+${((activeBoost.multiplier) * 100).toFixed(0)}% CPS`;
+            banner.style.display = 'block';
+        } else {
+            banner.style.display = 'none';
+        }
+    }
+
+    function updateBoostTimers() {
+        const now = Date.now();
+        const boostTimer = document.getElementById('boost-timer');
+
+        activeBoosts = activeBoosts.filter(boost => {
+            const remaining = Math.ceil((boost.endTime - now) / 1000);
+            if (remaining <= 0) {
+                return false;
+            }
+            if (boostTimer) {
+                boostTimer.textContent = `(${remaining}s)`;
+            }
+            return true;
+        });
+
+        if (activeBoosts.length === 0) {
+            updateBoostBanner();
+            checkRebirthUnlock();
         }
     }
 
@@ -846,14 +1049,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const ownedCount = parseInt(upgradeElement.dataset.owned) || 0;
         const costSpan = upgradeElement.querySelector('.cost');
 
-        if (ownedCount > 0) {
+        if (ownedCount > 0 && config.type !== UPGRADE_TYPES.BOOST) {
             upgradeElement.style.border = '2px solid #4CAF50';
             costSpan.textContent = 'OWNED';
         } else {
             upgradeElement.style.border = '';
             upgradeElement.style.borderBottom = '1px solid #666';
             const formattedCost = formatNumber(config.cost);
-            costSpan.textContent = formattedCost + (config.costType === 'gems' ? ' gems' : ' leaves');
+            costSpan.textContent = formattedCost;
         }
     }
 
@@ -879,6 +1082,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 return (pumpkinSpiceLatte && pumpkinSpiceLatte.dataset.owned === '1') ||
                        (pumpkinPie && pumpkinPie.dataset.owned === '1');
             }
+            if (prereqId === 'has-rebirth-1') {
+                return rebirthCount >= 1;
+            }
 
             const prereqElement = document.getElementById(prereqId);
             return prereqElement && prereqElement.dataset.owned === '1';
@@ -896,7 +1102,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function showFoodUpgrades() {
-        if (leafCount >= 1000 && !foodModalShown) {
+        if (leafCount >= 100 && !foodModalShown) {
             const starterFoodUpgrades = ['pumpkin-spice-latte', 'pumpkin-pie'];
             const foodSectionDivider = document.getElementById('food-section-divider');
 
@@ -930,6 +1136,72 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    function checkRebirthUnlock() {
+        const halloweenCandy = document.getElementById('halloween-candy');
+        const rebirthBtn = document.getElementById('rebirth-btn');
+        const rebirthCounter = document.getElementById('rebirth-counter');
+        const rebirthMultiDisplay = document.getElementById('rebirth-multi-display');
+
+        if (halloweenCandy && halloweenCandy.dataset.owned === '1') {
+            if (rebirthBtn) {
+                rebirthBtn.style.display = 'block';
+                rebirthBtn.style.bottom = '140px';
+            }
+        } else {
+            if (rebirthBtn) {
+                rebirthBtn.style.display = 'none';
+                rebirthBtn.style.bottom = '90px';
+            }
+        }
+
+        if (rebirthCount > 0 && rebirthCounter) {
+            rebirthCounter.style.display = 'block';
+            rebirthCounter.textContent = `Rebirth: ${rebirthCount}`;
+            if (rebirthBtn && rebirthBtn.style.display === 'block') {
+                rebirthCounter.style.bottom = '110px';
+            } else {
+                rebirthCounter.style.bottom = '85px';
+            }
+        } else if (rebirthCounter) {
+            rebirthCounter.style.display = 'none';
+        }
+
+        if (rebirthCount > 0 && rebirthMultiDisplay) {
+            rebirthMultiDisplay.style.display = 'block';
+            rebirthMultiDisplay.textContent = `${rebirthMultiplier}x Multiplier`;
+        } else if (rebirthMultiDisplay) {
+            rebirthMultiDisplay.style.display = 'none';
+        }
+
+        if (rebirthCount >= 1) {
+            const boostsSectionDivider = document.getElementById('boosts-section-divider');
+            const pumpkinCreamBrew = document.getElementById('pumpkin-cream-brew');
+            const largePumpkinCreamBrew = document.getElementById('large-pumpkin-cream-brew');
+
+            if (boostsSectionDivider) {
+                boostsSectionDivider.style.display = 'block';
+            }
+
+            const activeBoostIds = activeBoosts.map(boost => boost.id);
+
+            if (pumpkinCreamBrew && checkPrerequisites('pumpkin-cream-brew')) {
+                if (activeBoostIds.includes('pumpkin-cream-brew')) {
+                    pumpkinCreamBrew.style.display = 'none';
+                } else {
+                    pumpkinCreamBrew.style.display = 'block';
+                }
+            }
+
+            if (largePumpkinCreamBrew && checkPrerequisites('large-pumpkin-cream-brew')) {
+                if (activeBoostIds.includes('large-pumpkin-cream-brew')) {
+                    largePumpkinCreamBrew.style.display = 'none';
+                } else {
+                    largePumpkinCreamBrew.style.display = 'block';
+                }
+            }
+        }
+    }
+
     function hideAllUpgrades() {
         const upgrades = [
             'electric-leaf-blower', 'maple-syrup-tap', 'large-maple-syrup-tap', 'golden-maple-syrup-tap', 'lawn-mower', 'jack-o-lantern', 'snow-blower', 'super-snow-blower', 'halloween-candy',
@@ -938,6 +1210,19 @@ document.addEventListener('DOMContentLoaded', function() {
         ];
 
         upgrades.forEach(id => {
+            const element = document.getElementById(id);
+            if (element) element.style.display = 'none';
+        });
+
+        const boostsSectionDivider = document.getElementById('boosts-section-divider');
+        const pumpkinCreamBrew = document.getElementById('pumpkin-cream-brew');
+        if (boostsSectionDivider) boostsSectionDivider.style.display = 'none';
+        if (pumpkinCreamBrew) pumpkinCreamBrew.style.display = 'none';
+
+        const upgradesWithBoosts = [
+            'boosts-section-divider', 'pumpkin-cream-brew', 'large-pumpkin-cream-brew'
+        ];
+        upgradesWithBoosts.forEach(id => {
             const element = document.getElementById(id);
             if (element) element.style.display = 'none';
         });
@@ -997,7 +1282,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     const ownedCount = parseInt(upgrades[upgradeId].owned) || 0;
 
                     if (ownedCount > 0) {
-                        upgrade.dataset.owned = upgrades[upgradeId].owned;
+                        if (config.type !== UPGRADE_TYPES.BOOST) {
+                            upgrade.dataset.owned = upgrades[upgradeId].owned;
+                        }
                         updateUpgradeDisplay(upgradeId);
 
                         if (config.type === UPGRADE_TYPES.PASSIVE_INCOME && config.maxOwned === Infinity) {
@@ -1005,7 +1292,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             for (let i = 0; i < ownedCount; i++) {
                                 applyUpgradeEffect(upgradeId, i + 1);
                             }
-                        } else {
+                        } else if (config.type !== UPGRADE_TYPES.BOOST) {
                             applyUpgradeEffect(upgradeId);
                         }
 
@@ -1030,6 +1317,8 @@ document.addEventListener('DOMContentLoaded', function() {
         showFoodUpgrades();
 
         checkGemFoodUpgrades();
+
+        checkRebirthUnlock();
 
         if (leafCount >= 100) {
             const gemCounter = document.getElementById('gem-counter');
@@ -1066,6 +1355,16 @@ document.addEventListener('DOMContentLoaded', function() {
         if (savedFoodModalShown) {
             foodModalShown = savedFoodModalShown === 'true';
         }
+
+        const savedRebirthMultiplier = localStorage.getItem('rebirthMultiplier');
+        if (savedRebirthMultiplier) {
+            rebirthMultiplier = parseFloat(savedRebirthMultiplier);
+        }
+
+        const savedRebirthCount = localStorage.getItem('rebirthCount');
+        if (savedRebirthCount) {
+            rebirthCount = parseInt(savedRebirthCount);
+        }
     }
 
     window.updateGemDisplay = function(newGemCount) {
@@ -1087,6 +1386,8 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('upgrade', JSON.stringify(upgradesToSave));
         localStorage.setItem('foodModalShown', foodModalShown.toString());
         localStorage.setItem('hasEarnedGem', localStorage.getItem('hasEarnedGem') || 'false');
+        localStorage.setItem('rebirthMultiplier', rebirthMultiplier.toString());
+        localStorage.setItem('rebirthCount', rebirthCount.toString());
     }
 
     loadGame();
@@ -1143,7 +1444,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     setInterval(() => {
         if (passiveIncome > 0 || mapleSyrupBonus > 0) {
-            const totalIncome = Math.floor(passiveIncome * foodMultiplier * ciderPressBonus) + mapleSyrupBonus;
+            let boostMultiplier = 1.0;
+            if (activeBoosts.length > 0) {
+                boostMultiplier = activeBoosts[0].multiplier;
+            }
+            const totalIncome = Math.floor(passiveIncome * foodMultiplier * ciderPressBonus * rebirthMultiplier * boostMultiplier) + mapleSyrupBonus;
             leafCount += totalIncome;
             updateLeafDisplay();
 
@@ -1163,6 +1468,8 @@ document.addEventListener('DOMContentLoaded', function() {
             checkGemFoodUpgrades();
         }
     }, 1000);
+
+    setInterval(updateBoostTimers, 1000);
     mainLeaf.addEventListener('click', function() {
         this.style.animation = 'none';
         this.offsetHeight;
@@ -1253,6 +1560,8 @@ document.addEventListener('DOMContentLoaded', function() {
             gemCount = 0;
             gemModalShown = false;
             foodModalShown = false;
+            rebirthMultiplier = 1.0;
+            rebirthCount = 0;
             updateLeafDisplay();
             updateGemDisplay();
 
@@ -1283,8 +1592,18 @@ document.addEventListener('DOMContentLoaded', function() {
             localStorage.removeItem('upgrade');
             localStorage.removeItem('foodModalShown');
             localStorage.removeItem('hasEarnedGem');
+            localStorage.removeItem('rebirthMultiplier');
+            localStorage.removeItem('rebirthCount');
 
             return 'Game reset';
+        },
+
+        rebirth: function() {
+            this.reset();
+            rebirthMultiplier = 1.1;
+            rebirthCount = 1;
+            checkRebirthUnlock();
+            return 'Rebirth completed!';
         },
 
         status: function() {
@@ -1308,7 +1627,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const largeMapleSyrupOwned = largeMapleSyrupTap && largeMapleSyrupTap.dataset.owned === '1';
             const goldenMapleSyrupTap = document.getElementById('golden-maple-syrup-tap');
             const goldenMapleSyrupOwned = goldenMapleSyrupTap && goldenMapleSyrupTap.dataset.owned === '1';
-            return `Leaves: ${formatNumber(leafCount)}, LPS: ${passiveIncome}${electricDisabled ? ' (Electric disabled)' : ''}${electricReplaced ? ' (Electric replaced by snow blower)' : ''}${jackOLanternOwned ? ' (+25 jack bonus)' : ''}${snowBlowerOwned ? ' (+50 snow blower)' : ''}${superSnowBlowerOwned ? ' (+100 powerful snow blower)' : ''}${halloweenCandyOwned ? ' (+250 halloween candy)' : ''}${goldenMapleSyrupOwned ? ' (+100 golden maple)' : ''}, Maple Bonus: ${mapleSyrupBonus}${largeMapleSyrupOwned ? ' (LARGE)' : ''}${goldenMapleSyrupOwned ? ' (GOLDEN)' : ''}, Multiplier: ${foodMultiplier}x${appleCiderPressOwned ? ' (+50% cider bonus)' : ''}, Gems: ${gemCount}, Candycorn: ${candycornOwned ? 'OWNED' : 'NOT OWNED'}, Jack O'Lantern: ${jackOLanternOwned ? 'OWNED' : 'NOT OWNED'}, Snow Blower: ${snowBlowerOwned ? 'OWNED' : 'NOT OWNED'}, Powerful Snow Blower: ${superSnowBlowerOwned ? 'OWNED' : 'NOT OWNED'}, Halloween Candy: ${halloweenCandyOwned ? 'OWNED' : 'NOT OWNED'}, Golden Maple: ${goldenMapleSyrupOwned ? 'OWNED' : 'NOT OWNED'}, Cider Press: ${appleCiderPressOwned ? 'OWNED' : 'NOT OWNED'}`;
+            return `Leaves: ${formatNumber(leafCount)}, LPS: ${passiveIncome}${electricDisabled ? ' (Electric disabled)' : ''}${electricReplaced ? ' (Electric replaced by snow blower)' : ''}${jackOLanternOwned ? ' (+25 jack bonus)' : ''}${snowBlowerOwned ? ' (+50 snow blower)' : ''}${superSnowBlowerOwned ? ' (+100 powerful snow blower)' : ''}${halloweenCandyOwned ? ' (+250 halloween candy)' : ''}${goldenMapleSyrupOwned ? ' (+100 golden maple)' : ''}, Maple Bonus: ${mapleSyrupBonus}${largeMapleSyrupOwned ? ' (LARGE)' : ''}${goldenMapleSyrupOwned ? ' (GOLDEN)' : ''}, Multiplier: ${foodMultiplier}x${appleCiderPressOwned ? ' (+50% cider bonus)' : ''}${rebirthMultiplier > 1.0 ? ` (+${rebirthMultiplier}x rebirth bonus)` : ''}, Gems: ${gemCount}, Candycorn: ${candycornOwned ? 'OWNED' : 'NOT OWNED'}, Jack O'Lantern: ${jackOLanternOwned ? 'OWNED' : 'NOT OWNED'}, Snow Blower: ${snowBlowerOwned ? 'OWNED' : 'NOT OWNED'}, Powerful Snow Blower: ${superSnowBlowerOwned ? 'OWNED' : 'NOT OWNED'}, Halloween Candy: ${halloweenCandyOwned ? 'OWNED' : 'NOT OWNED'}, Golden Maple: ${goldenMapleSyrupOwned ? 'OWNED' : 'NOT OWNED'}, Cider Press: ${appleCiderPressOwned ? 'OWNED' : 'NOT OWNED'}`;
         },
 
         giveGems: function(gems) {
@@ -1344,6 +1663,7 @@ document.addEventListener('DOMContentLoaded', function() {
     window.give = window.fallSimulator.give;
     window.giveGems = window.fallSimulator.giveGems;
     window.reset = window.fallSimulator.reset;
+    window.rebirth = window.fallSimulator.rebirth;
     window.status = window.fallSimulator.status;
 
     document.querySelectorAll('.upgrade-item').forEach(upgrade => {
@@ -1359,7 +1679,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const isOwned = this.dataset.owned === '1';
             const ownedCount = parseInt(this.dataset.owned) || 0;
 
-            if (isOwned) {
+            if (isOwned && config.type !== UPGRADE_TYPES.BOOST) {
                 if (config.maxOwned && config.maxOwned === Infinity && upgradeId === 'leaf-blower') {
                 } else {
                     return;
@@ -1393,7 +1713,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.querySelector('.cost').textContent = 'OWNED';
                 }
             } else {
-                this.dataset.owned = '1';
+                if (config.type !== UPGRADE_TYPES.BOOST) {
+                    this.dataset.owned = '1';
+                }
                 applyUpgradeEffect(upgradeId);
                 updateUpgradeDisplay(upgradeId);
             }
@@ -1414,6 +1736,8 @@ document.addEventListener('DOMContentLoaded', function() {
             if (upgradeId === 'pumpkin-spice-latte' || upgradeId === 'pumpkin-pie') {
                 checkGemFoodUpgrades();
             }
+
+            checkRebirthUnlock();
 
             saveGame();
         });
@@ -1447,7 +1771,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const customMinValue = parseInt(customMinutes?.value) || 1;
             minutes = customMinValue;
             gems = calculateGemCost(minutes);
-            const currentCPS = Math.floor(passiveIncome * foodMultiplier * ciderPressBonus) + mapleSyrupBonus;
+            let boostMultiplier = 1.0;
+            if (activeBoosts.length > 0) {
+                boostMultiplier = activeBoosts[0].multiplier;
+            }
+            const currentCPS = Math.floor(passiveIncome * foodMultiplier * ciderPressBonus * rebirthMultiplier * boostMultiplier) + mapleSyrupBonus;
             let totalEarnings = currentCPS * (minutes * 60);
 
             if (currentCPS > 2500) {
@@ -1464,7 +1792,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         } else {
             [minutes, gems] = selectedValue.split('-').map(Number);
-            const currentCPS = Math.floor(passiveIncome * foodMultiplier * ciderPressBonus) + mapleSyrupBonus;
+            let boostMultiplier = 1.0;
+            if (activeBoosts.length > 0) {
+                boostMultiplier = activeBoosts[0].multiplier;
+            }
+            const currentCPS = Math.floor(passiveIncome * foodMultiplier * ciderPressBonus * rebirthMultiplier * boostMultiplier) + mapleSyrupBonus;
             let totalEarnings = currentCPS * (minutes * 60);
 
             if (currentCPS > 2500) {
@@ -1526,7 +1858,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 [minutes, gems] = selectedValue.split('-').map(Number);
             }
 
-            const currentCPS = Math.floor(passiveIncome * foodMultiplier * ciderPressBonus) + mapleSyrupBonus;
+            let boostMultiplier = 1.0;
+            if (activeBoosts.length > 0) {
+                boostMultiplier = activeBoosts[0].multiplier;
+            }
+            const currentCPS = Math.floor(passiveIncome * foodMultiplier * ciderPressBonus * rebirthMultiplier * boostMultiplier) + mapleSyrupBonus;
 
             if (gemCount >= gems) {
                 let totalEarnings = currentCPS * (minutes * 60);
@@ -1608,15 +1944,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (backBtn) {
         backBtn.addEventListener('click', function() {
-            if (minigameModal) {
-                minigameModal.style.display = 'none';
-            }
+            window.location.href = 'https://gamerc0der.github.io/fallsimulator/';
         });
     }
 
     if (trickTreatBtn) {
         trickTreatBtn.addEventListener('click', function() {
-            window.location.href = '/minigame';
+            window.location.href = 'https://gamerc0der.github.io/fallsimulator/minigame';
         });
     }
 
@@ -1656,6 +1990,44 @@ document.addEventListener('DOMContentLoaded', function() {
         resetModal.addEventListener('click', function(e) {
             if (e.target === resetModal) {
                 resetModal.style.display = 'none';
+            }
+        });
+    }
+
+    const rebirthBtn = document.getElementById('rebirth-btn');
+    const rebirthModal = document.getElementById('rebirth-modal');
+    const rebirthConfirm = document.getElementById('rebirth-confirm');
+    const rebirthCancel = document.getElementById('rebirth-cancel');
+
+    if (rebirthBtn) {
+        rebirthBtn.addEventListener('click', function() {
+            if (rebirthModal) {
+                rebirthModal.style.display = 'flex';
+            }
+        });
+    }
+
+    if (rebirthConfirm) {
+        rebirthConfirm.addEventListener('click', function() {
+            window.fallSimulator.rebirth();
+            if (rebirthModal) {
+                rebirthModal.style.display = 'none';
+            }
+        });
+    }
+
+    if (rebirthCancel) {
+        rebirthCancel.addEventListener('click', function() {
+            if (rebirthModal) {
+                rebirthModal.style.display = 'none';
+            }
+        });
+    }
+
+    if (rebirthModal) {
+        rebirthModal.addEventListener('click', function(e) {
+            if (e.target === rebirthModal) {
+                rebirthModal.style.display = 'none';
             }
         });
     }
