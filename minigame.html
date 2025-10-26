@@ -8,6 +8,7 @@
             margin: 0;
             padding: 0;
             overflow: hidden;
+            font-family: Arial, sans-serif;
         }
 
         .pumpkin {
@@ -30,7 +31,6 @@
             color: #f0f0f0;
             padding: 10px 15px;
             border-radius: 20px;
-            font-family: Arial, sans-serif;
             font-size: 16px;
             font-weight: bold;
             z-index: 1000;
@@ -45,7 +45,6 @@
             color: #f0f0f0;
             padding: 10px 15px;
             border-radius: 50%;
-            font-family: Arial, sans-serif;
             font-size: 20px;
             font-weight: bold;
             cursor: pointer;
@@ -80,7 +79,6 @@
             text-align: center;
             max-width: 400px;
             width: 90%;
-            font-family: Arial, sans-serif;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
         }
 
@@ -120,16 +118,22 @@
         }
     </style>
 <body>
-    <div id="counter" class="counter">🎃 0</div>
-    <button id="back-btn" class="back-btn">←</button>
+    <header>
+        <button id="back-btn" class="back-btn" aria-label="Back to main game">←</button>
+        <div id="counter" class="counter" aria-label="Pumpkin click counter">🎃 0</div>
+    </header>
 
-    <div id="game-modal" class="modal">
+    <main id="game-area" aria-label="Pumpkin clicking game area">
+        <!-- Pumpkins will be dynamically added here -->
+    </main>
+
+    <div id="game-modal" class="modal" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
         <div class="modal-content">
-            <h2>🎃 Time's Up!</h2>
+            <h2 id="modal-title">🎃 Time's Up!</h2>
             <p>You clicked</p>
-            <div class="score" id="final-score">0</div>
+            <div class="score" id="final-score" aria-label="Final pumpkin count">0</div>
             <p>pumpkins!</p>
-            <p>You earned <span class="score" id="gems-earned">0</span> gems! 🏆</p>
+            <p>You earned <span class="score" id="gems-earned" aria-label="Gems earned">0</span> gems! 🏆</p>
             <button id="close-modal" class="close-btn">Back</button>
         </div>
     </div>
@@ -193,7 +197,7 @@
             }
 
             static getRandomSize() {
-                const baseSize = Math.random() * GAME_CONFIG.PUMPKIN.MAX_SIZE + GAME_CONFIG.PUMPKIN.MIN_SIZE;
+                const baseSize = Math.random() * (GAME_CONFIG.PUMPKIN.MAX_SIZE - GAME_CONFIG.PUMPKIN.MIN_SIZE) + GAME_CONFIG.PUMPKIN.MIN_SIZE;
                 return {
                     width: baseSize * 2,
                     height: baseSize * 4
@@ -353,6 +357,12 @@
                         this.exitGame();
                     }
                 });
+
+                document.addEventListener('keydown', (e) => {
+                    if (this.ui.gameModal.style.display === 'flex' && e.key === 'Escape') {
+                        this.exitGame();
+                    }
+                });
             }
 
             startGame() {
@@ -378,7 +388,8 @@
             }
 
             spawnPumpkin() {
-                new Pumpkin(this.state);
+                const pumpkin = new Pumpkin(this.state);
+                document.body.appendChild(pumpkin.element);
             }
 
             scheduleGameEnd() {
@@ -402,6 +413,8 @@
                 GameUtils.communicateWithParent(gems);
 
                 this.ui.gameModal.style.display = 'flex';
+                this.ui.gameModal.setAttribute('aria-hidden', 'false');
+                this.ui.closeModalBtn.focus();
             }
 
             exitGame() {
