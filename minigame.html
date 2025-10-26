@@ -27,7 +27,7 @@
             top: 20px;
             right: 20px;
             background: rgba(255, 165, 0, 0.9);
-            color: white;
+            color: #f0f0f0;
             padding: 10px 15px;
             border-radius: 20px;
             font-family: Arial, sans-serif;
@@ -42,7 +42,7 @@
             top: 20px;
             left: 20px;
             background: none;
-            color: white;
+            color: #f0f0f0;
             padding: 10px 15px;
             border-radius: 50%;
             font-family: Arial, sans-serif;
@@ -74,7 +74,7 @@
 
         .modal-content {
             background-color: #2d2d3d;
-            color: white;
+            color: #f0f0f0;
             padding: 30px;
             border-radius: 15px;
             text-align: center;
@@ -104,7 +104,7 @@
 
         .close-btn {
             background-color: #4CAF50;
-            color: white;
+            color: #f0f0f0;
             border: none;
             padding: 12px 24px;
             font-size: 16px;
@@ -135,157 +135,305 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const pumpkinImage = 'pumpkin.png';
-            const maxPumpkins = 15;
-            let clickedCount = 0;
-            const counterDisplay = document.getElementById('counter');
-            const backBtn = document.getElementById('back-btn');
-            const gameModal = document.getElementById('game-modal');
-            const finalScore = document.getElementById('final-score');
-            const gemsEarned = document.getElementById('gems-earned');
-            const closeModalBtn = document.getElementById('close-modal');
+        const GAME_CONFIG = {
+            PUMPKIN: {
+                IMAGE: 'pumpkin.png',
+                MIN_SIZE: 40,
+                MAX_SIZE: 80,
+                FADE_DURATION: 300,
+                LIFETIME: 10000,
+                SPAWN_INTERVAL: 800,
+                INITIAL_COUNT: 5,
+                SPAWN_DELAY: 200,
+                MAX_COUNT: 15
+            },
+            UI: {
+                COUNTER_EMOJI: '🎃',
+                GAME_DURATION: 15000,
+                GEMS_PER_CLICK: 10
+            },
+            STORAGE: {
+                GEMS_KEY: 'minigameGems',
+                PARENT_GEMS_KEY: 'gems'
+            }
+        };
 
-            function createPumpkin() {
+        class GameUtils {
+            static calculateGems(clickCount) {
+                return Math.floor(clickCount / GAME_CONFIG.UI.GEMS_PER_CLICK);
+            }
+
+            static communicateWithParent(gems) {
+                if (window.parent && window.parent !== window) {
+                    try {
+                        const currentGems = parseInt(localStorage.getItem(GAME_CONFIG.STORAGE.PARENT_GEMS_KEY) || '0');
+                        const newGemCount = currentGems + gems;
+                        localStorage.setItem(GAME_CONFIG.STORAGE.PARENT_GEMS_KEY, newGemCount.toString());
+
+                        if (window.parent.updateGemDisplay) {
+                            window.parent.updateGemDisplay(newGemCount);
+                        }
+                        return true;
+                    } catch (error) {
+                        console.warn('Could not update parent window:', error.message);
+                        return false;
+                    }
+                }
+                return false;
+            }
+
+            static saveGemsToStorage(gems) {
+                localStorage.setItem(GAME_CONFIG.STORAGE.GEMS_KEY, gems.toString());
+            }
+
+            static getRandomPosition(maxWidth, maxHeight, elementWidth, elementHeight) {
+                const x = Math.random() * (maxWidth - elementWidth);
+                const y = Math.random() * (maxHeight - elementHeight);
+                return { x, y };
+            }
+
+            static getRandomSize() {
+                const baseSize = Math.random() * GAME_CONFIG.PUMPKIN.MAX_SIZE + GAME_CONFIG.PUMPKIN.MIN_SIZE;
+                return {
+                    width: baseSize * 2,
+                    height: baseSize * 4
+                };
+            }
+        }
+
+        class GameState {
+            constructor() {
+                this.clickCount = 0;
+                this.pumpkins = new Set();
+                this.isGameActive = true;
+                this.gameTimer = null;
+            }
+
+            incrementScore() {
+                this.clickCount++;
+            }
+
+            addPumpkin(pumpkin) {
+                this.pumpkins.add(pumpkin);
+            }
+
+            removePumpkin(pumpkin) {
+                this.pumpkins.delete(pumpkin);
+            }
+
+            getActivePumpkinCount() {
+                return this.pumpkins.size;
+            }
+
+            endGame() {
+                this.isGameActive = false;
+                if (this.gameTimer) {
+                    clearInterval(this.gameTimer);
+                }
+            }
+
+            reset() {
+                this.clickCount = 0;
+                this.pumpkins.clear();
+                this.isGameActive = true;
+            }
+        }
+
+        class Pumpkin {
+            constructor(gameState) {
+                this.gameState = gameState;
+                this.element = this.createElement();
+                this.setupEventListeners();
+                this.setupAutoRemove();
+                this.gameState.addPumpkin(this.element);
+            }
+
+            createElement() {
                 const pumpkin = document.createElement('img');
-                pumpkin.src = pumpkinImage;
+                pumpkin.src = GAME_CONFIG.PUMPKIN.IMAGE;
                 pumpkin.alt = 'Pumpkin';
                 pumpkin.className = 'pumpkin';
 
-                const x = Math.random() * (window.innerWidth - 160);
-                const y = Math.random() * (window.innerHeight - 320);
+                const { width, height } = GameUtils.getRandomSize();
+                const { x, y } = GameUtils.getRandomPosition(
+                    window.innerWidth - 160,
+                    window.innerHeight - 320,
+                    width,
+                    height
+                );
 
-                pumpkin.style.left = x + 'px';
-                pumpkin.style.top = y + 'px';
+                pumpkin.style.left = `${x}px`;
+                pumpkin.style.top = `${y}px`;
+                pumpkin.style.width = `${width}px`;
+                pumpkin.style.height = `${height}px`;
 
-                const baseSize = Math.random() * 40 + 40;
-                pumpkin.style.width = (baseSize * 2) + 'px';
-                pumpkin.style.height = (baseSize * 4) + 'px';
+                return pumpkin;
+            }
 
-                pumpkin.addEventListener('click', function() {
-                    clickedCount++;
-                    counterDisplay.textContent = `🎃 ${clickedCount}`;
-                    this.style.opacity = '0';
-                    setTimeout(() => {
-                        this.remove();
-                    }, 300);
+            setupEventListeners() {
+                this.element.addEventListener('click', () => {
+                    this.onClick();
+                });
+            }
+
+            onClick() {
+                if (!this.gameState.isGameActive) return;
+
+                this.gameState.incrementScore();
+                this.updateCounter();
+                this.fadeOut();
+            }
+
+            updateCounter() {
+                const counterDisplay = document.getElementById('counter');
+                if (counterDisplay) {
+                    counterDisplay.textContent = `${GAME_CONFIG.UI.COUNTER_EMOJI} ${this.gameState.clickCount}`;
+                }
+            }
+
+            fadeOut() {
+                this.element.style.opacity = '0';
+                setTimeout(() => {
+                    this.destroy();
+                }, GAME_CONFIG.PUMPKIN.FADE_DURATION);
+            }
+
+            setupAutoRemove() {
+                setTimeout(() => {
+                    if (document.body.contains(this.element)) {
+                        this.fadeOut();
+                    }
+                }, GAME_CONFIG.PUMPKIN.LIFETIME);
+            }
+
+            destroy() {
+                if (this.element.parentNode) {
+                    this.element.parentNode.removeChild(this.element);
+                }
+                this.gameState.removePumpkin(this.element);
+            }
+        }
+
+        class PumpkinGame {
+            constructor() {
+                this.state = new GameState();
+                this.ui = this.initializeUI();
+                this.pumpkinSpawner = null;
+                this.gameEndTimer = null;
+                this.init();
+            }
+
+            initializeUI() {
+                return {
+                    counter: document.getElementById('counter'),
+                    backBtn: document.getElementById('back-btn'),
+                    gameModal: document.getElementById('game-modal'),
+                    finalScore: document.getElementById('final-score'),
+                    gemsEarned: document.getElementById('gems-earned'),
+                    closeModalBtn: document.getElementById('close-modal')
+                };
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.startGame();
+            }
+
+            setupEventListeners() {
+                this.ui.backBtn?.addEventListener('click', () => {
+                    this.exitGame();
                 });
 
-                document.body.appendChild(pumpkin);
+                this.ui.closeModalBtn?.addEventListener('click', () => {
+                    this.exitGame();
+                });
 
-
-                setTimeout(() => {
-                    if (document.body.contains(pumpkin)) {
-                        pumpkin.style.opacity = '0';
-                        setTimeout(() => {
-                            if (document.body.contains(pumpkin)) {
-                                pumpkin.remove();
-                            }
-                        }, 300);
+                this.ui.gameModal?.addEventListener('click', (e) => {
+                    if (e.target === this.ui.gameModal) {
+                        this.exitGame();
                     }
-                }, 10000);
+                });
             }
 
-            setInterval(() => {
-                const currentPumpkins = document.querySelectorAll('.pumpkin').length;
-                if (currentPumpkins < maxPumpkins) {
-                    createPumpkin();
-                }
-            }, 800);
-
-            for (let i = 0; i < 5; i++) {
-                setTimeout(createPumpkin, i * 200);
+            startGame() {
+                this.spawnInitialPumpkins();
+                this.startPumpkinSpawner();
+                this.scheduleGameEnd();
             }
 
-            backBtn.addEventListener('click', function() {
-                const gems = Math.floor(clickedCount / 10);
-                localStorage.setItem('minigameGems', gems.toString());
-
-                if (window.parent && window.parent !== window) {
-                    try {
-                        const currentGems = parseInt(localStorage.getItem('gems') || '0');
-                        const newGemCount = currentGems + gems;
-                        localStorage.setItem('gems', newGemCount.toString());
-
-                        if (window.parent.updateGemDisplay) {
-                            window.parent.updateGemDisplay(newGemCount);
-                        }
-                    } catch (e) {
-                        console.log('Could not update parent window');
-                    }
+            spawnInitialPumpkins() {
+                for (let i = 0; i < GAME_CONFIG.PUMPKIN.INITIAL_COUNT; i++) {
+                    setTimeout(() => {
+                        this.spawnPumpkin();
+                    }, i * GAME_CONFIG.PUMPKIN.SPAWN_DELAY);
                 }
+            }
+
+            startPumpkinSpawner() {
+                this.pumpkinSpawner = setInterval(() => {
+                    if (this.state.getActivePumpkinCount() < GAME_CONFIG.PUMPKIN.MAX_COUNT && this.state.isGameActive) {
+                        this.spawnPumpkin();
+                    }
+                }, GAME_CONFIG.PUMPKIN.SPAWN_INTERVAL);
+            }
+
+            spawnPumpkin() {
+                new Pumpkin(this.state);
+            }
+
+            scheduleGameEnd() {
+                this.gameEndTimer = setTimeout(() => {
+                    this.endGame();
+                }, GAME_CONFIG.UI.GAME_DURATION);
+            }
+
+            endGame() {
+                this.state.endGame();
+                this.showGameOverModal();
+            }
+
+            showGameOverModal() {
+                const gems = GameUtils.calculateGems(this.state.clickCount);
+
+                this.ui.finalScore.textContent = this.state.clickCount;
+                this.ui.gemsEarned.textContent = gems;
+
+                GameUtils.saveGemsToStorage(gems);
+                GameUtils.communicateWithParent(gems);
+
+                this.ui.gameModal.style.display = 'flex';
+            }
+
+            exitGame() {
+                const gems = GameUtils.calculateGems(this.state.clickCount);
+                GameUtils.saveGemsToStorage(gems);
+                GameUtils.communicateWithParent(gems);
 
                 window.location.href = '/';
-            });
+            }
 
-            setTimeout(() => {
-                finalScore.textContent = clickedCount;
-                const gems = Math.floor(clickedCount / 10);
-                gemsEarned.textContent = gems;
-
-                localStorage.setItem('minigameGems', gems.toString());
-
-                if (window.parent && window.parent !== window) {
-                    try {
-                        const currentGems = parseInt(localStorage.getItem('gems') || '0');
-                        const newGemCount = currentGems + gems;
-                        localStorage.setItem('gems', newGemCount.toString());
-
-                        if (window.parent.updateGemDisplay) {
-                            window.parent.updateGemDisplay(newGemCount);
-                        }
-                    } catch (e) {
-                        console.log('Could not update parent window, gems saved to localStorage');
-                    }
+            destroy() {
+                if (this.pumpkinSpawner) {
+                    clearInterval(this.pumpkinSpawner);
                 }
-
-                gameModal.style.display = 'flex';
-            }, 15000);
-
-            closeModalBtn.addEventListener('click', function() {
-                const gems = Math.floor(clickedCount / 10);
-                localStorage.setItem('minigameGems', gems.toString());
-
-                if (window.parent && window.parent !== window) {
-                    try {
-                        const currentGems = parseInt(localStorage.getItem('gems') || '0');
-                        const newGemCount = currentGems + gems;
-                        localStorage.setItem('gems', newGemCount.toString());
-
-                        if (window.parent.updateGemDisplay) {
-                            window.parent.updateGemDisplay(newGemCount);
-                        }
-                    } catch (e) {
-                        console.log('Could not update parent window');
-                    }
+                if (this.gameEndTimer) {
+                    clearTimeout(this.gameEndTimer);
                 }
+                this.state.endGame();
+            }
+        }
 
-                window.location.href = '/';
-            });
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                const game = new PumpkinGame();
 
-            gameModal.addEventListener('click', function(e) {
-                if (e.target === gameModal) {
-                    const gems = Math.floor(clickedCount / 10);
-                    localStorage.setItem('minigameGems', gems.toString());
+                window.addEventListener('beforeunload', () => {
+                    game.destroy();
+                });
 
-                    if (window.parent && window.parent !== window) {
-                        try {
-                            const currentGems = parseInt(localStorage.getItem('gems') || '0');
-                            const newGemCount = currentGems + gems;
-                            localStorage.setItem('gems', newGemCount.toString());
-
-                            if (window.parent.updateGemDisplay) {
-                                window.parent.updateGemDisplay(newGemCount);
-                            }
-                        } catch (e) {
-                            console.log(e);
-                            console.log('Could not update parent window');
-                        }
-                    }
-
-                    window.location.href = '/';
-                }
-            });
+            } catch (error) {
+                console.error('Failed to initialize Pumpkin Game:', error);
+            }
         });
     </script>
 </body>
