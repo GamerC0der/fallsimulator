@@ -14,7 +14,7 @@
   0% { transform: translate(-50%, -50%) scale(1); }
   50% { transform: translate(-50%, -50%) scale(1.2); }
   100% { transform: translate(-50%, -50%) scale(1); }
-}
+}   
 
 .leaf {
   position: absolute;
@@ -48,20 +48,6 @@
   opacity: 0;
 }
 
-.bg-leaf:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 8s; }
-.bg-leaf:nth-child(2) { left: 25%; animation-delay: 1s; animation-duration: 10s; }
-.bg-leaf:nth-child(3) { left: 40%; animation-delay: 2s; animation-duration: 9s; }
-.bg-leaf:nth-child(4) { left: 55%; animation-delay: 1.5s; animation-duration: 11s; }
-.bg-leaf:nth-child(5) { left: 70%; animation-delay: 3s; animation-duration: 7s; }
-.bg-leaf:nth-child(6) { left: 85%; animation-delay: 0.5s; animation-duration: 12s; }
-.bg-leaf:nth-child(7) { left: 15%; animation-delay: 4s; animation-duration: 8s; }
-.bg-leaf:nth-child(8) { left: 60%; animation-delay: 2.5s; animation-duration: 9s; }
-.bg-leaf:nth-child(9) { left: 35%; animation-delay: 0.8s; animation-duration: 10s; }
-.bg-leaf:nth-child(10) { left: 75%; animation-delay: 3.2s; animation-duration: 8s; }
-.bg-leaf:nth-child(11) { left: 5%; animation-delay: 1.8s; animation-duration: 12s; }
-.bg-leaf:nth-child(12) { left: 90%; animation-delay: 0.3s; animation-duration: 7s; }
-.bg-leaf:nth-child(13) { left: 20%; animation-delay: 4.1s; animation-duration: 9s; }
-.bg-leaf:nth-child(14) { left: 65%; animation-delay: 2.7s; animation-duration: 11s; }
 
 .modal {
     position: fixed;
@@ -538,6 +524,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const mainLeaf = document.querySelector('.main-leaf');
     const bgLeaves = document.querySelectorAll('.bg-leaf');
+    const leafConfigs = [[10,0,8],[25,1,10],[40,2,9],[55,1.5,11],[70,3,7],[85,0.5,12],[15,4,8],[60,2.5,9],[35,0.8,10],[75,3.2,8],[5,1.8,12],[90,0.3,7],[20,4.1,9],[65,2.7,11]]; bgLeaves.forEach((leaf,i)=>leaf.style.cssText=`left:${leafConfigs[i][0]}%;animation-delay:${leafConfigs[i][1]}s;animation-duration:${leafConfigs[i][2]}s`);
     const countDisplay = document.getElementById('count');
 
     let leafCount = 0;
