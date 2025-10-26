@@ -1,9 +1,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Edu+NSW+ACT+Cursive:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <body style="background-color: lightblue; margin: 0; padding: 0;">
 <style>
+:root {
+  --font-cursive: 'Edu NSW ACT Cursive', cursive;
+}
 @keyframes fall {
   0% { transform: translateY(0px) rotate(0deg); opacity: 1; }
   95% { opacity: 1; }
@@ -71,7 +75,7 @@
     text-align: center;
     position: relative;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    font-family: 'Edu NSW ACT Cursive', cursive;
+    font-family: var(--font-cursive);
 }
 
 .modal-content h2 {
@@ -108,7 +112,7 @@
     border: none;
     padding: 12px 24px;
     font-size: 16px;
-    font-family: 'Edu NSW ACT Cursive', cursive;
+    font-family: var(--font-cursive);
     border-radius: 6px;
     cursor: pointer;
     margin-top: 10px;
@@ -239,7 +243,7 @@
     text-align: center;
     max-width: 400px;
     width: 90%;
-    font-family: 'Edu NSW ACT Cursive', cursive;
+    font-family: var(--font-cursive);
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
 }
 
@@ -270,7 +274,7 @@
     font-size: 16px;
     border-radius: 8px;
     cursor: pointer;
-    font-family: 'Edu NSW ACT Cursive', cursive;
+    font-family: var(--font-cursive);
     transition: background-color 0.3s ease;
 }
 
@@ -286,7 +290,7 @@
     font-size: 16px;
     border-radius: 8px;
     cursor: pointer;
-    font-family: 'Edu NSW ACT Cursive', cursive;
+    font-family: var(--font-cursive);
     transition: background-color 0.3s ease;
 }
 
@@ -295,112 +299,112 @@
 }
 </style>
 
-<h1 style="position: absolute; top: 10px; left: 10px; font-family: 'Edu NSW ACT Cursive', cursive; margin: 0; letter-spacing: 2px;">Fall Simulator</h1>
+<h1 style="position: absolute; top: 10px; left: 10px; font-family: var(--font-cursive); margin: 0; letter-spacing: 2px;">Fall Simulator</h1>
 
     <div id="right-sidebar" style="position: fixed; top: 0; right: 0; width: 400px; height: 100vh; background: rgba(50, 50, 70, 0.95); border-left: 2px solid #555; padding: 20px; box-sizing: border-box; z-index: 1000;">
-    <div id="leaf-counter" style="font-family: 'Edu NSW ACT Cursive', cursive; font-size: 28px; color: #f0f0f0; margin-bottom: 20px;">Leaves: <span id="count">0</span></div>
-    <div id="gem-counter" style="font-family: 'Edu NSW ACT Cursive', cursive; font-size: 28px; color: #f0f0f0; margin-bottom: 30px; display: none;">Gems: <span id="gem-count">0</span> <img src="gem.png" alt="Gem" style="width: 25px; height: 25px; vertical-align: middle; margin-left: 5px;"></div>
+    <div id="leaf-counter" style="font-family: var(--font-cursive); font-size: 28px; color: #f0f0f0; margin-bottom: 20px;">Leaves: <span id="count">0</span></div>
+    <div id="gem-counter" style="font-family: var(--font-cursive); font-size: 28px; color: #f0f0f0; margin-bottom: 30px; display: none;">Gems: <span id="gem-count">0</span> <img src="gem.png" alt="Gem" style="width: 25px; height: 25px; vertical-align: middle; margin-left: 5px;"></div>
 
     <div style="position: absolute; top: 15px; right: 15px; z-index: 1001;">
-        <button id="minigame-btn" style="display: none; background: linear-gradient(135deg, #666, #444); color: #f0f0f0; border: 2px solid #777; padding: 8px 16px; font-size: 14px; font-family: 'Edu NSW ACT Cursive', cursive; border-radius: 15px; cursor: pointer; transition: all 0.3s ease; font-weight: bold;">
-            🎮
+        <button id="minigame-btn" style="display: none; background: linear-gradient(135deg, #666, #444); color: #f0f0f0; border: 2px solid #777; padding: 8px 16px; font-size: 14px; font-family: var(--font-cursive); border-radius: 15px; cursor: pointer; transition: all 0.3s ease; font-weight: bold;">
+            <i class="fas fa-gamepad"></i>
         </button>
     </div>
 
     <div id="upgrades-section" style="color: #f0f0f0; max-height: 70vh; overflow-y: auto; padding-bottom: 20px; scrollbar-width: thin; scrollbar-color: #666 #444;">
-        <div id="leaf-blower" class="upgrade-item" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666;" data-cost="10" data-owned="0">
+        <div id="leaf-blower" class="upgrade-item" style="font-family: var(--font-cursive); padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666;" data-cost="10" data-owned="0">
             <div style="font-size: 18px; font-weight: bold; color: #f0f0f0;"><img src="leave.png" alt="Leaf" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;">Leaf Blower</div>
             <div style="font-size: 14px; color: #f0f0f0; margin-top: 2px;">+1 leaf per second</div>
             <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">10</span> leaves</div>
         </div>
 
-        <div id="electric-leaf-blower" class="upgrade-item" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="25" data-owned="0">
+        <div id="electric-leaf-blower" class="upgrade-item" style="font-family: var(--font-cursive); padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="25" data-owned="0">
             <div style="font-size: 18px; font-weight: bold; color: #f0f0f0;"><img src="electric.png" alt="Electric" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;">Electric Leaf Blower</div>
             <div style="font-size: 14px; color: #f0f0f0; margin-top: 2px;">+3 leaves per second</div>
             <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">25</span> leaves</div>
         </div>
 
-        <div id="maple-syrup-tap" class="upgrade-item" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="100" data-owned="0">
+        <div id="maple-syrup-tap" class="upgrade-item" style="font-family: var(--font-cursive); padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="100" data-owned="0">
             <div style="font-size: 18px; font-weight: bold; color: #f0f0f0;"><img src="maplesyrup.png" alt="Maple Syrup" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;">Maple Syrup Tap</div>
             <div style="font-size: 14px; color: #f0f0f0; margin-top: 2px;">+1 leaf per second bonus</div>
             <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">100</span> leaves</div>
         </div>
 
-        <div id="large-maple-syrup-tap" class="upgrade-item" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="1000" data-owned="0">
+        <div id="large-maple-syrup-tap" class="upgrade-item" style="font-family: var(--font-cursive); padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="1000" data-owned="0">
             <div style="font-size: 18px; font-weight: bold; color: #f0f0f0;"><img src="largemaplesyrup.png" alt="Large Maple Syrup" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;">Large Maple Syrup Tap</div>
             <div style="font-size: 14px; color: #f0f0f0; margin-top: 2px;">+2 leaves per second bonus</div>
             <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">1000</span> leaves</div>
         </div>
 
-        <div id="golden-maple-syrup-tap" class="upgrade-item" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="25000" data-owned="0">
+        <div id="golden-maple-syrup-tap" class="upgrade-item" style="font-family: var(--font-cursive); padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="25000" data-owned="0">
             <div style="font-size: 18px; font-weight: bold; color: #ffd700;"><img src="largemaplesyrup.png" alt="Golden Maple Syrup" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle; filter: sepia(100%) hue-rotate(45deg) saturate(200%);">Golden Maple Syrup Tap</div>
             <div style="font-size: 14px; color: #f0f0f0; margin-top: 2px;">+100 leaves per second</div>
             <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">25000</span> leaves</div>
         </div>
 
-        <div id="lawn-mower" class="upgrade-item" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="250" data-owned="0">
+        <div id="lawn-mower" class="upgrade-item" style="font-family: var(--font-cursive); padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="250" data-owned="0">
             <div style="font-size: 18px; font-weight: bold; color: #f0f0f0;"><img src="lawn_mower.png" alt="Lawn Mower" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;">Lawn Mower</div>
             <div style="font-size: 14px; color: #f0f0f0; margin-top: 2px;">+10 leaves per second</div>
             <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">250</span> leaves</div>
         </div>
 
-        <div id="jack-o-lantern" class="upgrade-item" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="500" data-owned="0">
+        <div id="jack-o-lantern" class="upgrade-item" style="font-family: var(--font-cursive); padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="500" data-owned="0">
             <div style="font-size: 18px; font-weight: bold; color: #f0f0f0;"><img src="pumpkin.png" alt="Jack O'Lantern" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;">Jack O'Lantern</div>
             <div style="font-size: 14px; color: #f0f0f0; margin-top: 2px;">+25 leaves per second</div>
             <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">500</span> leaves</div>
         </div>
 
-        <div id="snow-blower" class="upgrade-item" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="2500" data-owned="0">
+        <div id="snow-blower" class="upgrade-item" style="font-family: var(--font-cursive); padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="2500" data-owned="0">
             <div style="font-size: 18px; font-weight: bold; color: #f0f0f0;"><img src="snow.png" alt="Snow Blower" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;">Snow Blower</div>
             <div style="font-size: 14px; color: #f0f0f0; margin-top: 2px;">+50 leaves per second</div>
             <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">2500</span> leaves</div>
         </div>
 
-        <div id="super-snow-blower" class="upgrade-item" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="7500" data-owned="0">
+        <div id="super-snow-blower" class="upgrade-item" style="font-family: var(--font-cursive); padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="7500" data-owned="0">
             <div style="font-size: 18px; font-weight: bold; color: #f0f0f0;"><img src="largesnow.png" alt="Powerful Snow Blower" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;">Powerful Snow Blower</div>
             <div style="font-size: 14px; color: #f0f0f0; margin-top: 2px;">+100 leaves per second</div>
             <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">7500</span> leaves</div>
         </div>
 
-        <div id="halloween-candy" class="upgrade-item" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="25000" data-owned="0">
+        <div id="halloween-candy" class="upgrade-item" style="font-family: var(--font-cursive); padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="25000" data-owned="0">
             <div style="font-size: 18px; font-weight: bold; color: #f0f0f0;">🍬 Halloween Candy</div>
             <div style="font-size: 14px; color: #f0f0f0; margin-top: 2px;">+250 leaves per second</div>
             <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">25000</span> leaves</div>
         </div>
 
 
-        <div id="food-section-divider" style="font-family: 'Edu NSW ACT Cursive', cursive; font-size: 20px; color: #ffa500; margin: 20px 0 15px 0; text-align: center; border-bottom: 2px solid #ffa500; padding-bottom: 5px; display: none;">
+        <div id="food-section-divider" style="font-family: var(--font-cursive); font-size: 20px; color: #ffa500; margin: 20px 0 15px 0; text-align: center; border-bottom: 2px solid #ffa500; padding-bottom: 5px; display: none;">
             🍎 Food
         </div>
 
-        <div id="pumpkin-spice-latte" class="upgrade-item" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="50" data-owned="0">
+        <div id="pumpkin-spice-latte" class="upgrade-item" style="font-family: var(--font-cursive); padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="50" data-owned="0">
             <div style="font-size: 18px; font-weight: bold; color: #f0f0f0;"><img src="pumpkinspice.png" alt="Pumpkin Spice" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;">Pumpkin Spice Latte</div>
             <div style="font-size: 14px; color: #f0f0f0; margin-top: 2px;">+5% CPS boost</div>
             <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">50</span> leaves</div>
         </div>
 
-        <div id="pumpkin-pie" class="upgrade-item" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="100" data-owned="0">
+        <div id="pumpkin-pie" class="upgrade-item" style="font-family: var(--font-cursive); padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="100" data-owned="0">
             <div style="font-size: 18px; font-weight: bold; color: #f0f0f0;"><img src="pie.png" alt="Pie" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;">Pumpkin Pie</div>
             <div style="font-size: 14px; color: #f0f0f0; margin-top: 2px;">+10% CPS boost</div>
             <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">100</span> leaves</div>
         </div>
 
-        <div id="candycorn" class="upgrade-item" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="3" data-owned="0" data-cost-type="gems">
+        <div id="candycorn" class="upgrade-item" style="font-family: var(--font-cursive); padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="3" data-owned="0" data-cost-type="gems">
             <div style="font-size: 18px; font-weight: bold; color: #f0f0f0;"><img src="candycorn.png" alt="Candy Corn" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;">Candy Corn</div>
             <div style="font-size: 14px; color: #f0f0f0; margin-top: 2px;">+25% CPS boost</div>
             <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">3</span> gems</div>
         </div>
 
-        <div id="apple-cider-press" class="upgrade-item" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="10" data-owned="0" data-cost-type="gems">
+        <div id="apple-cider-press" class="upgrade-item" style="font-family: var(--font-cursive); padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="10" data-owned="0" data-cost-type="gems">
             <div style="font-size: 18px; font-weight: bold; color: #f0f0f0;"><img src="applecider.png" alt="Apple Cider Press" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;">Apple Cider Press</div>
             <div style="font-size: 14px; color: #f0f0f0; margin-top: 2px;">+50% CPS boost</div>
             <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">10</span> gems</div>
         </div>
 
-        <div id="duration-boost-section" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; border-bottom: 1px solid #666; display: none;">
+        <div id="duration-boost-section" style="font-family: var(--font-cursive); padding: 8px 0; margin-bottom: 12px; border-bottom: 1px solid #666; display: none;">
             <div style="font-size: 18px; font-weight: bold; color: #f0f0f0; margin-bottom: 10px;"><img src="clock.png" alt="Clock" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;">Duration Boost</div>
             <div style="margin-bottom: 8px;">
-                <select id="duration-select" style="width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #666; background-color: #444; color: #f0f0f0; font-family: 'Edu NSW ACT Cursive', cursive; font-size: 14px;">
+                <select id="duration-select" style="width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #666; background-color: #444; color: #f0f0f0; font-family: var(--font-cursive); font-size: 14px;">
                     <option value="1-1">1 minute - 1 gem</option>
                     <option value="5-3">5 minutes - 3 gems</option>
                     <option value="10-5">10 minutes - 5 gems</option>
@@ -409,9 +413,9 @@
                 </select>
             </div>
             <div id="custom-duration-input" style="margin-bottom: 8px; display: none;">
-                <input type="number" id="custom-minutes" min="1" max="1440" placeholder="Enter minutes" style="width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #666; background-color: #444; color: #f0f0f0; font-family: 'Edu NSW ACT Cursive', cursive; font-size: 14px;">
+                <input type="number" id="custom-minutes" min="1" max="1440" placeholder="Enter minutes" style="width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #666; background-color: #444; color: #f0f0f0; font-family: var(--font-cursive); font-size: 14px;">
             </div>
-            <button id="duration-boost-btn" style="width: 100%; padding: 10px; background-color: #ff9800; color: #f0f0f0; border: none; border-radius: 5px; font-family: 'Edu NSW ACT Cursive', cursive; font-size: 16px; cursor: pointer; transition: background-color 0.3s ease;">Activate Boost</button>
+            <button id="duration-boost-btn" style="width: 100%; padding: 10px; background-color: #ff9800; color: #f0f0f0; border: none; border-radius: 5px; font-family: var(--font-cursive); font-size: 16px; cursor: pointer; transition: background-color 0.3s ease;">Activate Boost</button>
             <div id="duration-preview" style="font-size: 12px; color: #999; margin-top: 5px; text-align: center;">Earn leaves instantly</div>
         </div>
     </div>
@@ -449,19 +453,19 @@
 <div id="minigame-modal" class="modal" style="display: none;">
     <div class="modal-content" style="min-height: 200px; min-width: 350px; padding: 40px; text-align: center;">
         <span class="close-btn">&times;</span>
-        <h2 style="color: #f0f0f0; font-size: 24px; margin: 0 0 30px 0; font-family: 'Edu NSW ACT Cursive', cursive;">Minigames</h2>
+        <h2 style="color: #f0f0f0; font-size: 24px; margin: 0 0 30px 0; font-family: var(--font-cursive);">Minigames</h2>
 
         <div style="display: flex; flex-direction: row; gap: 20px; justify-content: center; align-items: center;">
-            <button id="trick-treat-btn" style="background: #ff6b35; color: #f0f0f0; border: none; padding: 12px 25px; font-size: 16px; font-family: 'Edu NSW ACT Cursive', cursive; border-radius: 20px; cursor: pointer; transition: all 0.3s ease;">
+            <button id="trick-treat-btn" style="background: #ff6b35; color: #f0f0f0; border: none; padding: 12px 25px; font-size: 16px; font-family: var(--font-cursive); border-radius: 20px; cursor: pointer; transition: all 0.3s ease;">
                 🎃 Trick n Treat
             </button>
 
-            <button id="back-btn" style="background: #666; color: #f0f0f0; border: 2px solid #777; padding: 12px 25px; font-size: 16px; font-family: 'Edu NSW ACT Cursive', cursive; border-radius: 15px; cursor: pointer; transition: all 0.3s ease;">
+            <button id="back-btn" style="background: #666; color: #f0f0f0; border: 2px solid #777; padding: 12px 25px; font-size: 16px; font-family: var(--font-cursive); border-radius: 15px; cursor: pointer; transition: all 0.3s ease;">
                 ← Back
             </button>
         </div>
 
-        <p style="color: #f0f0f0; font-size: 14px; margin: 20px 0 0 0; text-align: center; font-family: 'Edu NSW ACT Cursive', cursive;">
+        <p style="color: #f0f0f0; font-size: 14px; margin: 20px 0 0 0; text-align: center; font-family: var(--font-cursive);">
             <img src="gem.png" alt="Gem" style="width: 16px; height: 16px; vertical-align: middle; margin: 0 3px;"> Unlock games with gems and earn even more diamonds!
         </p>
     </div>
@@ -479,43 +483,16 @@
 
 <div id="reset-modal" class="reset-modal">
     <div class="reset-modal-content">
-        <h2>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 8px;">
-                <path d="M6 6H18V18C18 19.1 17.1 20 16 20H8C6.9 20 6 19.1 6 18V6Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M8 6V4C8 2.9 8.9 2 10 2H14C15.1 2 16 2.9 16 4V6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <line x1="9" y1="9" x2="9" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                <line x1="15" y1="9" x2="15" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                <line x1="3" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-            Reset Game?
-        </h2>
-        <p>This will permanently delete all your progress including:</p>
-        <p>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 8px;">
-                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            All leaves and gems
-        </p>
-        <p>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 8px;">
-                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
-                <circle cx="9" cy="9" r="2" stroke="currentColor" stroke-width="2"/>
-                <path d="M21 15L16 10L9 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            All purchased upgrades
-        </p>
-        <p>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 8px;">
-                <polyline points="22,12 18,12 15,21 9,3 6,12 2,12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
-            </svg>
-            All achievements and unlocks
-        </p>
+        <h2><i class="fas fa-exclamation-triangle"></i> Reset Game?</h2>
+        <p style="color:#ffaaaa;font-weight:bold;">This will permanently delete ALL progress:</p>
+        <div style="text-align:left;display:inline-block;">
+            <p><i class="fas fa-leaf" style="color:#4CAF50;"></i> Leaves & Gems</p>
+            <p><i class="fas fa-arrow-up" style="color:#2196F3;"></i> Purchased Upgrades</p>
+            <p><i class="fas fa-trophy" style="color:#FFD700;"></i> Achievements & Unlocks</p>
+        </div>
         <div class="reset-modal-buttons">
-            <button id="reset-confirm" class="reset-confirm-btn">Yes, Reset</button>
             <button id="reset-cancel" class="reset-cancel-btn">Cancel</button>
+            <button id="reset-confirm" class="reset-confirm-btn">Yes, Reset Everything</button>
         </div>
     </div>
 </div>
