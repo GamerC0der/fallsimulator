@@ -376,6 +376,12 @@
             <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">7500</span> leaves</div>
         </div>
 
+        <div id="halloween-candy" class="upgrade-item" style="font-family: 'Edu NSW ACT Cursive', cursive; padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;" data-cost="25000" data-owned="0">
+            <div style="font-size: 18px; font-weight: bold; color: #f0f0f0;">🍬 Halloween Candy</div>
+            <div style="font-size: 14px; color: #f0f0f0; margin-top: 2px;">+250 leaves per second</div>
+            <div style="font-size: 13px; color: #999; margin-top: 1px;">Cost: <span class="cost">25000</span> leaves</div>
+        </div>
+
 
         <div id="food-section-divider" style="font-family: 'Edu NSW ACT Cursive', cursive; font-size: 20px; color: #ffa500; margin: 20px 0 15px 0; text-align: center; border-bottom: 2px solid #ffa500; padding-bottom: 5px; display: none;">
             🍎 Food
@@ -441,14 +447,6 @@
 <img class="bg-leaf" src="leave.png" alt="Falling leaf">
 <img class="bg-leaf" src="leave.png" alt="Falling leaf">
 
-<div id="food-modal" class="modal" style="display: none;">
-    <div class="modal-content">
-        <span class="close-btn">&times;</span>
-        <h2>🍎 Introducing Food</h2>
-        <p>Get boosts of up to 50% on all LPS earnings.</p>
-        <button id="got-it-btn" class="got-it-button">Got it!</button>
-    </div>
-</div>
 
 <div id="gem-modal" class="modal" style="display: none;">
     <div class="modal-content">
@@ -553,38 +551,25 @@ document.addEventListener('DOMContentLoaded', function() {
     let foodModalShown = false;
     const gemCountDisplay = document.getElementById('gem-count');
 
-    function formatLeafCount(count) {
-        if (count >= 1000000000000) {
-            return (count / 1000000000000).toFixed(1).replace(/\.0$/, '') + 'T';
-        } else if (count >= 1000000000) {
-            return (count / 1000000000).toFixed(1).replace(/\.0$/, '') + 'B';
-        } else if (count >= 1000000) {
-            return (count / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
-        } else if (count >= 1000) {
-            return (count / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
+    function formatNumber(num) {
+        if (num >= 1000000000000) {
+            return (num / 1000000000000).toFixed(1).replace(/\.0$/, '') + 'T';
+        } else if (num >= 1000000000) {
+            return (num / 1000000000).toFixed(1).replace(/\.0$/, '') + 'B';
+        } else if (num >= 1000000) {
+            return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+        } else if (num >= 1000) {
+            return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
         }
-        return count.toString();
+        return num.toString();
     }
 
     function updateLeafDisplay() {
-        countDisplay.textContent = formatLeafCount(leafCount);
+        countDisplay.textContent = formatNumber(leafCount);
     }
 
     function updateGemDisplay() {
         gemCountDisplay.textContent = gemCount;
-    }
-
-    function formatCost(cost) {
-        if (cost >= 1000000000000) {
-            return (cost / 1000000000000).toFixed(1).replace(/\.0$/, '') + 'T';
-        } else if (cost >= 1000000000) {
-            return (cost / 1000000000).toFixed(1).replace(/\.0$/, '') + 'B';
-        } else if (cost >= 1000000) {
-            return (cost / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
-        } else if (cost >= 1000) {
-            return (cost / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
-        }
-        return cost.toString();
     }
 
     updateLeafDisplay();
@@ -678,7 +663,7 @@ document.addEventListener('DOMContentLoaded', function() {
             costType: 'leaves',
             effect: { value: 10 },
             replaces: ['electric-leaf-blower'],
-            prerequisites: ['large-maple-syrup-tap'],
+            prerequisites: ['maple-syrup-tap'],
             unlocks: ['jack-o-lantern']
         },
 
@@ -719,7 +704,20 @@ document.addEventListener('DOMContentLoaded', function() {
             costType: 'leaves',
             effect: { value: 100 },
             replaces: ['snow-blower', 'electric-leaf-blower'],
-            prerequisites: ['snow-blower']
+            prerequisites: ['snow-blower'],
+            unlocks: ['halloween-candy']
+        },
+
+        'halloween-candy': {
+            id: 'halloween-candy',
+            name: 'Halloween Candy',
+            icon: '🍬',
+            description: '+250 leaves per second',
+            type: UPGRADE_TYPES.PASSIVE_INCOME,
+            cost: 25000,
+            costType: 'leaves',
+            effect: { value: 250 },
+            prerequisites: ['super-snow-blower']
         },
 
         'pumpkin-spice-latte': {
@@ -757,7 +755,7 @@ document.addEventListener('DOMContentLoaded', function() {
             cost: 3,
             costType: 'gems',
             effect: { value: 1.25, operation: 'multiply' },
-            prerequisites: ['pumpkin-pie'],
+            prerequisites: ['has-earned-gem', 'has-bought-food-starter'],
             unlocks: ['apple-cider-press']
         },
 
@@ -770,7 +768,7 @@ document.addEventListener('DOMContentLoaded', function() {
             cost: 10,
             costType: 'gems',
             effect: { value: 1.50, operation: 'multiply' },
-            prerequisites: ['candycorn'],
+            prerequisites: ['has-earned-gem', 'has-bought-food-starter'],
             unlocks: ['large-maple-syrup-tap']
         },
 
@@ -842,12 +840,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const foodUpgrades = ['pumpkin-spice-latte', 'pumpkin-pie', 'candycorn', 'apple-cider-press'];
             if (foodUpgrades.includes(upgradeId)) {
                 const foodSectionDivider = document.getElementById('food-section-divider');
-                const allFoodHidden = foodUpgrades.every(id => {
+                const visibleFoodUpgrades = foodUpgrades.filter(id => {
                     const element = document.getElementById(id);
-                    return !element || element.style.display === 'none';
+                    return element && element.style.display !== 'none' && !element.dataset.owned;
                 });
 
-                if (allFoodHidden && foodSectionDivider) {
+                if (visibleFoodUpgrades.length === 0 && foodSectionDivider) {
                     foodSectionDivider.style.display = 'none';
                 }
             }
@@ -862,7 +860,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const foodUpgrades = ['pumpkin-spice-latte', 'pumpkin-pie', 'candycorn', 'apple-cider-press'];
             if (foodUpgrades.includes(upgradeId)) {
                 const foodSectionDivider = document.getElementById('food-section-divider');
-                if (foodSectionDivider) {
+                const visibleFoodUpgrades = foodUpgrades.filter(id => {
+                    const element = document.getElementById(id);
+                    return element && element.style.display !== 'none' && !element.dataset.owned;
+                });
+
+                if (visibleFoodUpgrades.length > 0 && foodSectionDivider) {
                     foodSectionDivider.style.display = 'block';
                 }
             }
@@ -885,7 +888,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             upgradeElement.style.border = '';
             upgradeElement.style.borderBottom = '1px solid #666';
-            const formattedCost = config.costType === 'gems' ? config.cost : formatCost(config.cost);
+            const formattedCost = formatNumber(config.cost);
             costSpan.textContent = formattedCost + (config.costType === 'gems' ? ' gems' : ' leaves');
         }
     }
@@ -903,6 +906,16 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!config || !config.prerequisites) return true;
 
         return config.prerequisites.every(prereqId => {
+            if (prereqId === 'has-earned-gem') {
+                return localStorage.getItem('hasEarnedGem') === 'true';
+            }
+            if (prereqId === 'has-bought-food-starter') {
+                const pumpkinSpiceLatte = document.getElementById('pumpkin-spice-latte');
+                const pumpkinPie = document.getElementById('pumpkin-pie');
+                return (pumpkinSpiceLatte && pumpkinSpiceLatte.dataset.owned === '1') ||
+                       (pumpkinPie && pumpkinPie.dataset.owned === '1');
+            }
+
             const prereqElement = document.getElementById(prereqId);
             return prereqElement && prereqElement.dataset.owned === '1';
         });
@@ -918,9 +931,44 @@ document.addEventListener('DOMContentLoaded', function() {
         if (minigameBtn) minigameBtn.style.display = 'inline-block';
     }
 
+    function showFoodUpgrades() {
+        if (leafCount >= 1000 && !foodModalShown) {
+            const starterFoodUpgrades = ['pumpkin-spice-latte', 'pumpkin-pie'];
+            const foodSectionDivider = document.getElementById('food-section-divider');
+
+            starterFoodUpgrades.forEach(upgradeId => {
+                showUpgrade(upgradeId);
+            });
+
+            if (foodSectionDivider) {
+                foodSectionDivider.style.display = 'block';
+            }
+
+            foodModalShown = true;
+        }
+    }
+
+    function checkGemFoodUpgrades() {
+        if (localStorage.getItem('hasEarnedGem') === 'true') {
+            const pumpkinSpiceLatte = document.getElementById('pumpkin-spice-latte');
+            const pumpkinPie = document.getElementById('pumpkin-pie');
+            const hasBoughtStarter = (pumpkinSpiceLatte && pumpkinSpiceLatte.dataset.owned === '1') ||
+                                   (pumpkinPie && pumpkinPie.dataset.owned === '1');
+
+            if (hasBoughtStarter) {
+                const gemFoodUpgrades = ['candycorn', 'apple-cider-press'];
+                gemFoodUpgrades.forEach(upgradeId => {
+                    if (checkPrerequisites(upgradeId)) {
+                        showUpgrade(upgradeId);
+                    }
+                });
+            }
+        }
+    }
+
     function hideAllUpgrades() {
         const upgrades = [
-            'electric-leaf-blower', 'maple-syrup-tap', 'large-maple-syrup-tap', 'golden-maple-syrup-tap', 'lawn-mower', 'jack-o-lantern', 'snow-blower', 'super-snow-blower',
+            'electric-leaf-blower', 'maple-syrup-tap', 'large-maple-syrup-tap', 'golden-maple-syrup-tap', 'lawn-mower', 'jack-o-lantern', 'snow-blower', 'super-snow-blower', 'halloween-candy',
             'food-section-divider', 'pumpkin-spice-latte', 'pumpkin-pie',
             'candycorn', 'apple-cider-press', 'duration-boost-section'
         ];
@@ -948,15 +996,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        if (upgradeId === 'jack-o-lantern') {
-            if (!foodModalShown) {
-                const foodModal = document.getElementById('food-modal');
-                if (foodModal) {
-                    foodModal.style.display = 'flex';
-                    foodModalShown = true;
-                }
-            }
-        }
     }
 
     function loadGame() {
@@ -976,6 +1015,10 @@ document.addEventListener('DOMContentLoaded', function() {
             if (gemCount > 0 && !gemModalShown) {
                 showGemUI();
                 gemModalShown = true;
+            }
+
+            if (gemCount > 0) {
+                localStorage.setItem('hasEarnedGem', 'true');
             }
         }
 
@@ -1004,14 +1047,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
                         showUpgradesForProgression(upgradeId);
 
-                        if (upgradeId === 'jack-o-lantern' && !foodModalShown) {
-                            const foodModal = document.getElementById('food-modal');
-                            if (foodModal) {
-                                foodModal.style.display = 'flex';
-                                foodModalShown = true;
-                            }
-                        }
-
                         if (gemCount > 0 && !gemModalShown) {
                             showGemUI();
                             gemModalShown = true;
@@ -1020,6 +1055,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         }
+
+        document.querySelectorAll('.upgrade-item').forEach(upgrade => {
+            const upgradeId = upgrade.id;
+            if (upgradeId && !upgrade.dataset.owned && checkPrerequisites(upgradeId)) {
+                showUpgrade(upgradeId);
+            }
+        });
+
+        showFoodUpgrades();
+
+        checkGemFoodUpgrades();
 
         if (leafCount >= 100) {
             const gemCounter = document.getElementById('gem-counter');
@@ -1044,6 +1090,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 showGemUI();
                 gemModalShown = true;
             }
+
+            if (gemCount > 0) {
+                localStorage.setItem('hasEarnedGem', 'true');
+            }
+
+            checkGemFoodUpgrades();
         }
 
         const savedFoodModalShown = localStorage.getItem('foodModalShown');
@@ -1070,6 +1122,7 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('gems', gemCount.toString());
         localStorage.setItem('upgrade', JSON.stringify(upgradesToSave));
         localStorage.setItem('foodModalShown', foodModalShown.toString());
+        localStorage.setItem('hasEarnedGem', localStorage.getItem('hasEarnedGem') || 'false');
     }
 
     loadGame();
@@ -1106,6 +1159,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 gemCount += 1;
                 updateGemDisplay();
 
+                if (gemCount === 1) {
+                    localStorage.setItem('hasEarnedGem', 'true');
+                }
+
                 if (gemCount === 1 && !gemModalShown) {
                     const gemModal = document.getElementById('gem-modal');
                     if (gemModal) {
@@ -1114,6 +1171,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                     showGemUI();
                 }
+
+                checkGemFoodUpgrades();
             }, 300);
         });
     }
@@ -1135,6 +1194,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 }
             }
+
+            showFoodUpgrades();
+            checkGemFoodUpgrades();
         }
     }, 1000);
     mainLeaf.addEventListener('click', function() {
@@ -1156,6 +1218,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
+        showFoodUpgrades();
+        checkGemFoodUpgrades();
         checkGemReward();
     });
 
@@ -1181,6 +1245,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 }
 
+                showFoodUpgrades();
+                checkGemFoodUpgrades();
                 checkGemReward();
             }, 500);
         });
@@ -1205,6 +1271,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 }
 
+                showFoodUpgrades();
+                checkGemFoodUpgrades();
                 return `Added ${amount} leaves`;
             } else {
                 return 'Error: Please provide a positive number';
@@ -1250,6 +1318,7 @@ document.addEventListener('DOMContentLoaded', function() {
             localStorage.removeItem('gems');
             localStorage.removeItem('upgrade');
             localStorage.removeItem('foodModalShown');
+            localStorage.removeItem('hasEarnedGem');
 
             return 'Game reset';
         },
@@ -1265,15 +1334,17 @@ document.addEventListener('DOMContentLoaded', function() {
             const appleCiderPress = document.getElementById('apple-cider-press');
             const largeMapleSyrupTap = document.getElementById('large-maple-syrup-tap');
             const superSnowBlower = document.getElementById('super-snow-blower');
+            const halloweenCandy = document.getElementById('halloween-candy');
             const candycornOwned = candycorn && candycorn.dataset.owned === '1';
             const jackOLanternOwned = jackOLantern && jackOLantern.dataset.owned === '1';
             const snowBlowerOwned = snowBlower && snowBlower.dataset.owned === '1';
             const superSnowBlowerOwned = superSnowBlower && superSnowBlower.dataset.owned === '1';
+            const halloweenCandyOwned = halloweenCandy && halloweenCandy.dataset.owned === '1';
             const appleCiderPressOwned = appleCiderPress && appleCiderPress.dataset.owned === '1';
             const largeMapleSyrupOwned = largeMapleSyrupTap && largeMapleSyrupTap.dataset.owned === '1';
             const goldenMapleSyrupTap = document.getElementById('golden-maple-syrup-tap');
             const goldenMapleSyrupOwned = goldenMapleSyrupTap && goldenMapleSyrupTap.dataset.owned === '1';
-            return `Leaves: ${formatLeafCount(leafCount)}, LPS: ${passiveIncome}${electricDisabled ? ' (Electric disabled)' : ''}${electricReplaced ? ' (Electric replaced by snow blower)' : ''}${jackOLanternOwned ? ' (+25 jack bonus)' : ''}${snowBlowerOwned ? ' (+50 snow blower)' : ''}${superSnowBlowerOwned ? ' (+100 powerful snow blower)' : ''}${goldenMapleSyrupOwned ? ' (+100 golden maple)' : ''}, Maple Bonus: ${mapleSyrupBonus}${largeMapleSyrupOwned ? ' (LARGE)' : ''}${goldenMapleSyrupOwned ? ' (GOLDEN)' : ''}, Multiplier: ${foodMultiplier}x${appleCiderPressOwned ? ' (+50% cider bonus)' : ''}, Gems: ${gemCount}, Candycorn: ${candycornOwned ? 'OWNED' : 'NOT OWNED'}, Jack O'Lantern: ${jackOLanternOwned ? 'OWNED' : 'NOT OWNED'}, Snow Blower: ${snowBlowerOwned ? 'OWNED' : 'NOT OWNED'}, Powerful Snow Blower: ${superSnowBlowerOwned ? 'OWNED' : 'NOT OWNED'}, Golden Maple: ${goldenMapleSyrupOwned ? 'OWNED' : 'NOT OWNED'}, Cider Press: ${appleCiderPressOwned ? 'OWNED' : 'NOT OWNED'}`;
+            return `Leaves: ${formatNumber(leafCount)}, LPS: ${passiveIncome}${electricDisabled ? ' (Electric disabled)' : ''}${electricReplaced ? ' (Electric replaced by snow blower)' : ''}${jackOLanternOwned ? ' (+25 jack bonus)' : ''}${snowBlowerOwned ? ' (+50 snow blower)' : ''}${superSnowBlowerOwned ? ' (+100 powerful snow blower)' : ''}${halloweenCandyOwned ? ' (+250 halloween candy)' : ''}${goldenMapleSyrupOwned ? ' (+100 golden maple)' : ''}, Maple Bonus: ${mapleSyrupBonus}${largeMapleSyrupOwned ? ' (LARGE)' : ''}${goldenMapleSyrupOwned ? ' (GOLDEN)' : ''}, Multiplier: ${foodMultiplier}x${appleCiderPressOwned ? ' (+50% cider bonus)' : ''}, Gems: ${gemCount}, Candycorn: ${candycornOwned ? 'OWNED' : 'NOT OWNED'}, Jack O'Lantern: ${jackOLanternOwned ? 'OWNED' : 'NOT OWNED'}, Snow Blower: ${snowBlowerOwned ? 'OWNED' : 'NOT OWNED'}, Powerful Snow Blower: ${superSnowBlowerOwned ? 'OWNED' : 'NOT OWNED'}, Halloween Candy: ${halloweenCandyOwned ? 'OWNED' : 'NOT OWNED'}, Golden Maple: ${goldenMapleSyrupOwned ? 'OWNED' : 'NOT OWNED'}, Cider Press: ${appleCiderPressOwned ? 'OWNED' : 'NOT OWNED'}`;
         },
 
         giveGems: function(gems) {
@@ -1282,6 +1353,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 const wasZero = gemCount === 0;
                 gemCount += amount;
                 updateGemDisplay();
+
+                if (wasZero && gemCount > 0) {
+                    localStorage.setItem('hasEarnedGem', 'true');
+                }
 
                 if (wasZero) {
                     if (!gemModalShown) {
@@ -1294,6 +1369,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     showGemUI();
                 }
 
+                checkGemFoodUpgrades();
                 return `Added ${amount} gem${amount > 1 ? 's' : ''}`;
             } else {
                 return 'Error: Please provide a positive number';
@@ -1362,14 +1438,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 unlockUpgrades(config.unlocks);
             }
 
-            if (upgradeId === 'jack-o-lantern' && !foodModalShown) {
-                const foodModal = document.getElementById('food-modal');
-                if (foodModal) {
-                    foodModal.style.display = 'flex';
-                    foodModalShown = true;
-                }
-            }
-
             if (config.costType === 'gems' && gemCount === 0 && !gemModalShown) {
                 const gemModal = document.getElementById('gem-modal');
                 if (gemModal) {
@@ -1377,6 +1445,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     gemModalShown = true;
                 }
                 showGemUI();
+            }
+
+            if (upgradeId === 'pumpkin-spice-latte' || upgradeId === 'pumpkin-pie') {
+                checkGemFoodUpgrades();
             }
 
             saveGame();
@@ -1519,33 +1591,6 @@ document.addEventListener('DOMContentLoaded', function() {
     toggleCustomInput();
     setInterval(updateDurationPreview, 1000);
 
-    const foodModal = document.getElementById('food-modal');
-    const closeBtn = document.querySelector('.close-btn');
-
-    if (closeBtn) {
-        closeBtn.addEventListener('click', function() {
-            if (foodModal) {
-                foodModal.style.display = 'none';
-            }
-        });
-    }
-
-    const gotItBtn = document.getElementById('got-it-btn');
-    if (gotItBtn) {
-        gotItBtn.addEventListener('click', function() {
-            if (foodModal) {
-                foodModal.style.display = 'none';
-            }
-        });
-    }
-
-    if (foodModal) {
-        foodModal.addEventListener('click', function(e) {
-            if (e.target === foodModal) {
-                foodModal.style.display = 'none';
-            }
-        });
-    }
 
     const gemModal = document.getElementById('gem-modal');
     const gemCloseBtn = gemModal ? gemModal.querySelector('.close-btn') : null;
