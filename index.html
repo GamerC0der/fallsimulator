@@ -614,9 +614,8 @@
     <div class="rebirth-modal-content">
         <h2>Rebirth 1!</h2>
         <p>Reset upgrades & Leaves. Keeps Gems.</p>
-        <div style="text-align:left;display:inline-block;color:#f0f0f0;margin: 30px 0;">
+        <div style="text-align:left;display:inline-block;color:#f0f0f0;margin: 15px 0;">
             <p><i class="fas fa-star" style="color:#FFD700;"></i> 1.1x multiplier</p>
-            <p><i class="fas fa-clock" style="color:#FF6B35;"></i> Temporary Food</p>
         </div>
         <div class="rebirth-modal-buttons">
             <button id="rebirth-cancel" class="rebirth-cancel-btn">Cancel</button>
@@ -1693,15 +1692,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
 
                     if (tempFoodText) {
-                        if (rebirthNumber === 2) {
-                            tempFoodText.innerHTML = `<i class="fas fa-magic" style="color:#9c27b0;"></i> Large Pumpkin Cream Brew`;
-                            tempFoodText.style.display = 'block';
-                        } else if (rebirthCount <= 1) {
-                            tempFoodText.innerHTML = `<i class="fas fa-clock" style="color:#FF6B35;"></i> Temporary Food`;
-                            tempFoodText.style.display = 'block';
-                        } else {
-                            tempFoodText.style.display = 'none';
-                        }
+                        tempFoodText.style.display = 'none';
                     }
 
                     rebirthModal.style.display = 'flex';
