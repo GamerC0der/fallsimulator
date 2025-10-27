@@ -387,9 +387,9 @@
 
 <h1 style="position: absolute; top: 10px; left: 10px; font-family: var(--font-cursive); margin: 0; letter-spacing: 2px;">Fall Simulator</h1>
 
-    <div id="right-sidebar" style="position: fixed; top: 0; right: 0; width: 400px; height: 100vh; background: rgba(50, 50, 70, 0.95); border-left: 2px solid #555; padding: 20px; box-sizing: border-box; z-index: 1000;">
+    <div id="right-sidebar" style="position: fixed; top: 0; right: 0; width: 440px; height: 100vh; background: rgba(50, 50, 70, 0.95); border-left: 2px solid #555; padding: 20px; box-sizing: border-box; z-index: 1000;">
     <div id="leaf-counter" style="font-family: var(--font-cursive); font-size: 28px; color: #f0f0f0; margin-bottom: 20px;">Leaves: <span id="count">0</span></div>
-    <div id="gem-counter" style="font-family: var(--font-cursive); font-size: 28px; color: #f0f0f0; margin-bottom: 30px; display: none;">Gems: <span id="gem-count">0</span> <img src="gem.png" alt="Gem" style="width: 25px; height: 25px; vertical-align: middle; margin-left: 5px;"></div>
+    <div id="gem-counter" style="font-family: var(--font-cursive); font-size: 28px; color: #f0f0f0; margin-bottom: 20px; display: none;">Gems: <span id="gem-count">0</span> <img src="gem.png" alt="Gem" style="width: 25px; height: 25px; vertical-align: middle; margin-left: 5px;"></div>
 
     <div style="position: absolute; top: 15px; right: 15px; z-index: 1001;">
         <button id="minigame-btn" style="display: none; background: linear-gradient(135deg, #666, #444); color: #f0f0f0; border: 2px solid #777; padding: 8px 16px; font-size: 14px; font-family: var(--font-cursive); border-radius: 15px; cursor: pointer; transition: all 0.3s ease; font-weight: bold;">
@@ -520,6 +520,16 @@
             <button id="duration-boost-btn" style="width: 100%; padding: 10px; background-color: #ff9800; color: #f0f0f0; border: none; border-radius: 5px; font-family: var(--font-cursive); font-size: 16px; cursor: pointer; transition: background-color 0.3s ease;">Activate Boost</button>
             <div id="duration-preview" style="font-size: 12px; color: #999; margin-top: 5px; text-align: center;">Earn leaves instantly</div>
         </div>
+
+        <div id="other-section-divider" style="font-family: var(--font-cursive); font-size: 20px; color: #ffa500; margin: 20px 0 15px 0; text-align: center; border-bottom: 2px solid #ffa500; padding-bottom: 5px; display: none;">
+            🔄 Other
+        </div>
+
+        <div id="rebirth-upgrade" class="upgrade-item" style="font-family: var(--font-cursive); padding: 8px 0; margin-bottom: 12px; cursor: pointer; border-bottom: 1px solid #666; display: none;">
+            <div style="font-size: 18px; font-weight: bold; color: #f0f0f0;"><i class="fas fa-recycle" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;"></i>Rebirth</div>
+            <div style="font-size: 14px; color: #f0f0f0; margin-top: 2px;">Reset for permanent multiplier</div>
+            <div style="font-size: 13px; color: #999; margin-top: 1px;">Rebirths: <span id="rebirth-count-display">0</span> | Multiplier: <span id="rebirth-multiplier-display">1.0x</span></div>
+        </div>
     </div>
 </div>
 
@@ -583,12 +593,6 @@
     </svg>
 </button>
 
-<button id="rebirth-btn" class="rebirth-btn" title="Rebirth">
-    Rebirth
-</button>
-
-<div id="rebirth-counter" style="position: fixed; bottom: 20px; left: 20px; font-family: var(--font-cursive); font-size: 20px; color: #f0f0f0; display: none;" title="Rebirth Multi">Rebirth: 1</div>
-<div id="rebirth-multi-display" style="position: fixed; bottom: 5px; left: 20px; font-family: var(--font-cursive); font-size: 16px; color: #f0f0f0; display: none;">1.1x Multiplier</div>
 
 <div id="reset-modal" class="reset-modal">
     <div class="reset-modal-content">
@@ -890,7 +894,7 @@ document.addEventListener('DOMContentLoaded', function() {
             cost: 2,
             costType: 'gems',
             effect: { value: 5.0, duration: 60 },
-            prerequisites: ['has-rebirth-1'],
+            prerequisites: ['has-rebirth-2'],
             unlocks: []
         },
 
@@ -1085,6 +1089,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if (prereqId === 'has-rebirth-1') {
                 return rebirthCount >= 1;
             }
+            if (prereqId === 'has-rebirth-2') {
+                return rebirthCount >= 2;
+            }
 
             const prereqElement = document.getElementById(prereqId);
             return prereqElement && prereqElement.dataset.owned === '1';
@@ -1138,39 +1145,31 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function checkRebirthUnlock() {
         const halloweenCandy = document.getElementById('halloween-candy');
-        const rebirthBtn = document.getElementById('rebirth-btn');
-        const rebirthCounter = document.getElementById('rebirth-counter');
-        const rebirthMultiDisplay = document.getElementById('rebirth-multi-display');
+        const rebirthUpgrade = document.getElementById('rebirth-upgrade');
+        const otherSectionDivider = document.getElementById('other-section-divider');
+        const rebirthCountDisplay = document.getElementById('rebirth-count-display');
+        const rebirthMultiplierDisplay = document.getElementById('rebirth-multiplier-display');
 
         if (halloweenCandy && halloweenCandy.dataset.owned === '1') {
-            if (rebirthBtn) {
-                rebirthBtn.style.display = 'block';
-                rebirthBtn.style.bottom = '140px';
+            if (rebirthUpgrade) {
+                rebirthUpgrade.style.display = 'block';
+            }
+            if (otherSectionDivider) {
+                otherSectionDivider.style.display = 'block';
+            }
+            if (rebirthCountDisplay) {
+                rebirthCountDisplay.textContent = rebirthCount;
+            }
+            if (rebirthMultiplierDisplay) {
+                rebirthMultiplierDisplay.textContent = `${rebirthMultiplier}x`;
             }
         } else {
-            if (rebirthBtn) {
-                rebirthBtn.style.display = 'none';
-                rebirthBtn.style.bottom = '90px';
+            if (rebirthUpgrade) {
+                rebirthUpgrade.style.display = 'none';
             }
-        }
-
-        if (rebirthCount > 0 && rebirthCounter) {
-            rebirthCounter.style.display = 'block';
-            rebirthCounter.textContent = `Rebirth: ${rebirthCount}`;
-            if (rebirthBtn && rebirthBtn.style.display === 'block') {
-                rebirthCounter.style.bottom = '110px';
-            } else {
-                rebirthCounter.style.bottom = '85px';
+            if (otherSectionDivider) {
+                otherSectionDivider.style.display = 'none';
             }
-        } else if (rebirthCounter) {
-            rebirthCounter.style.display = 'none';
-        }
-
-        if (rebirthCount > 0 && rebirthMultiDisplay) {
-            rebirthMultiDisplay.style.display = 'block';
-            rebirthMultiDisplay.textContent = `${rebirthMultiplier}x Multiplier`;
-        } else if (rebirthMultiDisplay) {
-            rebirthMultiDisplay.style.display = 'none';
         }
 
         if (rebirthCount >= 1) {
@@ -1229,7 +1228,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const foodSectionDivider = document.getElementById('food-section-divider');
         const durationBoostSection = document.getElementById('duration-boost-section');
+        const otherSectionDivider = document.getElementById('other-section-divider');
+        const rebirthUpgrade = document.getElementById('rebirth-upgrade');
         if (durationBoostSection) durationBoostSection.style.display = 'none';
+        if (otherSectionDivider) otherSectionDivider.style.display = 'none';
+        if (rebirthUpgrade) rebirthUpgrade.style.display = 'none';
     }
 
     function showUpgradesForProgression(upgradeId) {
@@ -1669,6 +1672,43 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.upgrade-item').forEach(upgrade => {
         upgrade.addEventListener('click', function() {
             const upgradeId = this.id;
+
+            // Special handling for rebirth upgrade
+            if (upgradeId === 'rebirth-upgrade') {
+                const rebirthModal = document.getElementById('rebirth-modal');
+                if (rebirthModal) {
+                    const rebirthNumber = rebirthCount + 1;
+                    const rebirthMultiplierDisplay = (1.0 + (rebirthNumber * 0.1)).toFixed(1);
+
+                    const modalTitle = rebirthModal.querySelector('h2');
+                    const multiplierText = rebirthModal.querySelector('div p:first-child');
+                    const tempFoodText = rebirthModal.querySelector('div p:nth-child(2)');
+
+                    if (modalTitle) {
+                        modalTitle.textContent = `Rebirth ${rebirthNumber}!`;
+                    }
+
+                    if (multiplierText) {
+                        multiplierText.innerHTML = `<i class="fas fa-star" style="color:#FFD700;"></i> ${rebirthMultiplierDisplay}x multiplier`;
+                    }
+
+                    if (tempFoodText) {
+                        if (rebirthNumber === 2) {
+                            tempFoodText.innerHTML = `<i class="fas fa-magic" style="color:#9c27b0;"></i> Large Pumpkin Cream Brew`;
+                            tempFoodText.style.display = 'block';
+                        } else if (rebirthCount <= 1) {
+                            tempFoodText.innerHTML = `<i class="fas fa-clock" style="color:#FF6B35;"></i> Temporary Food`;
+                            tempFoodText.style.display = 'block';
+                        } else {
+                            tempFoodText.style.display = 'none';
+                        }
+                    }
+
+                    rebirthModal.style.display = 'flex';
+                }
+                return;
+            }
+
             const config = getUpgradeConfig(upgradeId);
 
             if (!config) {
